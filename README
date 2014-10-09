@@ -37,7 +37,7 @@ Set Up Your IntelliJ Project
 1. Checkout the code
 2. Copy the saved .idea files: "cp -r .idea.template/ .idea/"
 3. Open IntelliJ IDEA
-4. Click “Open Project” -> Choose the “trunk” folder that you just checked out from source control (Or use "File" -> “Open…”)
+4. Click “Open Project” -> Choose the “twuXXprojX” folder that you just checked out from source control (Or use "File" -> “Open…”)
 5. If you see a popup in which IntelliJ wants to use your confidential information in you keychain, click “Allow” or “Always Allow”
 6. If you see an error with the Java SDK being set incorrectly, follow the instructions in IntelliJ to set the Project SDK to Java 1.7
 7. To verify that the import was successful:

@@ -35,15 +35,12 @@ public class HumansTxtTest {
                                         "Michael Bolton",
                                         "Juliana Paukowski",
                                         "Xiaonan Dong",
-<<<<<<< HEAD
-                                        "Daisy Shih"};
-=======
+                                        "Daisy Shih",
                                         "Siba Fadda",
                                         "Abhishek Puri",
                                         "Flavia Fale",
                                         "Gustavo Goulart",
                                         "Mohammed Binsabbar"};
->>>>>>> e43aa3f3e20641a228bb86161a1e76a38649eb0c
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

@@ -35,7 +35,8 @@ public class HumansTxtTest {
                                         "Michael Bolton",
                                         "Juliana Paukowski",
                                         "Xiaonan Dong",
-                                        "Siba Fadda"};
+                                        "Siba Fadda",
+                                        "Abhishek Puri"};
 
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }

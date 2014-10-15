@@ -42,7 +42,9 @@ public class HumansTxtTest {
                                         "Abhishek Puri",
                                         "Flavia Fale",
                                         "Gustavo Goulart",
-                                        "Mohammed Binsabbar"};
+                                        "Mohammed Binsabbar",
+                                        "Florian Schlosser",
+                                        "Boxing Peng"};
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

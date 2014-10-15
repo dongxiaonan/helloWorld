@@ -34,7 +34,10 @@ public class HumansTxtTest {
                                         "Samir Nagheenanajar",
                                         "Michael Bolton",
                                         "Juliana Paukowski",
-                                        "Xiaonan Dong"};
+                                        "Xiaonan Dong",
+                                        "Michael Bolton",
+                                        "Taylar Wade"};
+
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

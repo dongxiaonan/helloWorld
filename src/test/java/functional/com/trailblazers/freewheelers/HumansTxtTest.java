@@ -33,8 +33,8 @@ public class HumansTxtTest {
                                         "Peter Gibbons",
                                         "Samir Nagheenanajar",
                                         "Michael Bolton",
-                                        "Juliana Paukowski"
-        };
+                                        "Juliana Paukowski",
+                                        "Xiaonan Dong"};
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

@@ -36,8 +36,13 @@ public class HumansTxtTest {
                                         "Juliana Paukowski",
                                         "Xiaonan Dong",
                                         "Michael Bolton",
-                                        "Taylar Wade"};
-
+                                        "Taylar Wade",
+                                        "Daisy Shih",
+                                        "Siba Fadda",
+                                        "Abhishek Puri",
+                                        "Flavia Fale",
+                                        "Gustavo Goulart",
+                                        "Mohammed Binsabbar"};
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

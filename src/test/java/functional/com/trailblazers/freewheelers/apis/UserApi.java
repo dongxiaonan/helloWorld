@@ -49,13 +49,14 @@ public class UserApi {
         return this;
     }
 
-    public UserApi creates_an_account(String name, String email, String password, String phoneNumber) {
+    public UserApi creates_an_account(String name, String email, String password, String country, String phoneNumber) {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
         fillField(driver.findElement(By.id("fld_email")), email);
         fillField(driver.findElement(By.id("fld_password")), password);
         fillField(driver.findElement(By.id("fld_name")), name);
+        select(country, driver.findElement(By.id("fld_country")));
         fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
 
         driver.findElement(By.id("createAccount")).click();

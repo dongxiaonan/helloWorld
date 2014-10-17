@@ -44,6 +44,25 @@
         </div>
 
         <div>
+            <label for="fld_country">Country</label>
+            <div class="controls">
+                <%--<input type="text" id="fld_country" placeholder="Your Country" name="country">--%>
+                <select id="fld_country" name="country">
+                    <option value="">Select</option>
+                    <option value="UK">UK</option>
+                    <option value="USA">USA</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Italy">Italy</option>
+                </select>
+                <c:if test="${not empty validationMessage.errors['country']}">
+                    <span class="text-error">${validationMessage.errors["country"]}</span>
+                </c:if>
+            </div>
+        </div>
+
+        <div>
             <label for="fld_phoneNumber">Phone Number</label>
             <div class="controls">
                 <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber">
@@ -60,5 +79,9 @@
         </div>
 
 	</form>
+
+    <div class="note">
+        If your country is not listed then we don't ship there. Please check back later.
+    </div>
 
 <%@ include file="../footer.jsp" %>

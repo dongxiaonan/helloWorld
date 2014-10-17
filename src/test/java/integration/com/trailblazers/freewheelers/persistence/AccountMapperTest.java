@@ -83,6 +83,7 @@ public class AccountMapperTest extends MapperTestBase {
                 .setAccount_name("Some Body")
                 .setEmail_address(randomUUID() + "some.body@gmail.com")
                 .setPassword("V3ry S3cret")
+                .setCountry("UK")
                 .setPhoneNumber("12345")
                 .setEnabled(true);
     }

@@ -2,17 +2,20 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.service.AccountService;
+import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,24 +30,28 @@ public class AccountControllerTest {
     @Mock
     private AccountService accountService;
 
+    @Mock
+    private CountryService countryService;
+
     @Before
     public void setUp() throws Exception {
         initMocks(this);
 
         accountController = new AccountController();
         accountController.accountService = accountService;
+        accountController.countryService = countryService;
     }
 
     @Test
     public void shouldShowTheCreateAccountForm() throws Exception {
         ExtendedModelMap model = new ExtendedModelMap();
-
+        ExtendedModelMap expectedModelMap =  new ExtendedModelMap();
+        expectedModelMap.addAttribute("validationMessage",new ExtendedModelMap());
+        expectedModelMap.addAttribute("countries",countryService.getCountries());
         ModelAndView accountForm = accountController.createAccountForm(model);
 
-        ExtendedModelMap expectedModel = new ExtendedModelMap();
-        expectedModel.put("validationMessage", model);
-        assertThat(accountForm.getViewName(), is("account/create"));
-        assertThat(accountForm.getModel(), is(expectedModel.asMap()));
+        assertThat(accountForm.getViewName(),is("account/create"));
+        assertThat(accountForm.getModel(),is(expectedModelMap.asMap()));
     }
 
     @Test
@@ -100,6 +107,7 @@ public class AccountControllerTest {
         model.put("errors", errors);
         ExtendedModelMap expectedModel = new ExtendedModelMap();
         expectedModel.put("validationMessage", model);
+        expectedModel.put("countries",countryService.getCountries());
         assertThat(createView.getViewName(), is("account/create"));
         assertThat(createView.getModel(), is(expectedModel.asMap()));
     }

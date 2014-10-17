@@ -82,11 +82,12 @@ public class AdminApi {
 
     private Account account_for(String userName, String password) {
         return new Account()
-                    .setAccount_name(userName)
-                    .setPassword(password)
-                    .setEmail_address(emailFor(userName))
-                    .setPhoneNumber(SOME_PHONE_NUMBER)
-                    .setEnabled(true);
+                .setAccount_name(userName)
+                .setPassword(password)
+                .setEmail_address(emailFor(userName))
+                .setCountry(VALID_COUNTRY)
+                .setPhoneNumber(SOME_PHONE_NUMBER)
+                .setEnabled(true);
     }
 
     public AdminApi there_is_a_survey_entry_for(long accountId,int feedbackType, String comment) {

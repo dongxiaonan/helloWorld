@@ -8,8 +8,8 @@ import java.util.List;
 public interface AccountMapper {
 
     @Insert(
-        "INSERT INTO account (account_name, email_address, password, phone_number, enabled) " +
-        "VALUES (#{account_name}, #{emailAddress}, #{password}, #{phoneNumber}, #{enabled})"
+        "INSERT INTO account (account_name, email_address, password, country, phone_number, enabled) " +
+        "VALUES (#{account_name}, #{emailAddress}, #{password}, #{country}, #{phoneNumber}, #{enabled})"
     )
     @Options(keyProperty = "account_id", useGeneratedKeys = true)
     Integer insert(Account account);

@@ -15,13 +15,13 @@ SET search_path = public, pg_catalog;
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO account VALUES (1, 'AdminCat', 'admin@freewheelers.com', 'admin', '', true);
-INSERT INTO account VALUES (2, 'UserCat', 'user@freewheelers.com', 'user', '', true);
-INSERT INTO account VALUES (6, 'Michael Stipe', 'mstipe@freewheelers.com', 'REMisAwesome', '1234567890', true);
-INSERT INTO account VALUES (8, 'Peter Buck', 'peter-buck@gmx.de', 'P3t3r', '1234567890', true);
-INSERT INTO account VALUES (7, 'Scott McCaughey', 'smccaughey@gmail.com', 'ScottScottScott', '1234567890', true);
-INSERT INTO account VALUES (9, 'Bill Rieflin', 'billrieflin@apple.com', 'YoudontKNOW!!!', '', true);
-INSERT INTO account VALUES (10, 'SurveyUser', 'survey@freewheelers.com', 'survey', '', true);
+INSERT INTO account VALUES (1, 'AdminCat', 'admin@freewheelers.com', 'admin', 'UK', '', true);
+INSERT INTO account VALUES (2, 'UserCat', 'user@freewheelers.com', 'user', 'UK', '', true);
+INSERT INTO account VALUES (6, 'Michael Stipe', 'mstipe@freewheelers.com', 'REMisAwesome', 'UK', '1234567890', true);
+INSERT INTO account VALUES (8, 'Peter Buck', 'peter-buck@gmx.de', 'P3t3r', 'UK', '1234567890', true);
+INSERT INTO account VALUES (7, 'Scott McCaughey', 'smccaughey@gmail.com', 'ScottScottScott', 'UK', '1234567890', true);
+INSERT INTO account VALUES (9, 'Bill Rieflin', 'billrieflin@apple.com', 'YoudontKNOW!!!', 'UK', '', true);
+INSERT INTO account VALUES (10, 'SurveyUser', 'survey@freewheelers.com', 'survey','UK', '', true);
 
 
 --

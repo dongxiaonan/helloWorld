@@ -46,15 +46,11 @@
         <div>
             <label for="fld_country">Country</label>
             <div class="controls">
-                <%--<input type="text" id="fld_country" placeholder="Your Country" name="country">--%>
                 <select id="fld_country" name="country">
                     <option value="">Select</option>
-                    <option value="UK">UK</option>
-                    <option value="USA">USA</option>
-                    <option value="France">France</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Italy">Italy</option>
+                    <c:forEach var="country" items="${countries}">
+                        <option value="${country}">${country}</option>
+                    </c:forEach>
                 </select>
                 <c:if test="${not empty validationMessage.errors['country']}">
                     <span class="text-error">${validationMessage.errors["country"]}</span>

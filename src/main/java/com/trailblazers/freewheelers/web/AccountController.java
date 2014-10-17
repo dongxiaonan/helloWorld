@@ -2,9 +2,12 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.service.AccountService;
+import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import com.trailblazers.freewheelers.service.impl.AccountServiceImpl;
+import com.trailblazers.freewheelers.service.impl.CountryServiceImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -20,14 +24,18 @@ import java.util.Map;
 public class AccountController {
 
     AccountService accountService;
+    CountryService countryService;
 
     public AccountController() {
         accountService = new AccountServiceImpl();
+        countryService = new CountryServiceImpl();
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView createAccountForm(Model model) {
-        return new ModelAndView("account/create", "validationMessage", model);
+        model.addAttribute("validationMessage",new ExtendedModelMap());
+        model.addAttribute("countries",countryService.getCountries());
+        return new  ModelAndView("account/create", (Map<String, ?>) model);
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -59,9 +67,12 @@ public class AccountController {
     }
 
     private ModelAndView showErrors(Map errors) {
-        ModelMap model = new ModelMap();
-        model.put("errors", errors);
-        return new ModelAndView("account/create", "validationMessage", model);
+        Map<String,Object> model = new HashMap<String, Object>();
+        model.put("countries",countryService.getCountries());
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("errors", errors);
+        model.put("validationMessage",modelMap);
+        return new ModelAndView("account/create", model);
     }
 
     private ModelAndView showError() {

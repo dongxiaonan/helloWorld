@@ -49,12 +49,12 @@ public class AccountServiceImplTest {
     }
 
     private Account getAccountWithErrors() {
-        Account account =  new Account();
-        account.setAccount_name("");
-        account.setEmail_address("");
-        account.setPassword("");
-        account.setPhoneNumber("");
-        return account;
+        return new Account()
+                .setAccount_name("")
+                .setEmail_address("")
+                .setPassword("")
+                .setCountry("")
+                .setPhoneNumber("");
     }
 
     @Test
@@ -70,11 +70,11 @@ public class AccountServiceImplTest {
     }
 
     private Account getAccountWithoutErrors() {
-        Account account = new Account();
-        account.setEmail_address("example@example.com");
-        account.setPassword("example");
-        account.setAccount_name("Example Person");
-        account.setPhoneNumber("1234567890");
-        return account;
+        return new Account()
+                .setEmail_address("example@example.com")
+                .setPassword("example")
+                .setCountry("UK")
+                .setAccount_name("Example Person")
+                .setPhoneNumber("1234567890");
     }
 }

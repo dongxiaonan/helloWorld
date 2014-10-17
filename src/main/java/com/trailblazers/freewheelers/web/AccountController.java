@@ -35,12 +35,14 @@ public class AccountController {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
+        String country = request.getParameter("country");
         String phoneNumber = request.getParameter("phoneNumber");
 
         Account account = new Account()
                 .setEmail_address(email)
                 .setPassword(password)
                 .setAccount_name(name)
+                .setCountry(country)
                 .setPhoneNumber(phoneNumber)
                 .setEnabled(true);
 

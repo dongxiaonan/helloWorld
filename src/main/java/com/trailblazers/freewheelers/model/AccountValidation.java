@@ -19,6 +19,10 @@ public class AccountValidation {
             errors.put("name", "Must enter a name!");
         }
 
+        if(account.getCountry().isEmpty()) {
+            errors.put("country","Must select a country!");
+        }
+
         if(account.getPhoneNumber().isEmpty()) {
             errors.put("phoneNumber", "Must enter a phone number!");
         }

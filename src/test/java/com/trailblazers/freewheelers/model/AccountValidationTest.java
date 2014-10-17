@@ -16,6 +16,7 @@ public class AccountValidationTest {
     public static final String SOME_PASSWORD = "V3ry Secure!";
     public static final String SOME_NAME = "Günter Grass";
     public static final String SOME_PHONE = "004945542741";
+    public static final String SOME_COUNTRY = "UK";
     private Account account;
 
     @Before
@@ -24,6 +25,7 @@ public class AccountValidationTest {
                 .setEmail_address(SOME_EMAIL)
                 .setPassword(SOME_PASSWORD)
                 .setAccount_name(SOME_NAME)
+                .setCountry(SOME_COUNTRY)
                 .setPhoneNumber(SOME_PHONE)
                 .setEnabled(true);
 
@@ -77,6 +79,16 @@ public class AccountValidationTest {
         HashMap errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("phoneNumber", "enter a phone number", errors);
+    }
+
+    @Test
+    public void shouldComplainAboutAnEmptyCountry() throws Exception {
+        String emptyCountry="";
+        account.setCountry(emptyCountry);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("country","select a country",errors);
     }
 
     private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {

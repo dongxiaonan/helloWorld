@@ -70,6 +70,7 @@ public class AccountControllerTest {
         when(request.getParameter("email")).thenReturn("email@fake.com");
         when(request.getParameter("password")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
+        when(request.getParameter("country")).thenReturn("UK");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
 
         accountController.processCreate(request);
@@ -81,6 +82,7 @@ public class AccountControllerTest {
         assertThat(account.getEmail_address(), is("email@fake.com"));
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
+        assertThat(account.getCountry(),is("UK"));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
     }

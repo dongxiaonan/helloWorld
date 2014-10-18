@@ -11,8 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ScreenApi {
@@ -108,4 +107,8 @@ public class ScreenApi {
         return this;
     }
 
+    public ScreenApi should_show_country() {
+        assertThat(driver.findElement(By.className("country")).getText(),not(""));
+        return this;
+    }
 }

@@ -40,6 +40,14 @@ public class AccountMapperTest extends MapperTestBase {
     }
 
     @Test
+    public void theAccountFetchedFromDBShouldHaveCountry() throws Exception {
+        accountMapper.insert(someAccount().setAccount_name("Test Country"));
+
+        Account fetchedFromDB = accountMapper.getByName("Test Country");
+
+        assertThat(fetchedFromDB.getCountry(),is("UK"));
+    }
+    @Test
     public void shouldUpdateAnExistingAccount() throws Exception {
         Account someAccount = someAccount().setAccount_name("Prince");
         accountMapper.insert(someAccount);

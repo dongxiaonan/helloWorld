@@ -12,7 +12,6 @@ public class SyntaxSugar {
     public static final BigDecimal SOME_PRICE = valueOf(49.99);
     public static final String EMPTY_COUNTRY = "Select";
     public static final String VALID_COUNTRY = "UK";
-    public static final String INVALID_COUNTRY = "India";
 
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";

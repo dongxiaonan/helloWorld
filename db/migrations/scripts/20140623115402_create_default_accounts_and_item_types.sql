@@ -1,9 +1,9 @@
 -- // create_default_accounts_and_item_types
 -- Migration SQL that makes the change goes here.
 INSERT INTO account (email_address, account_name, password, country, phone_number, enabled)
-            VALUES ('admin@freewheelers.com', 'AdminCat','admin', '', '', true);
+            VALUES ('admin@freewheelers.com', 'AdminCat','admin', 'UK', '', true);
 INSERT INTO account (email_address, account_name, password, country, phone_number, enabled)
-            VALUES ('user@freewheelers.com', 'UserCat','user', '', '', true);
+            VALUES ('user@freewheelers.com', 'UserCat','user', 'UK', '', true);
 
 INSERT INTO account_role (account_name, role) VALUES ('AdminCat', 'ROLE_ADMIN');
 INSERT INTO account_role (account_name, role) VALUES ('UserCat', 'ROLE_USER');

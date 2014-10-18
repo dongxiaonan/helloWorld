@@ -4,7 +4,8 @@
 
 <div class="page-action">Your details</div>
         <div id="user-details" >
-            ${userDetail.account_name} - ${userDetail.email_address}<br />
+            <span class="user-name">${userDetail.account_name}</span> - <span class="email-address">${userDetail.email_address}</span><br />
+            <span class="country">${userDetail.country}</span>
         </div>
 
 		<div class="page-action">Your Orders</div>

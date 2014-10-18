@@ -78,5 +78,36 @@ public class AccountTest extends UserJourneyBase {
                 .shows_profile_for(Hugo);
     }
 
+    @Test
+    public void shouldDisplayTheCountryOfUserWhenUserProfileIsClicked() throws Exception {
+        String jan = "Jan Plewka";
+
+        admin
+                .there_is_a_user(jan,SOME_PASSWORD);
+        user
+                .is_logged_out()
+                .logs_in_with(jan, SOME_PASSWORD)
+                .visits_his_profile();
+
+        screen
+                .shows_profile_for(jan)
+                .should_show_country();
+    }
+
+    @Test
+    public void shouldDisplayTheCountryOfAdminWhenAdminProfileIsClicked() throws Exception {
+        String Arno = "Arno Admin";
+
+        admin
+                .there_is_an_admin(Arno,SOME_PASSWORD);
+        user
+                .is_logged_out()
+                .logs_in_with(Arno, SOME_PASSWORD)
+                .visits_his_profile();
+
+        screen
+                .shows_profile_for(Arno)
+                .should_show_country();
+    }
 
 }

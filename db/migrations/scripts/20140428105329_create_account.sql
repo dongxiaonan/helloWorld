@@ -6,7 +6,6 @@ CREATE TABLE account
       account_name CHARACTER VARYING(255) NOT NULL,
       email_address CHARACTER VARYING(255) NOT NULL UNIQUE,
       password CHARACTER VARYING(255) NOT NULL,
-      country CHARACTER VARYING(255) NOT NULL,
       phone_number CHARACTER VARYING(32) NOT NULL,
       enabled BOOLEAN NOT NULL
 );

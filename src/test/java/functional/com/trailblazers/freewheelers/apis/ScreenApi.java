@@ -108,7 +108,7 @@ public class ScreenApi {
     }
 
     public ScreenApi should_show_country() {
-        assertThat(driver.findElement(By.className("country")).getText(),not(""));
+        assertThat(driver.findElement(By.className("country")).getText(),not("Country : "));
         return this;
     }
 }

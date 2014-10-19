@@ -25,6 +25,7 @@ public class AccountController {
 
     AccountService accountService;
     CountryService countryService;
+    private Account account;
 
     public AccountController() {
         accountService = new AccountServiceImpl();
@@ -33,9 +34,17 @@ public class AccountController {
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView createAccountForm(Model model) {
+        account = account!=null?account:new Account()
+                .setEmail_address("")
+                .setPassword("")
+                .setAccount_name("")
+                .setCountry("")
+                .setPhoneNumber("")
+                .setEnabled(false);
         model.addAttribute("validationMessage",new ExtendedModelMap());
         model.addAttribute("countries",countryService.getCountries());
-        return new  ModelAndView("account/create", (Map<String, ?>) model);
+        model.addAttribute("account",account);
+        return new ModelAndView("account/create", (Map<String, ?>) model);
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -46,7 +55,7 @@ public class AccountController {
         String country = request.getParameter("country");
         String phoneNumber = request.getParameter("phoneNumber");
 
-        Account account = new Account()
+        account = (account!=null?account:new Account())
                 .setEmail_address(email)
                 .setPassword(password)
                 .setAccount_name(name)
@@ -71,7 +80,23 @@ public class AccountController {
         model.put("countries",countryService.getCountries());
         ModelMap modelMap = new ModelMap();
         modelMap.put("errors", errors);
+        if(errors.containsKey("email")){
+            account.setEmail_address("");
+        }
+        if(errors.containsKey("password")){
+            account.setPassword("");
+        }
+        if(errors.containsKey("name")){
+            account.setAccount_name("");
+        }
+        if(errors.containsKey("country")){
+            account.setCountry("");
+        }
+        if(errors.containsKey("phoneNumber")){
+            account.setPhoneNumber("");
+        }
         model.put("validationMessage",modelMap);
+        model.put("account",account);
         return new ModelAndView("account/create", model);
     }
 

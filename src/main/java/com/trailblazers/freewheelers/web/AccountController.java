@@ -107,6 +107,13 @@ public class AccountController {
     private ModelAndView showSuccess(Account account) {
         ModelMap model = new ModelMap();
         model.put("name", account.getAccount_name());
+        account = account
+                .setEmail_address("")
+                .setPassword("")
+                .setAccount_name("")
+                .setCountry("")
+                .setPhoneNumber("")
+                .setEnabled(false);
         return new ModelAndView("account/createSuccess", "postedValues", model);
     }
 

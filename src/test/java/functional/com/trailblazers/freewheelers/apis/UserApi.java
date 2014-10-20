@@ -56,7 +56,7 @@ public class UserApi {
         fillField(driver.findElement(By.id("fld_email")), email);
         fillField(driver.findElement(By.id("fld_password")), password);
         fillField(driver.findElement(By.id("fld_name")), name);
-        select(country, driver.findElement(By.id("fld_country")));
+        select(country, driver.findElement(By.id("sel_country")));
         fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
 
         driver.findElement(By.id("createAccount")).click();

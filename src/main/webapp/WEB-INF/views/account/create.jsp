@@ -44,9 +44,9 @@
         </div>
 
         <div>
-            <label for="fld_country">Country</label>
+            <label for="sel_country">Country</label>
             <div class="controls">
-                <select id="fld_country" name="country" >
+                <select id="sel_country" name="country" >
                     <option value="">Select</option>
                     <c:forEach var="country" items="${countries}">
                         <option <c:if test="${(account.country == country)}" >selected </c:if>value="${country}">${country}</option>

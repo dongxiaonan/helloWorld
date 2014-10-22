@@ -27,7 +27,7 @@
         <div>
             <label>Password</label>
             <div class="controls">
-                <input type="password" name="j_password" placeholder="Password">
+                <input type="password" name="j_password" id="j_password" placeholder="Password">
             </div>
         </div>
 

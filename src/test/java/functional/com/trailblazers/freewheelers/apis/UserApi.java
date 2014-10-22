@@ -178,4 +178,18 @@ public class UserApi {
             }
         });
     }
+
+    public String verify_password_field_is_masked_in_creat_account() {
+        driver.get(URLs.home());
+        driver.findElement(By.linkText("Create Account")).click();
+
+        return driver.findElement(By.id("fld_password")).getAttribute("type");
+    }
+
+    public String verify_password_field_is_masked_in_login() {
+        driver.get(URLs.home());
+        driver.findElement(By.linkText("User Profile")).click();
+
+        return  driver.findElement(By.id("j_password")).getAttribute("type");
+    }
 }

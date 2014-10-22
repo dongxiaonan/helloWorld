@@ -26,7 +26,7 @@
         <div>
             <label for="fld_password">Password</label>
             <div class="controls">
-                <input type="text" id="fld_password" placeholder="secret password" name="password" value="${account.password}">
+                <input type="password" id="fld_password" placeholder="secret password" name="password" value="${account.password}">
                 <c:if test="${not empty validationMessage.errors['password']}">
                     <span class="text-error">${validationMessage.errors["password"]}</span>
                 </c:if>

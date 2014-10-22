@@ -3,6 +3,7 @@ package functional.com.trailblazers.freewheelers;
 import org.junit.Test;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
+import static org.junit.Assert.assertEquals;
 
 public class AccountTest extends UserJourneyBase {
 
@@ -27,7 +28,7 @@ public class AccountTest extends UserJourneyBase {
                 .shows_error_alert("There were errors");
 
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, VALID_COUNTRY , SOME_PHONE_NUMBER);
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, VALID_COUNTRY, SOME_PHONE_NUMBER);
 
         screen
                 .shows_message("account has been created");
@@ -108,6 +109,14 @@ public class AccountTest extends UserJourneyBase {
         screen
                 .shows_profile_for(Arno)
                 .should_show_country();
+    }
+
+    @Test
+    public void shouldReturnPasswordWhenAskedForTypePasswordField() {
+        user
+                .is_logged_out();
+        assertEquals("password", user.verify_password_field_is_masked_in_creat_account());
+        assertEquals("password", user.verify_password_field_is_masked_in_login());
     }
 
 }

@@ -94,6 +94,7 @@ public class AccountValidationTest {
     private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));
+
     }
 
 

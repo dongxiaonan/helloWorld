@@ -49,7 +49,7 @@
                 <select id="sel_country" name="country" >
                     <option value="">Select</option>
                     <c:forEach var="country" items="${countries}">
-                        <option <c:if test="${(account.country == country)}" >selected </c:if>value="${country}">${country}</option>
+                        <option ${account.country == country ? 'selected' : ''} value="${country.name}">${country.name}</option>
                     </c:forEach>
                 </select>
                 <c:if test="${not empty validationMessage.errors['country']}">

@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
+import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
@@ -38,11 +39,11 @@ public class AccountController {
                 .setEmail_address("")
                 .setPassword("")
                 .setAccount_name("")
-                .setCountry("")
+                .setCountry(null)
                 .setPhoneNumber("")
                 .setEnabled(false);
         model.addAttribute("validationMessage",new ExtendedModelMap());
-        model.addAttribute("countries",countryService.getCountries());
+        model.addAttribute("countries",countryService.getAllCountries());
         model.addAttribute("account",account);
         return new ModelAndView("account/create", (Map<String, ?>) model);
     }
@@ -59,7 +60,7 @@ public class AccountController {
                 .setEmail_address(email)
                 .setPassword(password)
                 .setAccount_name(name)
-                .setCountry(country)
+                .setCountry(countryService.getCountryByName(country))
                 .setPhoneNumber(phoneNumber)
                 .setEnabled(true);
 
@@ -77,7 +78,7 @@ public class AccountController {
 
     private ModelAndView showErrors(Map errors) {
         Map<String,Object> model = new HashMap<String, Object>();
-        model.put("countries",countryService.getCountries());
+        model.put("countries",countryService.getAllCountries());
         ModelMap modelMap = new ModelMap();
         modelMap.put("errors", errors);
         if(errors.containsKey("email")){
@@ -90,13 +91,13 @@ public class AccountController {
             account.setAccount_name("");
         }
         if(errors.containsKey("country")){
-            account.setCountry("");
+            account.setCountry(null);
         }
         if(errors.containsKey("phoneNumber")){
             account.setPhoneNumber("");
         }
         model.put("validationMessage",modelMap);
-        model.put("account",account);
+        model.put("account",account.setEnabled(false));
         return new ModelAndView("account/create", model);
     }
 
@@ -111,7 +112,7 @@ public class AccountController {
                 .setEmail_address("")
                 .setPassword("")
                 .setAccount_name("")
-                .setCountry("")
+                .setCountry(null)
                 .setPhoneNumber("")
                 .setEnabled(false);
         return new ModelAndView("account/createSuccess", "postedValues", model);

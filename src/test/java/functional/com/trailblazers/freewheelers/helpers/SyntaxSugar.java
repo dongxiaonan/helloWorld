@@ -11,7 +11,8 @@ public class SyntaxSugar {
     public static final String SOME_EMAIL = "somebody@something.de";
     public static final BigDecimal SOME_PRICE = valueOf(49.99);
     public static final String EMPTY_COUNTRY = "Select";
-    public static final String VALID_COUNTRY = "UK";
+    public static final String VALID_COUNTRY = "United Kingdom";
+    public static final Integer VALID_COUNTRY_ID = 1;
 
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";

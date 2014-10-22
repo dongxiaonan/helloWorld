@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
+import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mock.*;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +46,7 @@ public class AccountControllerTest {
                 .setEmail_address("")
                 .setPassword("")
                 .setAccount_name("")
-                .setCountry("")
+                .setCountry(null)
                 .setPhoneNumber("")
                 .setEnabled(false);
     }
@@ -56,7 +56,7 @@ public class AccountControllerTest {
         ExtendedModelMap model = new ExtendedModelMap();
         ExtendedModelMap expectedModelMap =  new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage",new ExtendedModelMap());
-        expectedModelMap.addAttribute("countries",countryService.getCountries());
+        expectedModelMap.addAttribute("countries",countryService.getAllCountries());
         expectedModelMap.addAttribute("account",getEmptyUserAccount());
         ModelAndView accountForm = accountController.createAccountForm(model);
 
@@ -85,8 +85,9 @@ public class AccountControllerTest {
         when(request.getParameter("email")).thenReturn("email@fake.com");
         when(request.getParameter("password")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
-        when(request.getParameter("country")).thenReturn("UK");
+        when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
+        when(countryService.getCountryByName("United Kingdom")).thenReturn(new Country(1, "United Kingdom"));
 
         accountController.processCreate(request);
 
@@ -97,7 +98,7 @@ public class AccountControllerTest {
         assertThat(account.getEmail_address(), is("email@fake.com"));
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
-        assertThat(account.getCountry(),is("UK"));
+        assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
     }
@@ -115,8 +116,8 @@ public class AccountControllerTest {
         model.put("errors", errors);
         ExtendedModelMap expectedModelMap = new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage", model);
-        expectedModelMap.addAttribute("countries", countryService.getCountries());
-        expectedModelMap.addAttribute("account", new Account().setEnabled(true));
+        expectedModelMap.addAttribute("account", new Account().setCountry(null));
+        expectedModelMap.addAttribute("countries", countryService.getAllCountries());
         assertThat(createView.getViewName(), is("account/create"));
         assertThat(createView.getModel(), is(expectedModelMap.asMap()));
    }
@@ -136,8 +137,9 @@ public class AccountControllerTest {
         when(request.getParameter("email")).thenReturn("");
         when(request.getParameter("password")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
-        when(request.getParameter("country")).thenReturn("UK");
+        when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
+        when(countryService.getCountryByName("United Kingdom")).thenReturn(new Country(1, "United Kingdom"));
 
         accountController.processCreate(request);
 
@@ -148,7 +150,7 @@ public class AccountControllerTest {
         assertThat(account.getEmail_address(), is(""));
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
-        assertThat(account.getCountry(),is("UK"));
+        assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
 

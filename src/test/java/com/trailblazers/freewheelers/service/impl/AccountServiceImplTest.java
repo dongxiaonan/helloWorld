@@ -4,6 +4,7 @@ import com.trailblazers.freewheelers.mappers.AccountMapper;
 import com.trailblazers.freewheelers.mappers.AccountRoleMapper;
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.AccountRole;
+import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
@@ -53,7 +54,7 @@ public class AccountServiceImplTest {
                 .setAccount_name("")
                 .setEmail_address("")
                 .setPassword("")
-                .setCountry("")
+                .setCountry(null)
                 .setPhoneNumber("");
     }
 
@@ -73,7 +74,7 @@ public class AccountServiceImplTest {
         return new Account()
                 .setEmail_address("example@example.com")
                 .setPassword("example")
-                .setCountry("UK")
+                .setCountry(new Country(1, "United Kingdom"))
                 .setAccount_name("Example Person")
                 .setPhoneNumber("1234567890");
     }

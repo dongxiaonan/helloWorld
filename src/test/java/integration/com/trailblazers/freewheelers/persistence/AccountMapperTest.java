@@ -2,6 +2,7 @@ package integration.com.trailblazers.freewheelers.persistence;
 
 import com.trailblazers.freewheelers.mappers.AccountMapper;
 import com.trailblazers.freewheelers.model.Account;
+import com.trailblazers.freewheelers.model.Country;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,8 +46,9 @@ public class AccountMapperTest extends MapperTestBase {
 
         Account fetchedFromDB = accountMapper.getByName("Test Country");
 
-        assertThat(fetchedFromDB.getCountry(),is("UK"));
+        assertThat(fetchedFromDB.getCountry(),is(someAccount().setAccount_name("Test Country").getCountry()));
     }
+
     @Test
     public void shouldUpdateAnExistingAccount() throws Exception {
         Account someAccount = someAccount().setAccount_name("Prince");
@@ -91,7 +93,7 @@ public class AccountMapperTest extends MapperTestBase {
                 .setAccount_name("Some Body")
                 .setEmail_address(randomUUID() + "some.body@gmail.com")
                 .setPassword("V3ry S3cret")
-                .setCountry("UK")
+                .setCountry(new Country(1,"United Kingdom"))
                 .setPhoneNumber("12345")
                 .setEnabled(true);
     }

@@ -1,9 +1,6 @@
 package functional.com.trailblazers.freewheelers.apis;
 
-import com.trailblazers.freewheelers.model.Account;
-import com.trailblazers.freewheelers.model.Item;
-import com.trailblazers.freewheelers.model.ItemType;
-import com.trailblazers.freewheelers.model.SurveyEntry;
+import com.trailblazers.freewheelers.model.*;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.SurveyService;
@@ -85,7 +82,7 @@ public class AdminApi {
                 .setAccount_name(userName)
                 .setPassword(password)
                 .setEmail_address(emailFor(userName))
-                .setCountry(VALID_COUNTRY)
+                .setCountry(new Country(VALID_COUNTRY_ID, VALID_COUNTRY))
                 .setPhoneNumber(SOME_PHONE_NUMBER)
                 .setEnabled(true);
     }

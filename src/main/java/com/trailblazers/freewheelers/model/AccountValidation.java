@@ -19,8 +19,8 @@ public class AccountValidation {
             errors.put("name", "Must enter a name!");
         }
 
-        if(account.getCountry().isEmpty()) {
-            errors.put("country","Must select a country!");
+        if(CountryValidation.verifyInputs(account.getCountry()).containsKey("country")) {
+            errors.putAll(CountryValidation.verifyInputs(account.getCountry()));
         }
 
         if(account.getPhoneNumber().isEmpty()) {

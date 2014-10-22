@@ -16,7 +16,7 @@ public class AccountValidationTest {
     public static final String SOME_PASSWORD = "V3ry Secure!";
     public static final String SOME_NAME = "Günter Grass";
     public static final String SOME_PHONE = "004945542741";
-    public static final String SOME_COUNTRY = "UK";
+    public static final Country SOME_COUNTRY = new Country(1,"United Kingdom");
     private Account account;
 
     @Before
@@ -83,8 +83,7 @@ public class AccountValidationTest {
 
     @Test
     public void shouldComplainAboutAnEmptyCountry() throws Exception {
-        String emptyCountry="";
-        account.setCountry(emptyCountry);
+        account.setCountry(null);
 
         HashMap errors = verifyInputs(account);
 

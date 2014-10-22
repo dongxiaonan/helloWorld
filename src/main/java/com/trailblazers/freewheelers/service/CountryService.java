@@ -1,5 +1,6 @@
 package com.trailblazers.freewheelers.service;
 
+import com.trailblazers.freewheelers.model.Country;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.List;
 @Service
 public interface CountryService {
 
-    List<String> getCountries();
+    List<Country> getAllCountries();
 
+    Country getCountryByName(String countryName);
+
+    Country getCountryById(Integer countryID);
 }

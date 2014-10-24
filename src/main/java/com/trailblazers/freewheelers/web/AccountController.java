@@ -36,22 +36,9 @@ public class AccountController {
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView createAccountForm(Model model) {
-        account = account!=null?account:new Account()
-                .setEmail_address("")
-                .setPassword("")
-                .setAccount_name("")
-                .setCountry(null)
-                .setStreet1("")
-                .setStreet2("")
-                .setCity("")
-                .setState_Province("")
-                .setPostcode("")
-                .setPhoneNumber("")
-                .setEnabled(false);
         model.addAttribute("validationMessage",new ExtendedModelMap());
         model.addAttribute("countries",countryService.getAllCountries());
         model.addAttribute("confirmedPassword","");
-        model.addAttribute("account",account);
         return new ModelAndView("account/create", (Map<String, ?>) model);
     }
 
@@ -69,7 +56,7 @@ public class AccountController {
         String phoneNumber = request.getParameter("phoneNumber");
         confirmedPassword = request.getParameter("confirmedPassword");
 
-        account = (account!=null?account:new Account())
+        account = new Account()
                 .setEmail_address(email)
                 .setPassword(password)
                 .setAccount_name(name)
@@ -107,38 +94,7 @@ public class AccountController {
         model.put("countries",countryService.getAllCountries());
         ModelMap modelMap = new ModelMap();
         modelMap.put("errors", errors);
-        if(errors.containsKey("email")){
-            account.setEmail_address("");
-        }
-        if(errors.containsKey("password")){
-            account.setPassword("");
-        }
-        if(errors.containsKey("name")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("street1")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("street2")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("city")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("country")){
-            account.setCountry(null);
-        }
-        if(errors.containsKey("stateProvince")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("postcode")){
-            account.setAccount_name("");
-        }
-        if(errors.containsKey("phoneNumber")){
-            account.setPhoneNumber("");
-        }
         model.put("validationMessage",modelMap);
-        model.put("account",account.setEnabled(false));
         return new ModelAndView("account/create", model);
     }
 

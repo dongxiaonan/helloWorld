@@ -53,41 +53,17 @@ public class UserApi {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
-        if (name != null) {
-            fillField(driver.findElement(By.id("fld_email")), email);
-        }
-        if (email != null) {
-            fillField(driver.findElement(By.id("fld_password")), password);
-        }
-        if (password != null) {
-            fillField(driver.findElement(By.id("fld_name")), name);
-        }
-
-        if (confirmedPassword != null) {
-            fillField(driver.findElement(By.id("fld_confirmedPassword")), confirmedPassword);
-        }
-
-        if (country != null) {
-            select(country, driver.findElement(By.id("sel_country")));
-        }
-        if (phoneNumber != null) {
-            fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
-        }
-        if (street1 != null) {
-            fillField(driver.findElement(By.id("fld_street1")), street1);
-        }
-        if (street2 != null) {
-            fillField(driver.findElement(By.id("fld_street2")), street2);
-        }
-        if (city != null) {
-            fillField(driver.findElement(By.id("fld_city")), city);
-        }
-        if (postcode != null) {
-            fillField(driver.findElement(By.id("fld_postcode")), postcode);
-        }
-        if (stateProvince != null) {
-            fillField(driver.findElement(By.id("fld_stateProvince")), stateProvince);
-        }
+        fillField(driver.findElement(By.id("fld_email")), email);
+        fillField(driver.findElement(By.id("fld_password")), password);
+        fillField(driver.findElement(By.id("fld_confirmedPassword")), confirmedPassword);
+        fillField(driver.findElement(By.id("fld_name")), name);
+        select(country, driver.findElement(By.id("sel_country")));
+        fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
+        fillField(driver.findElement(By.id("fld_street1")), street1);
+        fillField(driver.findElement(By.id("fld_street2")), street2);
+        fillField(driver.findElement(By.id("fld_city")), city);
+        fillField(driver.findElement(By.id("fld_postcode")), postcode);
+        fillField(driver.findElement(By.id("fld_stateProvince")), stateProvince);
 
         driver.findElement(By.id("createAccount")).click();
 

@@ -18,15 +18,14 @@ fi;
 scp dist/freewheelers.zip ${USER}@${HOST}:/tmp
 
 ssh ${USER}@${HOST} /bin/bash << EOF
+rm -rf /tmp/2014*
 TIMESTAMP=\$(date +"%Y-%m-%d-%HH%MM%Ss")
 mkdir -p /tmp/\$TIMESTAMP
 mv /tmp/freewheelers.zip /tmp/\$TIMESTAMP
-cd /tmp/\$TIMESTAMP 
+cd /tmp/\$TIMESTAMP
 unzip freewheelers.zip
 sh stop-server.sh
 sh db/migrations/mybatis/bin/migrate --path=./db/migrations up
 nohup sh start-server.sh > server.out 2> server.err < /dev/null
-cd /tmp
-rm -rf /tmp/2014*
 EOF
 

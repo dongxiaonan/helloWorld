@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,8 +67,8 @@ public class AccountControllerTest {
         ExtendedModelMap expectedModelMap =  new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage",new ExtendedModelMap());
         expectedModelMap.addAttribute("countries",countryService.getAllCountries());
-        expectedModelMap.addAttribute("account",getEmptyUserAccount());
         expectedModelMap.addAttribute("confirmedPassword","");
+
         ModelAndView accountForm = accountController.createAccountForm(model);
 
         assertThat(accountForm.getViewName(),is("account/create"));
@@ -133,10 +134,16 @@ public class AccountControllerTest {
     public void shouldReturnErrorWhenPasswordNotMatch() throws Exception {
         HashMap<String, String> errors = new HashMap<String, String>();
         errors.put("confirmedPassword", "Must have matching password!");
+        ModelMap modelMap = new ModelMap();
+        modelMap.put("errors",errors);
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+        expectedModelMap.addAttribute("validationMessage",modelMap);
+        expectedModelMap.addAttribute("countries",countryService.getAllCountries());
+        when(countryService.getCountryByName("Canada")).thenReturn(new Country(3,"Canada"));
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("email@fake.com");
-        when(request.getParameter("password")).thenReturn("V3ry Secure!");
+        when(request.getParameter("password")).thenReturn("Pa$sw0rd");
         when(request.getParameter("confirmedPassword")).thenReturn("confirmedPassword");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("Canada");
@@ -154,20 +161,6 @@ public class AccountControllerTest {
 
         ModelMap model = new ModelMap();
         model.put("errors", errors);
-        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
-        expectedModelMap.addAttribute("validationMessage", model);
-        Account account = new Account().setCountry(new Country(3,"Canada"))
-                .setPassword("V3ry Secure!")
-                .setEnabled(false)
-                .setEmail_address("email@fake.com")
-                .setAccount_name("john smith")
-                .setPhoneNumber("123456789")
-                .setCity("123456789")
-                .setStreet1("123456789")
-                .setStreet2("123456789")
-                .setState_Province("123456789")
-                .setPostcode("123456789");
-        expectedModelMap.addAttribute("account", account);
         expectedModelMap.addAttribute("countries", countryService.getAllCountries());
 
         assertThat(createView.getModel(), is(expectedModelMap.asMap()));
@@ -190,8 +183,6 @@ public class AccountControllerTest {
         model.put("errors", errors);
         ExtendedModelMap expectedModelMap = new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage", model);
-
-        expectedModelMap.addAttribute("account", new Account().setCountry(null).setPassword("somePassword").setEnabled(false));
         expectedModelMap.addAttribute("countries", countryService.getAllCountries());
 
         assertThat(createView.getViewName(), is("account/create"));

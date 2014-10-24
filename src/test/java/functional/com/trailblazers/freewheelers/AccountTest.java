@@ -8,7 +8,6 @@ import static org.testng.Assert.assertEquals;
 public class AccountTest extends UserJourneyBase {
 
 
-
     @Test
     public void testCreateAccount() throws Exception {
         String jan = "Jan Plewka";
@@ -120,11 +119,12 @@ public class AccountTest extends UserJourneyBase {
     }
 
     @Test
-        public void shouldReturnPasswordWhenAskedForTypePasswordField() {
-                user
-                                .is_logged_out();
-                assertEquals("password", user.verify_password_field_is_masked_in_creat_account());
-                assertEquals("password", user.verify_password_field_is_masked_in_login());
-            }
+    public void shouldReturnPasswordWhenAskedForTypePasswordField() {
+        user
+                .is_logged_out();
+        assertEquals("password", user.verify_password_field_is_masked_in_create_account());
+        assertEquals("password", user.verify_confirmedPassword_field_is_masked_in_create_account());
+        assertEquals("password", user.verify_password_field_is_masked_in_login());
+    }
 
 }

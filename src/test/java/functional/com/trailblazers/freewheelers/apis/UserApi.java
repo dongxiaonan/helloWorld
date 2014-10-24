@@ -192,11 +192,19 @@ public class UserApi {
         });
     }
 
-    public String verify_password_field_is_masked_in_creat_account() {
+    public String verify_password_field_is_masked_in_create_account() {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
         return driver.findElement(By.id("fld_password")).getAttribute("type");
+
+    }
+    public String verify_confirmedPassword_field_is_masked_in_create_account() {
+        driver.get(URLs.home());
+        driver.findElement(By.linkText("Create Account")).click();
+
+        return driver.findElement(By.id("fld_confirmedPassword")).getAttribute("type");
+
     }
 
     public String verify_password_field_is_masked_in_login() {

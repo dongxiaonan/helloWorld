@@ -46,7 +46,7 @@
     <div>
         <label for="fld_confirmedPassword">Confirm Password</label>
         <div class="controls">
-            <input type="text" id="fld_confirmedPassword" placeholder="secret password" name="confirmedPassword"
+            <input type="password" id="fld_confirmedPassword" placeholder="secret password" name="confirmedPassword"
                    value="${confirmedPassword}">
             <c:if test="${not empty validationMessage.errors['confirmedPassword']}">
                 <span class="text-error">${validationMessage.errors["confirmedPassword"]}</span>

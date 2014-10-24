@@ -80,6 +80,7 @@ select {
     border: 1px solid gray;
     padding: 2px;
     font-size: 12pt;
+    width: 14.75em;
 }
 
 button {

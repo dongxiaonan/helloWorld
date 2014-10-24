@@ -214,4 +214,9 @@ public class UserApi {
         return this;
 
     }
+
+    public UserApi add_to_shopping_cart() {
+        driver.findElement(By.id("addToCart")).click();
+        return this;
+    }
 }

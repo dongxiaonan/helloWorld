@@ -26,6 +26,9 @@
         <security:authorize ifAnyGranted="ROLE_ADMIN">
             <li><a href="<c:url value="/survey/report" />" class="header-link">NPS Report</a></li>
         </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
+            <li><a href="<c:url value="/shoppingCart" />" class="header-link">My Shopping Cart</a></li>
+        </security:authorize>
         <li><a href="<c:url value='/admin' />" class="header-link">Admin Profile</a></li>
         <li><a href="<c:url value='/userProfile' />" class="header-link">User Profile</a></li>
         <li><a href="<c:url value='/account/create' />" class="header-link">Create Account</a></li>

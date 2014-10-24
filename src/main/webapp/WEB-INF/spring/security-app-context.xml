@@ -15,6 +15,7 @@
         <intercept-url pattern="/survey" access="ROLE_ADMIN, ROLE_USER"/>
         <intercept-url pattern="/survey/report" access="ROLE_ADMIN"/>
         <intercept-url pattern="/userProfile/**" access="ROLE_ADMIN, ROLE_USER"/>
+        <intercept-url pattern="/shoppingCart/**" access="ROLE_ADMIN, ROLE_USER"/>
         <form-login login-page="/login" default-target-url="/userProfile"
                     authentication-failure-url="/loginfailed" />
         <logout logout-success-url="/" />

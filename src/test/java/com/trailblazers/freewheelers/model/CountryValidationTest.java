@@ -5,11 +5,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertThat;
 
 public class CountryValidationTest {
 
@@ -27,8 +25,7 @@ public class CountryValidationTest {
 
         error=CountryValidation.verifyInputs(country);
 
-        assertThat(error.size(), is(1));
-        assertThat(error.get("country"),containsString("select a country"));
+        assertCountryErrors();
     }
 
     @Test
@@ -37,8 +34,7 @@ public class CountryValidationTest {
 
         error=CountryValidation.verifyInputs(country);
 
-        assertThat(error.size(), is(1));
-        assertThat(error.get("country"),containsString("select a country"));
+        assertCountryErrors();
     }
 
     @Test
@@ -47,14 +43,17 @@ public class CountryValidationTest {
 
         error=CountryValidation.verifyInputs(country);
 
-        assertThat(error.size(), is(1));
-        assertThat(error.get("country"),containsString("select a country"));
+        assertCountryErrors();
     }
 
     @Test
     public void shouldComplainAboutANullCountry() throws Exception {
         error=CountryValidation.verifyInputs(null);
 
+        assertCountryErrors();
+    }
+
+    private void assertCountryErrors() {
         assertThat(error.size(), is(1));
         assertThat(error.get("country"),containsString("select a country"));
     }

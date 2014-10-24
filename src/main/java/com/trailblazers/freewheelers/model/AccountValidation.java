@@ -21,6 +21,18 @@ public class AccountValidation {
             errors.putAll(CountryValidation.verifyInputs(account.getCountry()));
         }
 
+        if(account.getStreet1().isEmpty()) {
+            errors.put("street1","Must enter a street!");
+        }
+
+        if(account.getCity().isEmpty()) {
+            errors.put("city","Must enter a city!");
+        }
+
+        if(account.getPostcode().isEmpty()) {
+            errors.put("postcode","Must enter a post code!");
+        }
+
         if(account.getPhoneNumber().isEmpty()) {
             errors.put("phoneNumber", "Must enter a phone number!");
         }

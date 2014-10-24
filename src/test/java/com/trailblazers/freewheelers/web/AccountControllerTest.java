@@ -5,6 +5,8 @@ import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -49,6 +51,11 @@ public class AccountControllerTest {
                 .setPassword("")
                 .setAccount_name("")
                 .setCountry(null)
+                .setStreet1("")
+                .setStreet2("")
+                .setCity("")
+                .setState_Province("")
+                .setPostcode("")
                 .setPhoneNumber("")
                 .setEnabled(false);
     }
@@ -94,6 +101,11 @@ public class AccountControllerTest {
         when(request.getParameter("confirmedPassword")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
+        when(request.getParameter("street1")).thenReturn("Greenwood Avenue");
+        when(request.getParameter("street2")).thenReturn("Apartment 202");
+        when(request.getParameter("city")).thenReturn("London");
+        when(request.getParameter("stateProvince")).thenReturn("Somewhere");
+        when(request.getParameter("postcode")).thenReturn("12453");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
         when(countryService.getCountryByName("United Kingdom")).thenReturn(new Country(1, "United Kingdom"));
 
@@ -107,6 +119,11 @@ public class AccountControllerTest {
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
         assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
+        assertThat(account.getStreet1(), is("Greenwood Avenue"));
+        assertThat(account.getStreet2(), is("Apartment 202"));
+        assertThat(account.getCity(), is("London"));
+        assertThat(account.getState_Province(), is("Somewhere"));
+        assertThat(account.getPostcode(), is("12453"));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
         assertThat(accountController.getConfirmedPassword(), is("password"));
@@ -176,6 +193,11 @@ public class AccountControllerTest {
         when(request.getParameter("confirmedPassword")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
+        when(request.getParameter("street1")).thenReturn("Greenwood Avenue");
+        when(request.getParameter("street2")).thenReturn("Apartment 202");
+        when(request.getParameter("city")).thenReturn("London");
+        when(request.getParameter("stateProvince")).thenReturn("Somewhere");
+        when(request.getParameter("postcode")).thenReturn("12453");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
         when(countryService.getCountryByName("United Kingdom")).thenReturn(new Country(1, "United Kingdom"));
 
@@ -189,6 +211,11 @@ public class AccountControllerTest {
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
         assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
+        assertThat(account.getStreet1(), is("Greenwood Avenue"));
+        assertThat(account.getStreet2(), is("Apartment 202"));
+        assertThat(account.getCity(), is("London"));
+        assertThat(account.getState_Province(), is("Somewhere"));
+        assertThat(account.getPostcode(), is("12453"));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
 

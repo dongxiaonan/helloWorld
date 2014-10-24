@@ -55,6 +55,11 @@ public class AccountServiceImplTest {
                 .setEmail_address("")
                 .setPassword("")
                 .setCountry(null)
+                .setStreet1("")
+                .setStreet2("")
+                .setCity("")
+                .setState_Province("")
+                .setPostcode("")
                 .setPhoneNumber("");
     }
 
@@ -75,6 +80,11 @@ public class AccountServiceImplTest {
                 .setEmail_address("example@example.com")
                 .setCountry(new Country(1, "United Kingdom"))
                 .setPassword("V3y Secure!")
+                .setStreet1("Greenwood Avenue")
+                .setStreet2("Apartment 202")
+                .setCity("London")
+                .setState_Province("Somewhere")
+                .setPostcode("12453")
                 .setAccount_name("Example Person")
                 .setPhoneNumber("1234567890");
     }

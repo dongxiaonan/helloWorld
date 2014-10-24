@@ -3,7 +3,7 @@ package functional.com.trailblazers.freewheelers;
 import org.junit.Test;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
-import static org.testng.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class AccountTest extends UserJourneyBase {
 
@@ -22,20 +22,23 @@ public class AccountTest extends UserJourneyBase {
         screen
                 .shows_error_alert("login attempt was not successful");
 
+
+
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, EMPTY_COUNTRY, EMPTY_PASSWORD, SOME_CONFIRMEDPASSWORD);
+
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, EMPTY_COUNTRY, EMPTY_PASSWORD, SOME_CONFIRMEDPASSWORD);
 
         screen
                 .shows_error_alert("There were errors");
 
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
 
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
         screen
-                .shows_message("account has been created");
+                .shows_message("new account has been created");
 
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_INVALID_CONFIRMEDPASSWORD);
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_INVALID_CONFIRMEDPASSWORD);
 
         screen
                 .shows_error_alert("There were errors");

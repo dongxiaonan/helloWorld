@@ -83,6 +83,11 @@ public class AdminApi {
                 .setPassword(password)
                 .setEmail_address(emailFor(userName))
                 .setCountry(new Country(VALID_COUNTRY_ID, VALID_COUNTRY))
+                .setStreet1(SOME_STREET)
+                .setStreet2("")
+                .setCity(SOME_CITY)
+                .setPostcode(SOME_POSTCODE)
+                .setState_Province("")
                 .setPhoneNumber(SOME_PHONE_NUMBER)
                 .setEnabled(true);
     }

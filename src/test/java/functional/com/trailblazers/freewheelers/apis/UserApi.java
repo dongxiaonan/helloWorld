@@ -49,27 +49,44 @@ public class UserApi {
         return this;
     }
 
-    public UserApi creates_an_account(String name, String email, String password, String country, String phoneNumber, String confirmedPassword) {
+    public UserApi creates_an_account(String name, String email, String password, String street1, String street2, String city, String postcode, String stateProvince, String country, String phoneNumber, String confirmedPassword) {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
-        if (email != null) {
+        if (name != null) {
             fillField(driver.findElement(By.id("fld_email")), email);
         }
-        if (password != null) {
+        if (email != null) {
             fillField(driver.findElement(By.id("fld_password")), password);
         }
+        if (password != null) {
+            fillField(driver.findElement(By.id("fld_name")), name);
+        }
+
         if (confirmedPassword != null) {
             fillField(driver.findElement(By.id("fld_confirmedPassword")), confirmedPassword);
         }
-        if (name != null) {
-            fillField(driver.findElement(By.id("fld_name")), name);
-        }
+
         if (country != null) {
             select(country, driver.findElement(By.id("sel_country")));
         }
         if (phoneNumber != null) {
             fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
+        }
+        if (street1 != null) {
+            fillField(driver.findElement(By.id("fld_street1")), street1);
+        }
+        if (street2 != null) {
+            fillField(driver.findElement(By.id("fld_street2")), street2);
+        }
+        if (city != null) {
+            fillField(driver.findElement(By.id("fld_city")), city);
+        }
+        if (postcode != null) {
+            fillField(driver.findElement(By.id("fld_postcode")), postcode);
+        }
+        if (stateProvince != null) {
+            fillField(driver.findElement(By.id("fld_stateProvince")), stateProvince);
         }
 
         driver.findElement(By.id("createAccount")).click();
@@ -199,6 +216,7 @@ public class UserApi {
         return driver.findElement(By.id("fld_password")).getAttribute("type");
 
     }
+
     public String verify_confirmedPassword_field_is_masked_in_create_account() {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();

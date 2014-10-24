@@ -9,6 +9,11 @@ public class Account {
     private String emailAddress;
     private String phoneNumber;
     private Country country;
+    private String street1;
+    private String street2;
+    private String city;
+    private String stateProvince;
+    private String postcode;
 
     public Account() {
         this.account_id = 0L;
@@ -64,6 +69,33 @@ public class Account {
         return this;
     }
 
+    public Account setStreet1(String street1) {
+        this.street1 = street1;
+        return this;
+    }
+
+    public String getStreet1() {
+        return street1;
+    }
+
+    public Account setStreet2(String street2) {
+        this.street2 = street2;
+        return this;
+    }
+
+    public String getStreet2() {
+        return street2;
+    }
+
+    public Account setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -75,6 +107,24 @@ public class Account {
     public Account setCountry(Country country) {
         this.country = country;
         return this;
+    }
+
+    public Account setState_Province(String stateProvince) {
+        this.stateProvince = stateProvince;
+        return this;
+    }
+
+    public String getState_Province() {
+        return stateProvince;
+    }
+
+    public Account setPostcode(String postcode) {
+        this.postcode = postcode;
+        return this;
+    }
+
+    public String getPostcode() {
+        return postcode;
     }
 
     @Override

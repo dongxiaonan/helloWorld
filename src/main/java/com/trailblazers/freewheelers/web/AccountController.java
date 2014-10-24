@@ -40,6 +40,11 @@ public class AccountController {
                 .setPassword("")
                 .setAccount_name("")
                 .setCountry(null)
+                .setStreet1("")
+                .setStreet2("")
+                .setCity("")
+                .setState_Province("")
+                .setPostcode("")
                 .setPhoneNumber("")
                 .setEnabled(false);
         model.addAttribute("validationMessage",new ExtendedModelMap());
@@ -54,7 +59,12 @@ public class AccountController {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
+        String street1 = request.getParameter("street1");
+        String street2 = request.getParameter("street2");
+        String city = request.getParameter("city");
         String country = request.getParameter("country");
+        String stateProvince = request.getParameter("stateProvince");
+        String postcode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phoneNumber");
         confirmedPassword = request.getParameter("confirmedPassword");
 
@@ -63,6 +73,11 @@ public class AccountController {
                 .setPassword(password)
                 .setAccount_name(name)
                 .setCountry(countryService.getCountryByName(country))
+                .setStreet1(street1)
+                .setStreet2(street2)
+                .setCity(city)
+                .setState_Province(stateProvince)
+                .setPostcode(postcode)
                 .setPhoneNumber(phoneNumber)
                 .setEnabled(true);
 
@@ -98,8 +113,23 @@ public class AccountController {
         if(errors.containsKey("name")){
             account.setAccount_name("");
         }
+        if(errors.containsKey("street1")){
+            account.setAccount_name("");
+        }
+        if(errors.containsKey("street2")){
+            account.setAccount_name("");
+        }
+        if(errors.containsKey("city")){
+            account.setAccount_name("");
+        }
         if(errors.containsKey("country")){
             account.setCountry(null);
+        }
+        if(errors.containsKey("stateProvince")){
+            account.setAccount_name("");
+        }
+        if(errors.containsKey("postcode")){
+            account.setAccount_name("");
         }
         if(errors.containsKey("phoneNumber")){
             account.setPhoneNumber("");

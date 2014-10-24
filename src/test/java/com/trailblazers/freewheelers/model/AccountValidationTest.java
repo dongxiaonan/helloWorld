@@ -17,6 +17,9 @@ public class AccountValidationTest {
     public static final String SOME_NAME = "Günter Grass";
     public static final String SOME_PHONE = "004945542741";
     public static final Country SOME_COUNTRY = new Country(1,"United Kingdom");
+    public static final String SOME_STREET = "Greenwood Avenue";
+    public static final String SOME_CITY = "London";
+    public static final String SOME_POSTCODE = "12453";
     private Account account;
 
     @Before
@@ -27,6 +30,9 @@ public class AccountValidationTest {
                 .setAccount_name(SOME_NAME)
                 .setCountry(SOME_COUNTRY)
                 .setPhoneNumber(SOME_PHONE)
+                .setStreet1(SOME_STREET)
+                .setCity(SOME_CITY)
+                .setPostcode(SOME_POSTCODE)
                 .setEnabled(true);
 
     }
@@ -57,6 +63,39 @@ public class AccountValidationTest {
         HashMap errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainAboutAnEmptyStreet1() throws Exception {
+        String emptyStreet1 = "";
+
+        account.setStreet1(emptyStreet1);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("street1", "enter a street", errors);
+    }
+
+    @Test
+    public void shouldComplainAboutAnEmptyCity() throws Exception {
+        String emptyCity = "";
+
+        account.setCity(emptyCity);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("city", "enter a city", errors);
+    }
+
+    @Test
+    public void shouldComplainAboutAnEmptyPostcode() throws Exception {
+        String emptyPostcode = "";
+
+        account.setPostcode(emptyPostcode);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("postcode", "enter a post code", errors);
     }
 
     @Test

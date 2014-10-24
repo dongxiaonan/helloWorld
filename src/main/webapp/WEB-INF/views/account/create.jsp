@@ -66,6 +66,40 @@
     </div>
 
         <div>
+            <label for="fld_street1">Street1</label>
+            <div class="controls">
+                <input type="text" id="fld_street1" placeholder="Your Street Address" name="street1" value="${account.street1}">
+                <c:if test="${not empty validationMessage.errors['street1']}">
+                    <span class="text-error">${validationMessage.errors["street1"]}</span>
+                </c:if>
+            </div>
+        </div>
+
+        <div>
+            <label for="fld_street2">Street2</label>
+            <div class="controls">
+                <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${account.street2}">
+            </div>
+        </div>
+
+        <div>
+            <label for="fld_city">City</label>
+            <div class="controls">
+                <input type="text" id="fld_city" placeholder="Your City" name="city" value="${account.city}">
+                <c:if test="${not empty validationMessage.errors['city']}">
+                    <span class="text-error">${validationMessage.errors["city"]}</span>
+                </c:if>
+            </div>
+        </div>
+
+        <div>
+            <label for="fld_stateProvince">StateProvince</label>
+            <div class="controls">
+                <input type="text" id="fld_stateProvince" placeholder="Your State/Province" name="stateProvince" value="${account.state_Province}">
+            </div>
+        </div>
+
+        <div>
             <label for="sel_country">Country</label>
             <div class="controls">
                 <select id="sel_country" name="country" >
@@ -82,15 +116,24 @@
         </div>
     </div>
 
-    <div>
-        <label for="fld_phoneNumber">Phone Number</label>
+        <div>
+            <label for="fld_postcode">Postcode</label>
+            <div class="controls">
+                <input type="text" id="fld_postcode" placeholder="Your Post Code" name="postcode" value="${account.postcode}">
+                <c:if test="${not empty validationMessage.errors['postcode']}">
+                    <span class="text-error">${validationMessage.errors["postcode"]}</span>
+                </c:if>
+            </div>
+        </div>
 
-        <div class="controls">
-            <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber"
-                   value="${account.phoneNumber}">
-            <c:if test="${not empty validationMessage.errors['phoneNumber']}">
-                <span class="text-error">${validationMessage.errors["phoneNumber"]}</span>
-            </c:if>
+        <div>
+            <label for="fld_phoneNumber">Phone Number</label>
+            <div class="controls">
+                <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber" value="${account.phoneNumber}">
+                <c:if test="${not empty validationMessage.errors['phoneNumber']}">
+                    <span class="text-error">${validationMessage.errors["phoneNumber"]}</span>
+                </c:if>
+            </div>
         </div>
     </div>
 

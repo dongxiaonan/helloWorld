@@ -15,6 +15,10 @@ public class SyntaxSugar {
     public static final String EMPTY_COUNTRY = "Select";
     public static final String VALID_COUNTRY = "United Kingdom";
     public static final Integer VALID_COUNTRY_ID = 1;
+    public static final String SOME_STREET = "Greenwood Avenue";
+    public static final String SOME_CITY = "London";
+    public static final String SOME_POSTCODE = "12453";
+    public static final String SOME_STATEPROVINCE = "Somewhere";
 
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";

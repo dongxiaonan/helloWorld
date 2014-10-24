@@ -148,7 +148,7 @@ public class AccountControllerTest {
         ExtendedModelMap expectedModelMap = new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage", model);
 
-        expectedModelMap.addAttribute("account", new Account().setPassword("somePassword").setEnabled(true));
+        expectedModelMap.addAttribute("account", new Account().setCountry(null).setPassword("somePassword").setEnabled(false));
         expectedModelMap.addAttribute("countries", countryService.getAllCountries());
 
         assertThat(createView.getViewName(), is("account/create"));

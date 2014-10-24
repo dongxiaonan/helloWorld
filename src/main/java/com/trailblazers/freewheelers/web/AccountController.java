@@ -26,6 +26,7 @@ public class AccountController {
     AccountService accountService;
     CountryService countryService;
     private Account account;
+    private String confirmedPassword;
 
     public AccountController() {
         accountService = new AccountServiceImpl();
@@ -43,6 +44,7 @@ public class AccountController {
                 .setEnabled(false);
         model.addAttribute("validationMessage",new ExtendedModelMap());
         model.addAttribute("countries",countryService.getAllCountries());
+        model.addAttribute("confirmedPassword","");
         model.addAttribute("account",account);
         return new ModelAndView("account/create", (Map<String, ?>) model);
     }
@@ -54,6 +56,7 @@ public class AccountController {
         String name = request.getParameter("name");
         String country = request.getParameter("country");
         String phoneNumber = request.getParameter("phoneNumber");
+        confirmedPassword = request.getParameter("confirmedPassword");
 
         account = (account!=null?account:new Account())
                 .setEmail_address(email)
@@ -64,6 +67,12 @@ public class AccountController {
                 .setEnabled(true);
 
         try {
+            if(!isPasswordMatch()){
+                Map errors = new HashMap();
+                errors.put("confirmedPassword", "Must have matching password!");
+                return showErrors(errors);
+            }
+
             ServiceResult<Account> result = accountService.createAccount(account);
 
             if (result.hasErrors()) {
@@ -110,4 +119,11 @@ public class AccountController {
         return new ModelAndView("account/createSuccess", "postedValues", model);
     }
 
+    public String getConfirmedPassword() {
+        return confirmedPassword;
+    }
+
+    public boolean isPasswordMatch() {
+        return confirmedPassword != null && confirmedPassword.equals(account.getPassword());
+    }
 }

@@ -7,6 +7,8 @@ import static org.junit.Assert.assertEquals;
 
 public class AccountTest extends UserJourneyBase {
 
+
+
     @Test
     public void testCreateAccount() throws Exception {
         String jan = "Jan Plewka";
@@ -29,16 +31,22 @@ public class AccountTest extends UserJourneyBase {
 
 
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, EMPTY_COUNTRY, SOME_PHONE_NUMBER);
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, EMPTY_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
 
         screen
                 .shows_error_alert("There were errors");
 
         user
-                .creates_an_account(null, null, null, VALID_COUNTRY, null);
+                .creates_an_account(null, null, null, VALID_COUNTRY, null, null);
 
         screen
                 .shows_message("account has been created");
+
+        user
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_INVALID_CONFIRMEDPASSWORD);
+
+        screen
+                .shows_error_alert("There were errors");
 
         user
                 .is_logged_out()

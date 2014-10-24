@@ -56,7 +56,7 @@ public class AccountValidationTest {
 
         HashMap errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("password", "enter a password", errors);
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
 
     @Test
@@ -90,6 +90,15 @@ public class AccountValidationTest {
         assertThereIsOneErrorFor("country","select a country",errors);
     }
 
+    @Test
+    public void shouldComplainAboutNotMeetingPasswordRequirement() throws Exception {
+        String password = "invalidPassword";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
     private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));

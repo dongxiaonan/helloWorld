@@ -11,9 +11,6 @@ public class AccountValidation {
            errors.put("email", "Must enter a valid email!");
         }
 
-        if(account.getPassword().isEmpty()) {
-            errors.put("password", "Must enter a password!");
-        }
 
         if(account.getAccount_name().isEmpty()) {
             errors.put("name", "Must enter a name!");
@@ -27,6 +24,10 @@ public class AccountValidation {
             errors.put("phoneNumber", "Must enter a phone number!");
         }
 
+
+        if (!account.getPassword().matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$")){
+            errors.put("password", "Must meet password requirement!");
+        }
         return errors;
     }
 

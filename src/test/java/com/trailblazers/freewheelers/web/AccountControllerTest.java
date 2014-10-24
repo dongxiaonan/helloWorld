@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -58,6 +60,7 @@ public class AccountControllerTest {
         expectedModelMap.addAttribute("validationMessage",new ExtendedModelMap());
         expectedModelMap.addAttribute("countries",countryService.getAllCountries());
         expectedModelMap.addAttribute("account",getEmptyUserAccount());
+        expectedModelMap.addAttribute("confirmedPassword","");
         ModelAndView accountForm = accountController.createAccountForm(model);
 
         assertThat(accountForm.getViewName(),is("account/create"));
@@ -68,13 +71,17 @@ public class AccountControllerTest {
     public void successfulAccountCreationShouldShowSuccess() throws Exception {
         ServiceResult<Account> success = new ServiceResult<Account>(new HashMap<String, String>(), getEmptyUserAccount().setAccount_name("john smith"));
         when(accountService.createAccount(any(Account.class))).thenReturn(success);
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 
-        ModelAndView createView = accountController.processCreate(mock(HttpServletRequest.class));
+        when(mockRequest.getParameter("password")).thenReturn("somePassword");
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
+        ModelAndView createView = accountController.processCreate(mockRequest);
 
         ModelMap model = new ModelMap();
         model.put("name", "john smith");
         ExtendedModelMap expectedModel = new ExtendedModelMap();
         expectedModel.put("postedValues", model);
+
         assertThat(createView.getViewName(), is("account/createSuccess"));
         assertThat(createView.getModel(), is(expectedModel.asMap()));
     }
@@ -84,6 +91,7 @@ public class AccountControllerTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("email@fake.com");
         when(request.getParameter("password")).thenReturn("password");
+        when(request.getParameter("confirmedPassword")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
@@ -101,6 +109,26 @@ public class AccountControllerTest {
         assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
         assertThat(account.getPhoneNumber(), is("123456789"));
         assertThat(account.isEnabled(), is(true));
+        assertThat(accountController.getConfirmedPassword(), is("password"));
+    }
+
+    @Test
+    public void shouldReturnErrorWhenPasswordNotMatch() throws Exception {
+        HashMap<String, String> errors = new HashMap<String, String>();
+        errors.put("confirmedPassword", "Must have matching password!");
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getParameter("email")).thenReturn("email@fake.com");
+        when(request.getParameter("password")).thenReturn("password");
+        when(request.getParameter("confirmedPassword")).thenReturn("confirmedPassword");
+        when(request.getParameter("name")).thenReturn("john smith");
+        when(request.getParameter("country")).thenReturn("UK");
+        when(request.getParameter("phoneNumber")).thenReturn("123456789");
+
+        ModelAndView createView = accountController.processCreate(request);
+
+        assertTrue(createView.getModel().toString().contains(errors.toString()));
+
     }
 
     @Test
@@ -109,15 +137,20 @@ public class AccountControllerTest {
         errors.put("some key", "some error message");
         ServiceResult<Account> failure = new ServiceResult<Account>(errors, new Account());
         when(accountService.createAccount(any(Account.class))).thenReturn(failure);
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
+        when(mockRequest.getParameter("password")).thenReturn("somePassword");
 
-        ModelAndView createView = accountController.processCreate(mock(HttpServletRequest.class));
+        ModelAndView createView = accountController.processCreate(mockRequest);
 
         ModelMap model = new ModelMap();
         model.put("errors", errors);
         ExtendedModelMap expectedModelMap = new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage", model);
-        expectedModelMap.addAttribute("account", new Account().setCountry(null));
+
+        expectedModelMap.addAttribute("account", new Account().setPassword("somePassword").setEnabled(true));
         expectedModelMap.addAttribute("countries", countryService.getAllCountries());
+
         assertThat(createView.getViewName(), is("account/create"));
         assertThat(createView.getModel(), is(expectedModelMap.asMap()));
    }
@@ -126,7 +159,11 @@ public class AccountControllerTest {
     public void accountCreationExceptionShouldShowError() throws Exception {
         when(accountService.createAccount(any(Account.class))).thenThrow(new RuntimeException("validation errors"));
 
-        ModelAndView createView = accountController.processCreate(mock(HttpServletRequest.class));
+        HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
+        when(mockRequest.getParameter("password")).thenReturn("somePassword");
+
+        ModelAndView createView = accountController.processCreate(mockRequest);
 
         assertThat(createView.getViewName(), is("account/createFailure"));
     }
@@ -136,6 +173,7 @@ public class AccountControllerTest {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("");
         when(request.getParameter("password")).thenReturn("password");
+        when(request.getParameter("confirmedPassword")).thenReturn("password");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
@@ -155,4 +193,6 @@ public class AccountControllerTest {
         assertThat(account.isEnabled(), is(true));
 
     }
+
+
 }

@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class NetPromoterScoreTest extends UserJourneyBase {
 
     private final String adminUser = "NPSAdmin";
-    private final String password = "password";
+    private final String password = "V3ry Secure!";
     private final String username = "Promoter";
     private final String frame = "Bike Frame";
     private final long someAccountId = 12L;

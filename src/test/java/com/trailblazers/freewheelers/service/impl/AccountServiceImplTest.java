@@ -73,8 +73,8 @@ public class AccountServiceImplTest {
     private Account getAccountWithoutErrors() {
         return new Account()
                 .setEmail_address("example@example.com")
-                .setPassword("example")
                 .setCountry(new Country(1, "United Kingdom"))
+                .setPassword("V3y Secure!")
                 .setAccount_name("Example Person")
                 .setPhoneNumber("1234567890");
     }

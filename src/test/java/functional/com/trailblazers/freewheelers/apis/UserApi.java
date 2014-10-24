@@ -49,15 +49,28 @@ public class UserApi {
         return this;
     }
 
-    public UserApi creates_an_account(String name, String email, String password, String country, String phoneNumber) {
+    public UserApi creates_an_account(String name, String email, String password, String country, String phoneNumber, String confirmedPassword) {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
-        if(name != null) {fillField(driver.findElement(By.id("fld_email")), email);}
-        if(email != null){fillField(driver.findElement(By.id("fld_password")), password);}
-        if(password != null){fillField(driver.findElement(By.id("fld_name")), name);}
-        if(country != null) {select(country, driver.findElement(By.id("sel_country")));}
-        if(phoneNumber != null){fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);}
+        if (email != null) {
+            fillField(driver.findElement(By.id("fld_email")), email);
+        }
+        if (password != null) {
+            fillField(driver.findElement(By.id("fld_password")), password);
+        }
+        if (confirmedPassword != null) {
+            fillField(driver.findElement(By.id("fld_confirmedPassword")), confirmedPassword);
+        }
+        if (name != null) {
+            fillField(driver.findElement(By.id("fld_name")), name);
+        }
+        if (country != null) {
+            select(country, driver.findElement(By.id("sel_country")));
+        }
+        if (phoneNumber != null) {
+            fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
+        }
 
         driver.findElement(By.id("createAccount")).click();
 
@@ -173,7 +186,7 @@ public class UserApi {
                 .ignoring(NoSuchElementException.class);
 
         wait.until(new Function<WebDriver, Boolean>() {
-            public Boolean apply(WebDriver driver)  {
+            public Boolean apply(WebDriver driver) {
                 return driver.getWindowHandles().size() > 1;
             }
         });
@@ -190,6 +203,6 @@ public class UserApi {
         driver.get(URLs.home());
         driver.findElement(By.linkText("User Profile")).click();
 
-        return  driver.findElement(By.id("j_password")).getAttribute("type");
+        return driver.findElement(By.id("j_password")).getAttribute("type");
     }
 }

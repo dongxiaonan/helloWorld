@@ -4,44 +4,66 @@
 
 <%@ include file="../header.jsp" %>
 
-    <div class="page-action">
-        Create a new account
+<div class="page-action">
+    Create a new account
+</div>
+
+<c:if test="${not empty validationMessage.errors}">
+    <div id="resultsMessage" class="page-action error">
+        There were errors.
+    </div>
+</c:if>
+
+<form action="/account/create" method="post">
+    <label for="fld_email">Email</label>
+
+    <div class="controls">
+        <input type="text" id="fld_email" placeholder="somebody@something.com" name="email"
+               value="${account.email_address}">
+        <c:if test="${not empty validationMessage.errors['email']}">
+            <span class="text-error">${validationMessage.errors["email"]}</span>
+        </c:if>
     </div>
 
-    <c:if test="${not empty validationMessage.errors}">
-        <div id="resultsMessage" class="page-action error">
-            There were errors.
-        </div>
-    </c:if>
 
-	<form action="/account/create" method="post">
-            <label for="fld_email">Email</label>
-            <div class="controls">
-                <input type="text" id="fld_email" placeholder="somebody@something.com" name="email" value="${account.email_address}">
-                <c:if test="${not empty validationMessage.errors['email']}">
-                    <span class="text-error">${validationMessage.errors["email"]}</span>
-                </c:if>
-        </div>
+    <div>
+        <text>Password needs to be between 8 and 20 characters, and contain at least 1 number, 1 lowercase letter, 1
+            uppercase letter, and 1 special character.
+        </text>
+    </div>
+    <div>
+        <label for="fld_password">Password</label>
 
-        <div>
-            <label for="fld_password">Password</label>
-            <div class="controls">
-                <input type="password" id="fld_password" placeholder="secret password" name="password" value="${account.password}">
-                <c:if test="${not empty validationMessage.errors['password']}">
-                    <span class="text-error">${validationMessage.errors["password"]}</span>
-                </c:if>
-            </div>
+        <div class="controls">
+            <input type="text" id="fld_password" placeholder="secret password" name="password"
+                   value="${account.password}">
+            <c:if test="${not empty validationMessage.errors['password']}">
+                <span class="text-error">${validationMessage.errors["password"]}</span>
+            </c:if>
         </div>
+    </div>
 
-        <div>
-            <label for="fld_name">Name</label>
-            <div class="controls">
-                <input type="text" id="fld_name" placeholder="Your Name" name="name" value="${account.account_name}">
-                <c:if test="${not empty validationMessage.errors['name']}">
-                    <span class="text-error">${validationMessage.errors["name"]}</span>
-                </c:if>
-            </div>
+    <div>
+        <label for="fld_confirmedPassword">Confirm Password</label>
+        <div class="controls">
+            <input type="text" id="fld_confirmedPassword" placeholder="secret password" name="confirmedPassword"
+                   value="${confirmedPassword}">
+            <c:if test="${not empty validationMessage.errors['confirmedPassword']}">
+                <span class="text-error">${validationMessage.errors["confirmedPassword"]}</span>
+            </c:if>
         </div>
+    </div>
+
+    <div>
+        <label for="fld_name">Name</label>
+
+        <div class="controls">
+            <input type="text" id="fld_name" placeholder="Your Name" name="name" value="${account.account_name}">
+            <c:if test="${not empty validationMessage.errors['name']}">
+                <span class="text-error">${validationMessage.errors["name"]}</span>
+            </c:if>
+        </div>
+    </div>
 
         <div>
             <label for="sel_country">Country</label>
@@ -56,28 +78,32 @@
                     <span class="text-error">${validationMessage.errors["country"]}</span>
                 </c:if>
             </div>
+
         </div>
-
-        <div>
-            <label for="fld_phoneNumber">Phone Number</label>
-            <div class="controls">
-                <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber" value="${account.phoneNumber}">
-                <c:if test="${not empty validationMessage.errors['phoneNumber']}">
-                    <span class="text-error">${validationMessage.errors["phoneNumber"]}</span>
-                </c:if>
-            </div>
-        </div>
-
-        <div>
-            <div class="controls">
-                <button type="submit" id="createAccount" value="Submit">Create Account</button>
-            </div>
-        </div>
-
-	</form>
-
-    <div class="note">
-        If your country is not listed then we don't ship there. Please check back later.
     </div>
+
+    <div>
+        <label for="fld_phoneNumber">Phone Number</label>
+
+        <div class="controls">
+            <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber"
+                   value="${account.phoneNumber}">
+            <c:if test="${not empty validationMessage.errors['phoneNumber']}">
+                <span class="text-error">${validationMessage.errors["phoneNumber"]}</span>
+            </c:if>
+        </div>
+    </div>
+
+    <div>
+        <div class="controls">
+            <button type="submit" id="createAccount" value="Submit">Create Account</button>
+        </div>
+    </div>
+
+</form>
+
+<div class="note">
+    If your country is not listed then we don't ship there. Please check back later.
+</div>
 
 <%@ include file="../footer.jsp" %>

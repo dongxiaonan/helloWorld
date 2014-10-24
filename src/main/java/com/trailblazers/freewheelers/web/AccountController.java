@@ -83,6 +83,7 @@ public class AccountController {
                 .setEnabled(true);
 
         try {
+
             if(!isPasswordMatch()){
                 Map errors = new HashMap();
                 errors.put("confirmedPassword", "Must have matching password!");

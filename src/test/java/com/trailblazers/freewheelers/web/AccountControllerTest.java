@@ -141,6 +141,13 @@ public class AccountControllerTest {
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("Canada");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
+        when(request.getParameter("street1")).thenReturn("123456789");
+        when(request.getParameter("street2")).thenReturn("123456789");
+        when(request.getParameter("city")).thenReturn("123456789");
+        when(request.getParameter("stateProvince")).thenReturn("123456789");
+        when(request.getParameter("postcode")).thenReturn("123456789");
+
+
         when(countryService.getCountryByName("Canada")).thenReturn(new Country(3,"Canada"));
 
         ModelAndView createView = accountController.processCreate(request);
@@ -154,7 +161,12 @@ public class AccountControllerTest {
                 .setEnabled(false)
                 .setEmail_address("email@fake.com")
                 .setAccount_name("john smith")
-                .setPhoneNumber("123456789");
+                .setPhoneNumber("123456789")
+                .setCity("123456789")
+                .setStreet1("123456789")
+                .setStreet2("123456789")
+                .setState_Province("123456789")
+                .setPostcode("123456789");
         expectedModelMap.addAttribute("account", account);
         expectedModelMap.addAttribute("countries", countryService.getAllCountries());
 

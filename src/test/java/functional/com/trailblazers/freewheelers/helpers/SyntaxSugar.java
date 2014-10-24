@@ -19,6 +19,11 @@ public class SyntaxSugar {
     public static final long ONLY_ONE_LEFT = 1L;
     public static final String REALLY_EXPENSIVE = "2899.00";
     public static final String SOME_DESCRIPTION = "4 x red, curved Arrow shape, screw fastening";
+    public static final String OVER255_DESCRIPTION = "4 x red, curved Arrow shape, screw fastening 4 x red, " +
+            "curved Arrow shape, screw fastening 4 x red, curved Arrow shape, screw fastening 4 x red, curved " +
+            "Arrow shape, screw fastening 4 x red, curved Arrow shape, screw fastening 4 x red, curved Arrow " +
+            "shape, screw fastening 4 x red, curved Arrow shape, screw fastening 4 x red, curved Arrow shape, " +
+            "screw fastening 4 x red, curved Arrow shape, screw fastening";
     public static final String A_LOT = "1000";
 
 

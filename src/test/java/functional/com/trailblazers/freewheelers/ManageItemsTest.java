@@ -11,6 +11,7 @@ public class ManageItemsTest extends UserJourneyBase {
         String Arno = "Arno Admin";
 
         String Simplon_Frame = "Simplon Pavo 3 Ultra";
+        String forOver255Case = "Simplon Pavo 4 Ultra";
         String Spoke_Reflectors = "Spoke - Reflectors Arrow red";
 
         String New_Simplon_Name = "NEW - Simplon Pavo 3 Ultra";
@@ -36,12 +37,18 @@ public class ManageItemsTest extends UserJourneyBase {
                 .creates_an_item(Simplon_Frame, "FRAME", A_LOT, REALLY_EXPENSIVE, SOME_DESCRIPTION);
         screen
                 .shows_in_manage_item_list(Simplon_Frame);
+        user
+                .creates_an_item(forOver255Case, "FRAME", A_LOT, REALLY_EXPENSIVE, OVER255_DESCRIPTION);
+        screen
+                .shows_in_manage_item_list(Simplon_Frame)
+                .shows_in_manage_item_list(forOver255Case);
 
         user
                 .creates_an_item(Spoke_Reflectors, "ACCESSORIES", A_LOT, REALLY_EXPENSIVE, SOME_DESCRIPTION);
 
         screen
                 .shows_in_manage_item_list(Simplon_Frame)
+                .shows_in_manage_item_list(forOver255Case)
                 .shows_in_manage_item_list(Spoke_Reflectors);
 
         user
@@ -50,12 +57,14 @@ public class ManageItemsTest extends UserJourneyBase {
 
         screen
                 .shows_in_manage_item_list(New_Simplon_Name)
+                .shows_in_manage_item_list(forOver255Case)
                 .shows_in_manage_item_list(New_Spoke_Name);
 
         user
                 .delete_item(New_Simplon_Name);
 
         screen
+                .shows_in_manage_item_list(forOver255Case)
                 .shows_in_manage_item_list(New_Spoke_Name)
                 .shows_not_in_manage_item_list(New_Simplon_Name);
     }

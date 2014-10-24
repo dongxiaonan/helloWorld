@@ -50,7 +50,7 @@
                 <div>
                     <form:label for="desription" path="description">Description</form:label>
                     <div class="controls">
-                        <form:textarea path="description" />
+                        <form:textarea path="description" maxlength="255"/>
                         <c:if test="${not empty errors['description']}">
                             <span class="text-error">${errors['description']}</span>
                         </c:if>

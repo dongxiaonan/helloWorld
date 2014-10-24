@@ -27,6 +27,6 @@ sh stop-server.sh
 sh db/migrations/mybatis/bin/migrate --path=./db/migrations up
 nohup sh start-server.sh > server.out 2> server.err < /dev/null
 cd /tmp
-find . -name "freewheelers*" -exec rm -rf {} \;
+rm -rf /tmp/2014*
 EOF
 

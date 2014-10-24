@@ -65,7 +65,7 @@ public class UserProfileController {
         List<ReserveOrder> reserveOrders = reserveOrderService.findAllOrdersByAccountId(account.getAccount_id());
         List<Item> items = new ArrayList<Item>();
         for (ReserveOrder reserveOrder : reserveOrders) {
-            items.add(itemService.get(reserveOrder.getItem_id()));
+            items.add(itemService.getById(reserveOrder.getItem_id()));
         }
         return items;
     }

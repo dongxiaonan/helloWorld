@@ -19,7 +19,7 @@ public interface ItemMapper {
         "FROM item " +
         "WHERE item_id = #{itemId}"
     )
-    Item get(Long itemId);
+    Item getById(Long itemId);
 
     @Select(
         "SELECT item_id as itemId, description, name, price, type, quantity " +

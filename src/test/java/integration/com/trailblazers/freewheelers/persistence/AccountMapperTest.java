@@ -22,10 +22,10 @@ public class AccountMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void shouldInsertAndGetAccount() throws Exception {
+    public void shouldGetAccountById() throws Exception {
         Account account = someAccount().setAccount_name("Johnny Cash");
-
         accountMapper.insert(account);
+
         Account fetchedFromDB = accountMapper.getById(account.getAccount_id());
 
         assertThat(fetchedFromDB.getAccount_name(), is("Johnny Cash"));
@@ -41,7 +41,7 @@ public class AccountMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void theAccountFetchedFromDBShouldHaveCountry() throws Exception {
+    public void shouldHaveCountryWhenTheAccountFetchedFromDB() throws Exception {
         accountMapper.insert(someAccount().setAccount_name("Test Country"));
 
         Account fetchedFromDB = accountMapper.getByName("Test Country");

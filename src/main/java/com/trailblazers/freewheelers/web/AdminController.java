@@ -30,16 +30,15 @@ public class AdminController {
     ItemService itemService = new ItemServiceImpl();
     AccountService accountService = new AccountServiceImpl();
 
-    @RequestMapping(value="/admin", method = RequestMethod.GET)
+    @RequestMapping(value = URL, method = RequestMethod.GET)
     public void get(Model model) {
         model.addAttribute("reserveOrders", getAllOrders());
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.POST, params="save=Save Changes")
+    @RequestMapping(value = URL, method = RequestMethod.POST, params="save=Save Changes")
     public void updateOrder(Model model, String state, String orderId, String note) {
-        Long order_id = valueOf(orderId);
         OrderStatus status = OrderStatus.valueOf(state);
-        reserveOrderService.updateOrderDetails(order_id, status, note);
+        reserveOrderService.updateOrderDetails(valueOf(orderId), status, note);
         get(model);
     }
 
@@ -50,7 +49,7 @@ public class AdminController {
 
         for (ReserveOrder reserveOrder: reserveOrders){
             Account account = accountService.get(reserveOrder.getAccount_id());
-            Item item = itemService.get(reserveOrder.getItem_id());
+            Item item = itemService.getById(reserveOrder.getItem_id());
 
             reservedOrderDetails.add(new ReservedOrderDetail(reserveOrder.getOrder_id(),
                                                              account,

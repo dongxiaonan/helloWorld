@@ -26,8 +26,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item get(Long item_id) {
-        return itemMapper.get(item_id);
+    public Item getById(Long item_id) {
+        return itemMapper.getById(item_id);
     }
 
     @Override
@@ -59,12 +59,6 @@ public class ItemServiceImpl implements ItemService {
             insertOrUpdate(item);
             sqlSession.commit();
         }
-    }
-
-    @Override
-    public void refreshItemList(Item item) {
-        List<Item> allItems = findAll();
-        allItems.add(item);
     }
 
     @Override

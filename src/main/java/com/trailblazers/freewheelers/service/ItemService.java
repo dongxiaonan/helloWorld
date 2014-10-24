@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ItemService {
 	
-	Item get(Long item_id);
+	Item getById(Long item_id);
 
     Item getByName(String name);
 
@@ -17,8 +17,6 @@ public interface ItemService {
     List<Item> getItemsWithNonZeroQuantity();
 	
 	void saveAll(List<Item> items);
-
-	void refreshItemList(Item item);
 
     void deleteItems(List<Item> items);
 

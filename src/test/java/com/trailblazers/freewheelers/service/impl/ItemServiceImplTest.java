@@ -8,6 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -32,6 +35,17 @@ public class ItemServiceImplTest {
     }
 
     @Test
+    public void shouldGetItemByIdFromMapper(){
+        Long itemId = 1L;
+        Item expectedItem = new Item();
+        when((itemMapper.getById(itemId))).thenReturn(expectedItem);
+
+        Item returnedItem = itemService.getById(itemId);
+        verify(itemMapper).getById(itemId);
+        assertThat(returnedItem, is(expectedItem));
+    }
+
+    @Test
     public void shouldGetItemByNameFromMapper(){
         String name = "name";
         Item expectedItem = new Item();
@@ -41,4 +55,25 @@ public class ItemServiceImplTest {
         verify(itemMapper).getByName(name);
         assertThat(returnedItem, is(expectedItem));
     }
+
+    @Test
+    public void shouldFindAllItemsFromMapper(){
+        List<Item> expectedItems = new ArrayList<Item>();
+        when((itemMapper.findAll())).thenReturn(expectedItems);
+
+        List<Item> returnedItems = itemService.findAll();
+        verify(itemMapper).findAll();
+        assertThat(returnedItems, is(expectedItems));
+    }
+
+    @Test
+    public void shouldFindAllAvailableItemsFromMapper(){
+        List<Item> expectedItems = new ArrayList<Item>();
+        when((itemMapper.findAvailable())).thenReturn(expectedItems);
+
+        List<Item> returnedItems = itemService.getItemsWithNonZeroQuantity();
+        verify(itemMapper).findAvailable();
+        assertThat(returnedItems, is(expectedItems));
+    }
+
 }

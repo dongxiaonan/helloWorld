@@ -1,7 +1,6 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
-import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
@@ -108,13 +107,6 @@ public class AccountController {
     private ModelAndView showSuccess(Account account) {
         ModelMap model = new ModelMap();
         model.put("name", account.getAccount_name());
-        account = account
-                .setEmail_address("")
-                .setPassword("")
-                .setAccount_name("")
-                .setCountry(null)
-                .setPhoneNumber("")
-                .setEnabled(false);
         return new ModelAndView("account/createSuccess", "postedValues", model);
     }
 

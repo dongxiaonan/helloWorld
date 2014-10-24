@@ -53,11 +53,11 @@ public class UserApi {
         driver.get(URLs.home());
         driver.findElement(By.linkText("Create Account")).click();
 
-        fillField(driver.findElement(By.id("fld_email")), email);
-        fillField(driver.findElement(By.id("fld_password")), password);
-        fillField(driver.findElement(By.id("fld_name")), name);
-        select(country, driver.findElement(By.id("sel_country")));
-        fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);
+        if(name != null) {fillField(driver.findElement(By.id("fld_email")), email);}
+        if(email != null){fillField(driver.findElement(By.id("fld_password")), password);}
+        if(password != null){fillField(driver.findElement(By.id("fld_name")), name);}
+        if(country != null) {select(country, driver.findElement(By.id("sel_country")));}
+        if(phoneNumber != null){fillField(driver.findElement(By.id("fld_phoneNumber")), phoneNumber);}
 
         driver.findElement(By.id("createAccount")).click();
 

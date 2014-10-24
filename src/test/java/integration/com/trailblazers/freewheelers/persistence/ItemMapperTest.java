@@ -39,7 +39,7 @@ public class ItemMapperTest extends MapperTestBase {
         Item item = someItem().setName("Awesome Item");
 
         itemMapper.insert(item);
-        Item fetched = itemMapper.get(item.getItemId());
+        Item fetched = itemMapper.getById(item.getItemId());
 
         assertThat(fetched.getName(), is("Awesome Item"));
     }
@@ -60,7 +60,7 @@ public class ItemMapperTest extends MapperTestBase {
         itemMapper.insert(item);
 
         itemMapper.delete(item);
-        Item fetched = itemMapper.get(item.getItemId());
+        Item fetched = itemMapper.getById(item.getItemId());
 
         assertThat(fetched, is(nullValue()));
     }
@@ -72,7 +72,7 @@ public class ItemMapperTest extends MapperTestBase {
 
         item.setPrice(valueOf(99.99));
         itemMapper.update(item);
-        Item fetched = itemMapper.get(item.getItemId());
+        Item fetched = itemMapper.getById(item.getItemId());
 
         assertThat(fetched.getPrice(), is(valueOf(99.99)));
     }

@@ -49,7 +49,7 @@ public class AdminController {
 
         for (ReserveOrder reserveOrder: reserveOrders){
             Account account = accountService.get(reserveOrder.getAccount_id());
-            Item item = itemService.get(reserveOrder.getItem_id());
+            Item item = itemService.getById(reserveOrder.getItem_id());
 
             reservedOrderDetails.add(new ReservedOrderDetail(reserveOrder.getOrder_id(),
                                                              account,

@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
+import com.trailblazers.freewheelers.model.AccountValidation;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
@@ -85,6 +86,7 @@ public class AccountController {
             if(!isPasswordMatch()){
                 Map errors = new HashMap();
                 errors.put("confirmedPassword", "Must have matching password!");
+                errors.putAll(AccountValidation.verifyInputs(account));
                 return showErrors(errors);
             }
 

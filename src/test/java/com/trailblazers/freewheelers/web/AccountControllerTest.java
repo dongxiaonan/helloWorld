@@ -136,15 +136,29 @@ public class AccountControllerTest {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("email@fake.com");
-        when(request.getParameter("password")).thenReturn("password");
+        when(request.getParameter("password")).thenReturn("V3ry Secure!");
         when(request.getParameter("confirmedPassword")).thenReturn("confirmedPassword");
         when(request.getParameter("name")).thenReturn("john smith");
-        when(request.getParameter("country")).thenReturn("UK");
+        when(request.getParameter("country")).thenReturn("Canada");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
+        when(countryService.getCountryByName("Canada")).thenReturn(new Country(3,"Canada"));
 
         ModelAndView createView = accountController.processCreate(request);
 
-        assertTrue(createView.getModel().toString().contains(errors.toString()));
+        ModelMap model = new ModelMap();
+        model.put("errors", errors);
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+        expectedModelMap.addAttribute("validationMessage", model);
+        Account account = new Account().setCountry(new Country(3,"Canada"))
+                .setPassword("V3ry Secure!")
+                .setEnabled(false)
+                .setEmail_address("email@fake.com")
+                .setAccount_name("john smith")
+                .setPhoneNumber("123456789");
+        expectedModelMap.addAttribute("account", account);
+        expectedModelMap.addAttribute("countries", countryService.getAllCountries());
+
+        assertThat(createView.getModel(), is(expectedModelMap.asMap()));
 
     }
 

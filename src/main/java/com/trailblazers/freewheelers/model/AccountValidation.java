@@ -3,6 +3,7 @@ package com.trailblazers.freewheelers.model;
 import java.util.HashMap;
 
 public class AccountValidation {
+    private static final String passwordRequirement = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`]).{8,20}$";
 
     public static HashMap verifyInputs(Account account) {
         HashMap errors = new HashMap();
@@ -25,7 +26,8 @@ public class AccountValidation {
         }
 
 
-        if (!account.getPassword().matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$")){
+
+        if (!account.getPassword().matches(passwordRequirement)){
             errors.put("password", "Must meet password requirement!");
         }
         return errors;

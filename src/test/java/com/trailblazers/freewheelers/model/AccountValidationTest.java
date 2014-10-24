@@ -91,8 +91,58 @@ public class AccountValidationTest {
     }
 
     @Test
-    public void shouldComplainAboutNotMeetingPasswordRequirement() throws Exception {
-        String password = "invalidPassword";
+    public void shouldComplainWhenPasswordNotContainsNumber() throws Exception {
+        String password = "!invalidPassword";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenPasswordNotContainsSpecialCapital() throws Exception {
+        String password = "1invalidPassword";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenPasswordNotContainsUpperCase() throws Exception {
+        String password = "!invalidpassword1";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenPasswordNotContainsLowerCase() throws Exception {
+        String password = "!1CONFIRMEDPASSWORD";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenPasswordLessThan8() throws Exception {
+        String password = "!2Pass";
+        account.setPassword(password);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenPasswordNotContainsMoreThan20() throws Exception {
+        String password = "!invalidPassword123qq";
         account.setPassword(password);
 
         HashMap errors = verifyInputs(account);

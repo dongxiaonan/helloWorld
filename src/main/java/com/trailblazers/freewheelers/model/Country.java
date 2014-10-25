@@ -1,12 +1,10 @@
 package com.trailblazers.freewheelers.model;
 
-import java.util.Comparator;
-
 public class Country {
 
 
-    private Integer countryId;
-    private String name;
+    private final Integer countryId;
+    private final String name;
 
     public Country(Integer countryId,String name) {
         this.name=name;
@@ -24,10 +22,8 @@ public class Country {
 
         Country country = (Country) o;
 
-        if (countryId != null ? !countryId.equals(country.countryId) : country.countryId != null) return false;
-        if (name != null ? !name.equals(country.name) : country.name != null) return false;
+        return !(countryId != null ? !countryId.equals(country.countryId) : country.countryId != null) && !(name != null ? !name.equals(country.name) : country.name != null);
 
-        return true;
     }
 
     @Override
@@ -40,4 +36,6 @@ public class Country {
     public Integer getCountryId() {
         return countryId;
     }
+
+
 }

@@ -1,10 +1,7 @@
 package functional.com.trailblazers.freewheelers.apis;
 
 import com.google.common.base.Function;
-import functional.com.trailblazers.freewheelers.helpers.HomeTable;
-import functional.com.trailblazers.freewheelers.helpers.ManageItemTable;
-import functional.com.trailblazers.freewheelers.helpers.OrderTable;
-import functional.com.trailblazers.freewheelers.helpers.URLs;
+import functional.com.trailblazers.freewheelers.helpers.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -140,7 +137,7 @@ public class UserApi {
     }
 
     public UserApi reserves_item(String name) {
-        driver.findElement(HomeTable.reserveButtonFor(name)).click();
+        driver.findElement(HomeTable.addToCartButtonFor(name)).click();
         return this;
     }
 
@@ -215,8 +212,23 @@ public class UserApi {
 
     }
 
-    public UserApi add_to_shopping_cart() {
+    public UserApi click_add_to_shopping_cart() {
         driver.findElement(By.id("addToCart")).click();
+        return this;
+    }
+
+    public UserApi visits_shopping_cart() {
+        driver.findElement(By.linkText("My Shopping Cart")).click();
+        return this;
+    }
+
+    public UserApi add_item_to_shopping_cart(String name) {
+        driver.findElement(HomeTable.addToCartButtonFor(name)).click();
+        return this;
+    }
+
+    public UserApi check_out_item(String item) {
+        driver.findElement(By.id("checkout")).click();
         return this;
     }
 }

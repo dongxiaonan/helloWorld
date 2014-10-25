@@ -82,9 +82,16 @@ public class AccountTest extends UserJourneyBase {
 
         user
                 .is_logged_out()
-                .add_to_shopping_cart();
+                .click_add_to_shopping_cart();
         screen
                 .shows_login();
+
+        user
+                .is_logged_out()
+                .logs_in_with(Hugo, SOME_PASSWORD)
+                .visits_shopping_cart();
+        screen
+                .shows_shopping_cart();
     }
 
     @Test

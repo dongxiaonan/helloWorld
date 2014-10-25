@@ -7,7 +7,7 @@ public class HomeTable {
         return By.xpath("//tbody/tr/td[1][text()='" + name + "']");
     }
 
-    public static By reserveButtonFor(String name) {
+    public static By addToCartButtonFor(String name) {
         return By.xpath("//tbody/tr/td[1][text() = '" + name + "']/parent::*/td[6]/form/button");
     }
 }

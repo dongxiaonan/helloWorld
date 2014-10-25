@@ -27,4 +27,8 @@ public class URLs {
     public static String surveyReport() {
         return BASE + "/survey/report";
     }
+
+    public static String shoppingCart() {
+        return BASE + "/shoppingCart";
+    }
 }

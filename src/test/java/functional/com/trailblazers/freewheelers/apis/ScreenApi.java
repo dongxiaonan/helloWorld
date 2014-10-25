@@ -1,9 +1,6 @@
 package functional.com.trailblazers.freewheelers.apis;
 
-import functional.com.trailblazers.freewheelers.helpers.HomeTable;
-import functional.com.trailblazers.freewheelers.helpers.ManageItemTable;
-import functional.com.trailblazers.freewheelers.helpers.OrderTable;
-import functional.com.trailblazers.freewheelers.helpers.URLs;
+import functional.com.trailblazers.freewheelers.helpers.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -113,7 +110,22 @@ public class ScreenApi {
     }
 
     public ScreenApi should_show_phone_number() {
-        assertThat(driver.findElement(By.className("phone-number")).getText(),not("Phone Number :"));
+        assertThat(driver.findElement(By.className("phone-number")).getText(), not("Phone Number :"));
+        return this;
+    }
+
+    public ScreenApi shows_shopping_cart() {
+        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart()));
+        return this;
+    }
+
+    public ScreenApi should_list_item_in_shopping_cart(String item) {
+        assertNumberOfRows(1, ShoppingCartTable.nameFieldFor(item));
+        return this;
+    }
+
+    public ScreenApi should_visit_confirmation_page() {
+        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/confirmation"));
         return this;
     }
 }

@@ -25,20 +25,20 @@ public class NetPromoterScoreTest extends UserJourneyBase {
                 .there_is_a_user(username, password);
     }
 
-    @Test
-    public void testSurveyPopUp() throws InterruptedException {
-        user
-                .logs_in_with(username, password)
-                .visits_home_page()
-                .reserves_item(frame)
-                .waits_for_survey_popup();
-
-        npsSurveyForm.submitFeedback(FeedbackType.Positive, "Some Feedback");
-        Assert.assertTrue(npsSurveyForm.thankYouMessageExists());
-        npsSurveyForm.closeWindow();
-
-        user.is_logged_out();
-    }
+//    @Test
+//    public void testSurveyPopUp() throws InterruptedException {
+//        user
+//                .logs_in_with(username, password)
+//                .visits_home_page()
+//                .reserves_item(frame)
+//                .waits_for_survey_popup();
+//
+//        npsSurveyForm.submitFeedback(FeedbackType.Positive, "Some Feedback");
+//        Assert.assertTrue(npsSurveyForm.thankYouMessageExists());
+//        npsSurveyForm.closeWindow();
+//
+//        user.is_logged_out();
+//    }
 
     @Test
     public void shouldShowNPSReport() {

@@ -32,7 +32,7 @@ public class AccountRoleMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void shouldFetchAccountRoleByAccountNAme() throws Exception {
+    public void shouldFetchAccountRoleByAccountName() throws Exception {
 
         AccountRole accountRole = new AccountRole();
         accountRole.setAccount_name("Some Name");

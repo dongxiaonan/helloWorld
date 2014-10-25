@@ -44,6 +44,14 @@ public class ItemValidationTest {
     }
 
     @Test
+    public void shouldReturnErrorForPriceLessThanOrEqualTo0() throws Exception {
+        assertFieldError(someItem().setPrice(valueOf(0.0)),"price","Please enter a price greater than zero.");
+        assertFieldError(someItem().setPrice(valueOf(-1.0)),"price","Please enter a price greater than zero.");
+    }
+
+
+
+    @Test
     public void shouldErrorWhenThereIsNoQuantity() {
         assertFieldError(someItem().setQuantity(null), "quantity", "Please enter Item Quantity");
     }
@@ -59,12 +67,7 @@ public class ItemValidationTest {
     }
 
     @Test
-    public void shouldHaveAPrice() {
-        assertFieldError(someItem().setPrice(null), "price", "Please enter Item Price");
-    }
-
-    @Test
-    public void should() throws Exception {
+    public void shouldReturnErrorForAPriceGreaterThan99999() throws Exception {
         Item ridiculouslyExpensive = someItem().setPrice(valueOf(100000.00));
         assertFieldError(ridiculouslyExpensive, "price", "must be less than or equal to 99999");
     }

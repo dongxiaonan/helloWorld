@@ -13,6 +13,7 @@ public class ManageItemsTest extends UserJourneyBase {
         String Simplon_Frame = "Simplon Pavo 3 Ultra";
         String forOver255Case = "Simplon Pavo 4 Ultra";
         String Spoke_Reflectors = "Spoke - Reflectors Arrow red";
+        String ZeroPriceItem = "I AM FREE";
 
         String New_Simplon_Name = "NEW - Simplon Pavo 3 Ultra";
         String New_Spoke_Name = "NEW - Spoke - Reflectors Arrow red";
@@ -23,7 +24,9 @@ public class ManageItemsTest extends UserJourneyBase {
                 .there_is_no_item(Spoke_Reflectors)
                 .there_is_no_item(forOver255Case)
                 .there_is_no_item(New_Simplon_Name)
-                .there_is_no_item(New_Spoke_Name);
+                .there_is_no_item(New_Spoke_Name)
+                .there_is_no_item(ZeroPriceItem);
+
         user
                 .logs_in_with(Arno, SOME_PASSWORD)
                 .wants_to_manage_items();
@@ -33,6 +36,12 @@ public class ManageItemsTest extends UserJourneyBase {
 
         screen
                 .shows_error("Please enter Item Quantity");
+
+        user
+                .creates_an_item(ZeroPriceItem, "FRAME", A_LOT, ZERO_VALUE, SOME_DESCRIPTION);
+
+        screen
+                .shows_error("Please enter a price greater than zero");
 
         user
                 .creates_an_item(Simplon_Frame, "FRAME", A_LOT, REALLY_EXPENSIVE, SOME_DESCRIPTION);
@@ -69,6 +78,7 @@ public class ManageItemsTest extends UserJourneyBase {
                 .shows_in_manage_item_list(New_Spoke_Name)
                 .shows_not_in_manage_item_list(New_Simplon_Name);
     }
+
 
 
 }

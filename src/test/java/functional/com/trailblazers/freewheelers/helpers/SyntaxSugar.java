@@ -22,6 +22,7 @@ public class SyntaxSugar {
 
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";
+    public static final String ZERO_VALUE = "0";
     public static final long ONLY_ONE_LEFT = 1L;
     public static final String REALLY_EXPENSIVE = "2899.00";
     public static final String SOME_DESCRIPTION = "4 x red, curved Arrow shape, screw fastening";

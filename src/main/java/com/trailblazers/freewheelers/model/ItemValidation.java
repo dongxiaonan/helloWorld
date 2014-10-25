@@ -16,6 +16,8 @@ public class ItemValidation {
 
         if (item.getPrice() == null) {
             errors.put("price", "Please enter Item Price");
+        } else if (item.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            errors.put("price", "Please enter a price greater than zero.");
         }
 
         if (item.getQuantity() == null) {

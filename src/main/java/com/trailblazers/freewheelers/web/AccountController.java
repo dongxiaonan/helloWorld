@@ -24,7 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
-    Logger logger;
+    private Logger logger;
 
     AccountService accountService;
     CountryService countryService;

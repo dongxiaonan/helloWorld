@@ -62,7 +62,7 @@
     </div>
 
     <div>
-        <label for="fld_street1">Street1</label>
+        <label for="fld_street1">Street 1</label>
         <div class="controls">
             <input type="text" id="fld_street1" placeholder="Your Street Address" name="street1" value="${empty validationMessage.errors['street1'] ? param.street1 : ''}">
             <c:if test="${not empty validationMessage.errors['street1']}">
@@ -72,7 +72,7 @@
     </div>
 
     <div>
-        <label for="fld_street2">Street2</label>
+        <label for="fld_street2">Street 2</label>
         <div class="controls">
             <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${param.street2}">
         </div>
@@ -89,7 +89,7 @@
     </div>
 
     <div>
-        <label for="fld_stateProvince">StateProvince</label>
+        <label for="fld_stateProvince">State/Province</label>
         <div class="controls">
             <input type="text" id="fld_stateProvince" placeholder="Your State/Province" name="stateProvince" value="${param.stateProvince}">
         </div>

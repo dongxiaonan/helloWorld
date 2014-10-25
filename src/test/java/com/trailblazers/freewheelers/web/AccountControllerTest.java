@@ -5,27 +5,26 @@ import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.Transport;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import javax.mail.Message;
 
 public class AccountControllerTest {
 
@@ -66,8 +65,8 @@ public class AccountControllerTest {
         ExtendedModelMap model = new ExtendedModelMap();
         ExtendedModelMap expectedModelMap =  new ExtendedModelMap();
         expectedModelMap.addAttribute("validationMessage",new ExtendedModelMap());
-        expectedModelMap.addAttribute("countries",countryService.getAllCountries());
-        expectedModelMap.addAttribute("confirmedPassword","");
+        expectedModelMap.addAttribute("countries", countryService.getAllCountries());
+        expectedModelMap.addAttribute("confirmedPassword", "");
 
         ModelAndView accountForm = accountController.createAccountForm(model);
 
@@ -119,7 +118,7 @@ public class AccountControllerTest {
         assertThat(account.getEmail_address(), is("email@fake.com"));
         assertThat(account.getPassword(), is("password"));
         assertThat(account.getAccount_name(), is("john smith"));
-        assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
+        assertThat(account.getCountry(), is(new Country(1,"United Kingdom")));
         assertThat(account.getStreet1(), is("Greenwood Avenue"));
         assertThat(account.getStreet2(), is("Apartment 202"));
         assertThat(account.getCity(), is("London"));
@@ -238,5 +237,29 @@ public class AccountControllerTest {
 
     }
 
+    @Test
+    public void shouldSendEmailToCustomerWithRightEmailAddress() throws Exception {
+//        AccountController con = new AccountController();
+//        AccountController.Sender senderMock = mock(AccountController.Sender.class);
+//
+//        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy", senderMock);
+//
+//        verify(senderMock).send(Matchers.<Message>any());
+
+        AccountController con = new AccountController();
+        Transport transport = mock(Transport.class);
+
+        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy");
+// todo
+        verify(transport).send(Matchers.<Message>any());
+    }
+
+    @Test
+    public void should() throws Exception { // todo: delete!
+        AccountController con = new AccountController();
+
+        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy");
+        // todo
+    }
 
 }

@@ -18,8 +18,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+
 
 @Controller
 @RequestMapping("/account")
@@ -59,6 +71,8 @@ public class AccountController {
         String phoneNumber = request.getParameter("phoneNumber");
         confirmedPassword = request.getParameter("confirmedPassword");
 
+        // todo: add a field to store verification status
+
         account = new Account()
                 .setEmail_address(email)
                 .setPassword(password)
@@ -86,6 +100,9 @@ public class AccountController {
             if (result.hasErrors()) {
                 return showErrors(result.getErrors());
             }
+
+            // todo: send email to customer
+
             return showSuccess(result.getModel());
         } catch (Exception e) {
             logger.error("Failed to create Account", e);
@@ -118,5 +135,9 @@ public class AccountController {
 
     public boolean isPasswordMatch() {
         return confirmedPassword != null && confirmedPassword.equals(account.getPassword());
+    }
+
+    public void sendVerificationEmail(String userEmailAddress, String userName) {
+        // todo add: do not reply to this email
     }
 }

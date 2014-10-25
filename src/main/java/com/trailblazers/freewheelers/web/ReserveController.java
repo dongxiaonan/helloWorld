@@ -37,7 +37,7 @@ public class ReserveController {
     public void reserveItem(Model model, Principal principal, @ModelAttribute Item item){
         Item itemToReserve =  itemService.getById(item.getItemId());
         String userName = principal.getName();
-        Account account =  accountService.getAccountIdByName(userName);
+        Account account =  accountService.getAccountByName(userName);
         Date rightNow = new Date();
 
         ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow );

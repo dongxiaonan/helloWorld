@@ -40,7 +40,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountIdByName(String userName) {
+    public Account getAccountByName(String userName) {
         return accountMapper.getByName(userName);
     }
 

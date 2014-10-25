@@ -56,7 +56,7 @@ public class SurveyController {
         if (bindingResult.hasErrors()) {
             return showValidationError();
         }
-        Account account = accountService.getAccountIdByName(username);
+        Account account = accountService.getAccountByName(username);
         surveyService.submitSurvey(account.getAccount_id(), surveyEntryForm.surveyEntry());
         return new ModelAndView("survey/confirmation");
     }

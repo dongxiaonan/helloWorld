@@ -38,7 +38,7 @@ public class UserProfileController {
         }
         userName = decode(userName);
 
-        Account account = accountService.getAccountIdByName(userName);
+        Account account = accountService.getAccountByName(userName);
 
         List<Item> items = getItemsOrderByUser(account);
 

@@ -44,7 +44,7 @@ public class SurveyControllerTest {
     public void setUp() {
         initMocks(this);
         userAccount.setAccount_id(12L);
-        when(accountService.getAccountIdByName("john")).thenReturn(userAccount);
+        when(accountService.getAccountByName("john")).thenReturn(userAccount);
     }
 
     @Test

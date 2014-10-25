@@ -28,7 +28,7 @@ public class AdminApi {
     }
 
     public AdminApi there_is_no_account_for(String accountName) {
-        Account account = accountService.getAccountIdByName(accountName);
+        Account account = accountService.getAccountByName(accountName);
         if (account != null) {
             accountService.delete(account);
         }

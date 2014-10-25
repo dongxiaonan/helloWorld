@@ -136,7 +136,7 @@ public class UserApi {
         return this;
     }
 
-    public UserApi reserves_item(String name) {
+    public UserApi add_to_cart(String name) {
         driver.findElement(HomeTable.addToCartButtonFor(name)).click();
         return this;
     }
@@ -227,7 +227,7 @@ public class UserApi {
         return this;
     }
 
-    public UserApi check_out_item(String item) {
+    public UserApi check_out_item() {
         driver.findElement(By.id("checkout")).click();
         return this;
     }

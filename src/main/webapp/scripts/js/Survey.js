@@ -9,7 +9,7 @@ function Survey() {
 function SurveyPopUp() {
     this.show = function () {
         setTimeout(function () {
-            window.open('survey', 'Survey', 'left=20,top=20,width=750,height=370');
+            window.open('../survey', 'Survey', 'left=20,top=20,width=750,height=370');
         }, 2000);
     }
 }

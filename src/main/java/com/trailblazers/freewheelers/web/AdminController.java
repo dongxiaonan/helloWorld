@@ -47,7 +47,7 @@ public class AdminController {
 
         List<ReservedOrderDetail> reservedOrderDetails = new ArrayList<ReservedOrderDetail>();
 
-        for (ReserveOrder reserveOrder: reserveOrders){
+        for (ReserveOrder reserveOrder : reserveOrders){
             Account account = accountService.get(reserveOrder.getAccount_id());
             Item item = itemService.getById(reserveOrder.getItem_id());
 

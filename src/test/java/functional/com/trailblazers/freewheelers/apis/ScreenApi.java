@@ -115,7 +115,7 @@ public class ScreenApi {
     }
 
     public ScreenApi shows_shopping_cart() {
-        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart()));
+        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/myShoppingCart"));
         return this;
     }
 

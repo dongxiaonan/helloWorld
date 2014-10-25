@@ -70,4 +70,24 @@ public class ReserveOrder {
     public String getNote() {
         return note;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReserveOrder that = (ReserveOrder) o;
+
+        if (account_id != null ? !account_id.equals(that.account_id) : that.account_id != null) return false;
+        if (item_id != null ? !item_id.equals(that.item_id) : that.item_id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = account_id != null ? account_id.hashCode() : 0;
+        result = 31 * result + (item_id != null ? item_id.hashCode() : 0);
+        return result;
+    }
 }

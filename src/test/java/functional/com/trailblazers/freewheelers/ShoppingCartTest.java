@@ -30,9 +30,10 @@ public class ShoppingCartTest extends UserJourneyBase{
         screen
                 .should_list_item_in_shopping_cart(Simplon_Frame);
         user
-                .check_out_item(Simplon_Frame);
+                .check_out_item();
         screen
                 .should_visit_confirmation_page();
+
 
     }
 }

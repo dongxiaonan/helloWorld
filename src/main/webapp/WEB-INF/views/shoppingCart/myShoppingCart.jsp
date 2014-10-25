@@ -2,8 +2,13 @@
 <c:set var="pageTitle" scope="request" value="Shopping Cart"/>
 <%@ include file="../header.jsp" %>
 
-<div class="page-action">My Shopping Cart</div>
 
+<div class="page-action">My Shopping Cart</div>
+<div class="controls">
+    <c:if test="${empty sessionItem}">
+        <td>You have no items in your shopping cart</td>
+    </c:if>
+</div>
 <table class="table">
     <thead>
     <tr>
@@ -14,30 +19,61 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>${item.name}</td>
-        <td>${item.description}</td>
-        <td>${item.price}</td>
-        <c:if test="${not empty item}">
-            <td>1</td>
-        </c:if>
-    </tr>
+        <tr>
+            <c:if test="${not empty sessionItem}">
+                <td>${sessionItem.name}</td>
+                <td>${sessionItem.description}</td>
+                <td>${sessionItem.price}</td>
+                <td>1</td>
+            </c:if>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<table>
+    <tbody>
+        <tr>
+            <td>
+                Tax:
+            </td>
+            <td>
+                0
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Total:
+            </td>
+            <td>
+                <c:if test="${not empty sessionItem}">
+                    ${sessionItem.price}
+                </c:if>
+            </td>
+        </tr>
     </tbody>
 </table>
 
-<form:form action="/shoppingCart/confirmation" method="post" modelAttribute="item">
-    <c:if test="${not empty item}">
-        <form:hidden path="itemId" value="${item.itemId}"/>
-    </c:if>
-    <button class="checkout-button" type="submit" name="checkout" id="checkout" value="Checkout">
-        Checkout
-    </button>
-</form:form>
-
-<form:form action="/shoppingCart/myShoppingCart" method="post" modelAttribute="item">
-    <button class="clear-button" type="submit" name="clear" id="clear" value="clear">
-        Clear Shopping Cart
-    </button>
-</form:form>
+<table>
+    <tr>
+        <td>
+            <form:form action="/shoppingCart/confirmation" method="post" modelAttribute="item">
+                <c:if test="${not empty item}">
+                    <form:hidden path="itemId" value="${sessionItem.itemId}"/>
+                </c:if>
+                <button class="checkout-button" type="submit" name="checkout" id="checkout" value="Checkout" ${empty sessionItem ? 'disabled' : ''}>
+                    Checkout
+                </button>
+            </form:form>
+        </td>
+        <td></td>
+        <td>
+            <a href="<c:url value='/' />" class="header-link">
+                <button class="clear-button" type="submit" onClick =<%session.setAttribute("sessionItem", null);%> name="clear" id="clear" value="clear">
+                    Clear Shopping Cart
+                </button>
+            </a>
+        </td>
+    </tr>
+</table>
 
 <%@ include file="../footer.jsp" %>

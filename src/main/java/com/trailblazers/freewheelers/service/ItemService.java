@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.service;
 
 import com.trailblazers.freewheelers.model.Item;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

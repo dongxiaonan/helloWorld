@@ -31,4 +31,19 @@ public class AccountRoleMapperTest extends MapperTestBase {
         assertThat(accountRole.getRole_id(), is(not(nullValue())));
     }
 
+    @Test
+    public void shouldFetchAccountRoleByAccountNAme() throws Exception {
+
+        AccountRole accountRole = new AccountRole();
+        accountRole.setAccount_name("Some Name");
+        accountRole.setRole("Some Role");
+
+        accountRoleMapper.insert(accountRole);
+
+
+        AccountRole role = accountRoleMapper.getRoleByAccountName("Some Name");
+
+        assertThat(role, is(not(nullValue())));
+    }
+
 }

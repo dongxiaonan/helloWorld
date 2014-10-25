@@ -82,6 +82,29 @@ public class AccountTest extends UserJourneyBase {
     }
 
     @Test
+    public void shouldDisplayErrorMessageWhenAccessingOtherUserProfileViaURL() throws InterruptedException {
+        String userAccount = "Hugo Huser";
+        String adminAccount = "Arno Admin";
+
+        admin
+                .there_is_a_user(userAccount, SOME_PASSWORD)
+                .there_is_an_admin(adminAccount, SOME_PASSWORD);
+
+        user
+                .is_logged_out()
+                .visits_his_profile();
+        screen
+                .shows_login();
+
+        user
+                .logs_in_with(userAccount, SOME_PASSWORD)
+                .tries_to_view_profile_of(adminAccount);
+        screen
+                .shows_error_alert("access is denied");
+    }
+
+
+    @Test
     public void shouldDisplayTheCountryOfUserWhenUserProfileIsClicked() throws Exception {
         String jan = "Jan Plewka";
 

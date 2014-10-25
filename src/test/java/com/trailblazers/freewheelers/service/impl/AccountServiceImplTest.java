@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -73,6 +74,16 @@ public class AccountServiceImplTest {
         verify(accountRoleMapper, times(1)).insert(any(AccountRole.class));
         verify(sqlSession, times(1)).commit();
         assertFalse(serviceResult.hasErrors());
+    }
+
+    @Test
+    public void shouldReturnRoleUserForAccountGivenName() {
+        when(accountRoleMapper.getRoleByAccountName("admin")).thenReturn(new AccountRole());
+
+        AccountRole accountRole = accountService.getAccountRoleByName("admin");
+
+        verify(accountRoleMapper).getRoleByAccountName("admin");
+        assertNotNull(accountRole);
     }
 
     private Account getAccountWithoutErrors() {

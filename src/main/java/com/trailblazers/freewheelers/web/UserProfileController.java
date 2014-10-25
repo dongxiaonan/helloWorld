@@ -36,7 +36,12 @@ public class UserProfileController {
         if (userName == null) {
             userName = principal.getName();
         }
+
         userName = decode(userName);
+
+        if (!userName.equals(principal.getName()) && !isAdmin(principal)){
+            return "accessDenied";
+        }
 
         Account account = accountService.getAccountByName(userName);
 
@@ -46,6 +51,10 @@ public class UserProfileController {
         model.addAttribute("userDetail", account);
 
         return "userProfile";
+    }
+
+    private boolean isAdmin(Principal principal) {
+        return accountService.getAccountRoleByName(principal.getName()).getRole().equals(AccountServiceImpl.ADMIN);
     }
 
     private String decode(String userName)  {

@@ -207,4 +207,11 @@ public class UserApi {
 
         return driver.findElement(By.id("j_password")).getAttribute("type");
     }
+
+    public UserApi tries_to_view_profile_of(String username) {
+
+        driver.get(URLs.userProfile()+"/" + username);
+        return this;
+
+    }
 }

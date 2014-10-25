@@ -2,8 +2,11 @@ package com.trailblazers.freewheelers.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.trailblazers.freewheelers.model.AccountValidation.verifyInputs;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -42,16 +45,35 @@ public class AccountValidationTest {
 
         assertThat(errors.size(), is(0));
     }
-    
+
+
     @Test
     public void shouldComplainAboutAnInvalidEmail() throws Exception {
-        String invalidEmail = "invalid.email.address";
+        List<String> invalidEmails = new ArrayList<String>();
+        invalidEmails.add("invalid.email.address");
+        invalidEmails.add("inva|id@email.com");
+        invalidEmails.add("invalid@emai|.com");
 
-        account.setEmail_address(invalidEmail);
+        for(String invaliEmail:invalidEmails) {
+            account.setEmail_address(invaliEmail);
+            HashMap errors = verifyInputs(account);
 
-        HashMap errors = verifyInputs(account);
+            assertThereIsOneErrorFor("email", "enter a valid email", errors);
+        }
+    }
 
-        assertThereIsOneErrorFor("email", "enter a valid email", errors);
+    @Test
+    public void shouldNotComplainAboutAValidEmail() throws Exception {
+        List<String> validEmails = new ArrayList<String>();
+        validEmails.add(SOME_EMAIL);
+        validEmails.add("valid@email.co.in");
+
+        for(String invaliEmail:validEmails) {
+            account.setEmail_address(invaliEmail);
+            HashMap errors = verifyInputs(account);
+
+            assertThat(errors.size(),is(0));
+        }
     }
 
     @Test
@@ -193,6 +215,4 @@ public class AccountValidationTest {
         assertThat(errors.get(field), containsString(expected));
 
     }
-
-
 }

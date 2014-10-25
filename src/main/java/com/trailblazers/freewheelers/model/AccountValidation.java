@@ -4,11 +4,12 @@ import java.util.HashMap;
 
 public class AccountValidation {
     private static final String passwordRequirement = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`]).{8,20}$";
+    private static final String emailFormat = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     public static HashMap verifyInputs(Account account) {
         HashMap errors = new HashMap();
 
-        if (!account.getEmail_address().contains("@")) {
+        if (!account.getEmail_address().matches(emailFormat)) {
            errors.put("email", "Must enter a valid email!");
         }
 

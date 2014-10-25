@@ -7,7 +7,7 @@ ItemValidation.prototype.validate = function (itemForm) {
     var isValid = true;
 
     if (!itemForm.price.match(NUMERICAL_PATTERN)) {
-        this.errorDisplayStrategy("Price should be a float only");
+        this.errorDisplayStrategy("Price should be a positive decimal number only");
         isValid = false;
     }
 

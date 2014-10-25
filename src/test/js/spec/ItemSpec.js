@@ -24,7 +24,7 @@ describe("item", function () {
 
             itemValidation.validate(itemForm)
 
-            expect(itemValidation.errorDisplayStrategy).toHaveBeenCalledWith("Price should be a float only");
+            expect(itemValidation.errorDisplayStrategy).toHaveBeenCalledWith("Price should be a positive decimal number only");
         });
     });
 });

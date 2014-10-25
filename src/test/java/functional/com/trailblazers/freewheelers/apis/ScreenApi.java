@@ -111,4 +111,9 @@ public class ScreenApi {
         assertThat(driver.findElement(By.className("country")).getText(),not("Country :"));
         return this;
     }
+
+    public ScreenApi should_show_phone_number() {
+        assertThat(driver.findElement(By.className("phone-number")).getText(),not("Phone Number :"));
+        return this;
+    }
 }

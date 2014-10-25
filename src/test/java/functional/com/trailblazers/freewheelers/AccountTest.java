@@ -22,17 +22,13 @@ public class AccountTest extends UserJourneyBase {
         screen
                 .shows_error_alert("login attempt was not successful");
 
-
-
         user
-
                 .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, EMPTY_COUNTRY, EMPTY_PASSWORD, SOME_CONFIRMEDPASSWORD);
 
         screen
                 .shows_error_alert("There were errors");
 
         user
-
                 .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
         screen
                 .shows_message("new account has been created");
@@ -59,7 +55,6 @@ public class AccountTest extends UserJourneyBase {
         admin
                 .there_is_a_user(Hugo, SOME_PASSWORD)
                 .there_is_an_admin(Arno, SOME_PASSWORD);
-
         user
                 .is_logged_out()
                 .visits_his_profile();
@@ -71,18 +66,15 @@ public class AccountTest extends UserJourneyBase {
                 .visits_his_profile();
         screen
                 .shows_profile_for(Hugo);
-
         user
                 .visits_admin_profile();
         screen
                 .shows_error_alert("access is denied");
-
         user
                 .logs_in_with(Arno, SOME_PASSWORD)
                 .visits_admin_profile();
         screen
                 .shows_admin_profile();
-
         user
                 .visits_profile_for(Hugo);
         screen
@@ -119,6 +111,29 @@ public class AccountTest extends UserJourneyBase {
         screen
                 .shows_profile_for(Arno)
                 .should_show_country();
+    }
+
+    @Test
+    public void shouldDisplayPhoneNumberWhenUserProfileIsClicked() throws Exception {
+        String Arno = "Arno Admin";
+        String Jan = "Jan User";
+
+        admin
+                .there_is_an_admin(Arno, SOME_PASSWORD)
+                .there_is_a_user(Jan, SOME_PASSWORD);
+        user
+                .is_logged_out()
+                .logs_in_with(Arno, SOME_PASSWORD)
+                .visits_his_profile();
+        screen
+                .shows_profile_for(Arno)
+                .should_show_phone_number();
+        user
+                .logs_in_with(Jan, SOME_PASSWORD)
+                .visits_his_profile();
+        screen
+                .shows_profile_for(Jan)
+                .should_show_phone_number();
     }
 
     @Test

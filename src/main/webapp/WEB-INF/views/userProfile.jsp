@@ -10,7 +10,8 @@
             <span class="city">City : ${userDetail.city}</span><br />
             <span class="state-province">State/Province : ${userDetail.state_Province}</span><br />
             <span class="country">Country : ${userDetail.country.name}</span><br />
-            <span class="post-code">Post Code : ${userDetail.postcode}</span>
+            <span class="post-code">Post Code : ${userDetail.postcode}</span><br />
+            <span class="phone-number">Phone Number : ${userDetail.phoneNumber}</span>
         </div>
 
 		<div class="page-action">Your Orders</div>

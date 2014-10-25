@@ -34,6 +34,7 @@ public class AccountValidationTest {
                 .setCountry(SOME_COUNTRY)
                 .setPhoneNumber(SOME_PHONE)
                 .setStreet1(SOME_STREET)
+                .setStreet2("")
                 .setCity(SOME_CITY)
                 .setPostcode(SOME_POSTCODE)
                 .setEnabled(true);
@@ -87,38 +88,6 @@ public class AccountValidationTest {
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
 
-    @Test
-    public void shouldComplainAboutAnEmptyStreet1() throws Exception {
-        String emptyStreet1 = "";
-
-        account.setStreet1(emptyStreet1);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("street1", "enter a street", errors);
-    }
-
-    @Test
-    public void shouldComplainAboutAnEmptyCity() throws Exception {
-        String emptyCity = "";
-
-        account.setCity(emptyCity);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("city", "enter a city", errors);
-    }
-
-    @Test
-    public void shouldComplainAboutAnEmptyPostcode() throws Exception {
-        String emptyPostcode = "";
-
-        account.setPostcode(emptyPostcode);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("postcode", "enter a post code", errors);
-    }
 
     @Test
     public void shouldComplainAboutAnEmptyName() throws Exception {
@@ -141,6 +110,7 @@ public class AccountValidationTest {
 
         assertThereIsOneErrorFor("phoneNumber", "enter a phone number", errors);
     }
+
 
     @Test
     public void shouldComplainAboutAnEmptyCountry() throws Exception {
@@ -193,7 +163,7 @@ public class AccountValidationTest {
 
     @Test
     public void shouldComplainWhenPasswordLessThan8() throws Exception {
-        String password = "!2Pass";
+        String password = "a!2Pass";
         account.setPassword(password);
 
         HashMap errors = verifyInputs(account);

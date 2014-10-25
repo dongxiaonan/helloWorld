@@ -25,14 +25,13 @@
         </div>
     </div>
 
-    <div>
+    <div class="note">
         <text>Password needs to be between 8 and 20 characters, and contain at least 1 number, 1 lowercase letter, 1
             uppercase letter, and 1 special character.
         </text>
     </div>
 
     <div>
-
         <label for="fld_password">Password</label>
         <div class="controls">
             <input type="password" id="fld_password" placeholder="secret password" name="password">
@@ -102,7 +101,7 @@
             <select id="sel_country" name="country" >
                 <option value="">Select</option>
                 <c:forEach var="country" items="${countries}">
-                    <option ${param.country == country ? 'selected' : ''} value="${country.name}">${country.name}</option>
+                    <option ${param.country == country.name ? 'selected' : ''} value="${country.name}">${country.name}</option>
                 </c:forEach>
             </select>
             <c:if test="${not empty validationMessage.errors['country']}">

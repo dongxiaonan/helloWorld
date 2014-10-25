@@ -21,6 +21,7 @@ public class ManageItemsTest extends UserJourneyBase {
                 .there_is_an_admin(Arno, SOME_PASSWORD)
                 .there_is_no_item(Simplon_Frame)
                 .there_is_no_item(Spoke_Reflectors)
+                .there_is_no_item(forOver255Case)
                 .there_is_no_item(New_Simplon_Name)
                 .there_is_no_item(New_Spoke_Name);
         user

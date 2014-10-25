@@ -97,16 +97,6 @@
     </div>
 
     <div>
-        <label for="fld_name">Name</label>
-        <div class="controls">
-            <input type="text" id="fld_name" placeholder="Your Name" name="name" value="${empty validationMessage.errors['name'] ? param.name : ''}">
-            <c:if test="${not empty validationMessage.errors['name']}">
-                <span class="text-error">${validationMessage.errors["name"]}</span>
-            </c:if>
-        </div>
-    </div>
-
-    <div>
         <label for="sel_country">Country</label>
         <div class="controls">
             <select id="sel_country" name="country" >

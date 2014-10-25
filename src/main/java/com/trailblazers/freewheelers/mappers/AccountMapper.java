@@ -50,6 +50,11 @@ public interface AccountMapper {
             @Result(property="password"),
             @Result(property="country", column = "country_id", javaType = Country.class,
                     one = @One(select = "com.trailblazers.freewheelers.mappers.CountryMapper.getById")),
+            @Result(property="street1", column="street1"),
+            @Result(property="street2", column="street2"),
+            @Result(property="city", column = "city"),
+            @Result(property="stateProvince", column="state_province"),
+            @Result(property="postcode", column = "postcode"),
             @Result(property="phoneNumber", column="phone_number"),
             @Result(property="enabled")
     })

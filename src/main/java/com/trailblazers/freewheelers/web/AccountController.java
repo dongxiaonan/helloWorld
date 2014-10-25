@@ -7,6 +7,7 @@ import com.trailblazers.freewheelers.service.CountryService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import com.trailblazers.freewheelers.service.impl.AccountServiceImpl;
 import com.trailblazers.freewheelers.service.impl.CountryServiceImpl;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+    Logger logger;
 
     AccountService accountService;
     CountryService countryService;
@@ -32,6 +34,7 @@ public class AccountController {
     public AccountController() {
         accountService = new AccountServiceImpl();
         countryService = new CountryServiceImpl();
+        this.logger = Logger.getLogger(AccountController.class);
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
@@ -85,6 +88,7 @@ public class AccountController {
             }
             return showSuccess(result.getModel());
         } catch (Exception e) {
+            logger.error("Failed to create Account", e);
             return showError();
         }
     }

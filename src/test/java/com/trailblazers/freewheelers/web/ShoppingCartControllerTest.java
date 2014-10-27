@@ -10,15 +10,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-import org.springframework.web.portlet.ModelAndView;
 import sun.security.acl.PrincipalImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Date;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
@@ -34,10 +39,26 @@ public class ShoppingCartControllerTest {
     @InjectMocks
     private ShoppingCartController shoppingCartController;
 
+    @Test
+    public void shouldSaveItemIntoSessionWhenReserveItemIsCalled (){
+        Item item = new Item();
+        item.setItemId(739L);
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        MockHttpSession httpSession = new MockHttpSession();
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+
+        when(itemService.getById(739L)).thenReturn(item);
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+
+        shoppingCartController.reserveItem(expectedModelMap, item, httpServletRequest);
+
+        assertTrue(expectedModelMap.containsValue(item));
+        assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is((Object)item));
+
+    }
 
     @Test
     public void shouldCallReserveOrderServiceWhenCheckoutItemIsCalled(){
-
         Model model = mock(Model.class);
         Principal principle = new PrincipalImpl("UserCat");
         Item item = new Item();
@@ -46,7 +67,7 @@ public class ShoppingCartControllerTest {
         account.setAccount_id(2L);
         ReserveOrder reserveOrder = new ReserveOrder(2L, 739L, new Date());
         when(itemService.getById(739L)).thenReturn(item);
-        when(accountService.getAccountIdByName("UserCat")).thenReturn(account);
+        when(accountService.getAccountByName("UserCat")).thenReturn(account);
 
         shoppingCartController.checkoutItem(model, principle, item);
 

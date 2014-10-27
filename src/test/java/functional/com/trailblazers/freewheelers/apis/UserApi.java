@@ -231,4 +231,9 @@ public class UserApi {
         driver.findElement(By.id("checkout")).click();
         return this;
     }
+
+    public UserApi clickClearItemsInShoppingCart() {
+        driver.findElement(By.id("clear")).click();
+        return this;
+    }
 }

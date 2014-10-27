@@ -124,8 +124,18 @@ public class ScreenApi {
         return this;
     }
 
+    public ScreenApi should_not_list_item_in_shopping_cart(String item) {
+        assertNumberOfRows(0, ShoppingCartTable.nameFieldFor(item));
+        return this;
+    }
+
     public ScreenApi should_visit_confirmation_page() {
         assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/confirmation"));
+        return this;
+    }
+
+    public ScreenApi shouldGoToHomePage() {
+        assertThat(driver.getCurrentUrl(), is(URLs.home()));
         return this;
     }
 }

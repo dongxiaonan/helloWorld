@@ -2,7 +2,6 @@
 <c:set var="pageTitle" scope="request" value="Shopping Cart"/>
 <%@ include file="../header.jsp" %>
 
-
 <div class="page-action">My Shopping Cart</div>
 <div class="controls">
     <c:if test="${empty sessionItem}">
@@ -67,8 +66,8 @@
         </td>
         <td></td>
         <td>
-            <a href="<c:url value='/' />" class="header-link">
-                <button class="clear-button" type="submit" onClick =<%session.setAttribute("sessionItem", null);%> name="clear" id="clear" value="clear">
+            <a href="<c:url value='/' />">
+                <button class="clear-button" type="submit" onsubmit=<%session.setAttribute("sessionItem", null);%> name="clear" id="clear" value="clear">
                     Clear Shopping Cart
                 </button>
             </a>

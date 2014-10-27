@@ -25,7 +25,7 @@
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="myDataSource"
-                               users-by-username-query="select account_name, password, enabled from account where account_name=?"
+                               users-by-username-query="select account_name, password, enabled, verified from account where account_name=? and (verified is true or verified is null)"
                                authorities-by-username-query="select a.account_name, ar.role from account a,
                                     account_role ar where a.account_name = ar.account_name and a.account_name=?"
                     />

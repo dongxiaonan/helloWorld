@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountRole roleFor(Account account, String role) {
         return new AccountRole()
-                .setAccount_name(account.getAccount_name())
+                .setAccountName(account.getAccount_name())
                 .setRole(role);
     }
 }

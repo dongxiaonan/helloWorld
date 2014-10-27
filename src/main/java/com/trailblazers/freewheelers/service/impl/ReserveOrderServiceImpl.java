@@ -6,9 +6,12 @@ import com.trailblazers.freewheelers.model.OrderStatus;
 import com.trailblazers.freewheelers.model.ReserveOrder;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+@Service
 public class ReserveOrderServiceImpl implements ReserveOrderService{
 
     private final SqlSession sqlSession;

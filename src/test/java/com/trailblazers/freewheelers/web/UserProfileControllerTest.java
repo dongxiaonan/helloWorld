@@ -4,11 +4,15 @@ import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.AccountRole;
 import com.trailblazers.freewheelers.model.Item;
 import com.trailblazers.freewheelers.service.AccountService;
-import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.Model;
+import sun.security.acl.PrincipalImpl;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -17,31 +21,28 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserProfileControllerTest {
-
+    @InjectMocks
     private UserProfileController userProfileController;
-    private Principal principal;
     private Model model;
+    @Mock
     private Account userAccount;
-    private Account adminAccount;
+    @Mock
+    private AccountService accountService;
+    @Mock
+    private ReserveOrderService reserveOrderService;
 
     @Before
     public void setUp() throws Exception {
-        userProfileController = new UserProfileController();
-        userProfileController.accountService = mock(AccountService.class);
-        userProfileController.reserveOrderService = mock(ReserveOrderService.class);
-        userProfileController.itemService = mock(ItemService.class);
-        principal = mock(Principal.class);
         model = mock(Model.class);
         userAccount = new Account().setAccount_name("user");
-        adminAccount = new Account().setAccount_name("admin");
-
     }
 
     @Test
     public void shouldReturnUserProfileViewWhenUserAccessesHisProfile(){
-        when(userProfileController.accountService.getAccountByName("user")).thenReturn(userAccount);
-        when(principal.getName()).thenReturn("user");
+        when(accountService.getAccountByName("user")).thenReturn(userAccount);
+        Principal principal = new PrincipalImpl("user");
 
         String returnedView = userProfileController.get("user", model, principal);
 
@@ -52,8 +53,8 @@ public class UserProfileControllerTest {
 
     @Test
     public void shouldReturnUserProfileViewWhenUserNameParamIsNotGiven(){
-        when(userProfileController.accountService.getAccountByName("user")).thenReturn(userAccount);
-        when(principal.getName()).thenReturn("user");
+        when(accountService.getAccountByName("user")).thenReturn(userAccount);
+        Principal principal = new PrincipalImpl("user");
 
         String returnedView = userProfileController.get(null, model, principal);
 
@@ -65,21 +66,21 @@ public class UserProfileControllerTest {
 
     @Test
     public void shouldReturnAccessDeniedViewWhenAUserAccessesOtherUserProfile(){
-        when(principal.getName()).thenReturn("user");
+        Principal principal = new PrincipalImpl("user");
         AccountRole userRole = new AccountRole().setRole("ROLE_USER");
-        when(userProfileController.accountService.getAccountRoleByName("user")).thenReturn(userRole);
-        String retunredView = userProfileController.get("otherUser", model, principal);
+        when(accountService.getAccountRoleByName("user")).thenReturn(userRole);
 
-        assertThat(retunredView, is("accessDenied"));
+        String returnedView = userProfileController.get("otherUser", model, principal);
+
+        assertThat(returnedView, is("accessDenied"));
     }
 
     @Test
     public void shouldReturnUserProfileWhenAdminAccessesUserAccount(){
         AccountRole adminRole = new AccountRole().setRole("ROLE_ADMIN");
-        when(userProfileController.accountService.getAccountByName("user")).thenReturn(userAccount);
-        when(userProfileController.accountService.getAccountRoleByName("admin")).thenReturn(adminRole);
-        when(principal.getName()).thenReturn("admin");
-
+        when(accountService.getAccountByName("user")).thenReturn(userAccount);
+        when(accountService.getAccountRoleByName("admin")).thenReturn(adminRole);
+        Principal principal = new PrincipalImpl("admin");
 
         String returnedView = userProfileController.get("user", model, principal);
 

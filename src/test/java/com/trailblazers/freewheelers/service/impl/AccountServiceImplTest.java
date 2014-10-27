@@ -12,9 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -77,13 +76,20 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void shouldReturnRoleUserForAccountGivenName() {
-        when(accountRoleMapper.getRoleByAccountName("admin")).thenReturn(new AccountRole());
-
-        AccountRole accountRole = accountService.getAccountRoleByName("admin");
+    public void shouldCallAccountRoleMapperToRetrieveTheAccountRole() {
+        accountService.getAccountRoleByName("admin");
 
         verify(accountRoleMapper).getRoleByAccountName("admin");
-        assertNotNull(accountRole);
+    }
+
+    @Test
+    public void shouldReturnAccountRoleObjectWhichIsRetrievedFromAccountRoleMapper(){
+        AccountRole expectedAccountRole = new AccountRole();
+        when(accountRoleMapper.getRoleByAccountName("Some Name")).thenReturn(expectedAccountRole);
+
+        AccountRole accountRole = accountService.getAccountRoleByName("Some Name");
+
+        assertThat(accountRole, is(expectedAccountRole));
     }
 
     private Account getAccountWithoutErrors() {

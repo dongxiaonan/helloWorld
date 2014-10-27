@@ -7,10 +7,12 @@ import com.trailblazers.freewheelers.model.ItemValidation;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class ItemServiceImpl implements ItemService {
 
     private final SqlSession sqlSession;

@@ -8,8 +8,7 @@ import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
 import com.trailblazers.freewheelers.service.impl.AccountServiceImpl;
-import com.trailblazers.freewheelers.service.impl.ItemServiceImpl;
-import com.trailblazers.freewheelers.service.impl.ReserveOrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +25,12 @@ import java.util.List;
 @RequestMapping("/userProfile")
 public class UserProfileController {
 
-    AccountService accountService = new AccountServiceImpl();
-    ReserveOrderService reserveOrderService = new ReserveOrderServiceImpl();
-    ItemService itemService = new ItemServiceImpl();
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private ReserveOrderService reserveOrderService;
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(value = "/{userName:.*}", method = RequestMethod.GET)
     public String get(@PathVariable String userName, Model model, Principal principal) {

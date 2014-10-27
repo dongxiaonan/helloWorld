@@ -23,27 +23,25 @@ public class AccountRoleMapperTest extends MapperTestBase {
     @Test
     public void shouldInsertAnAccountRole() throws Exception {
         AccountRole accountRole = new AccountRole();
-        accountRole.setAccount_name("Some Name");
+        accountRole.setAccountName("Some Name");
         accountRole.setRole("Some Role");
 
-        accountRoleMapper.insert(accountRole);
+        Integer accountId = accountRoleMapper.insert(accountRole);
 
-        assertThat(accountRole.getRole_id(), is(not(nullValue())));
+        assertThat(accountId, is(not(nullValue())));
     }
 
     @Test
     public void shouldFetchAccountRoleByAccountName() throws Exception {
-
         AccountRole accountRole = new AccountRole();
-        accountRole.setAccount_name("Some Name");
+        accountRole.setAccountName("Some Name");
         accountRole.setRole("Some Role");
-
         accountRoleMapper.insert(accountRole);
-
 
         AccountRole role = accountRoleMapper.getRoleByAccountName("Some Name");
 
-        assertThat(role, is(not(nullValue())));
+        AccountRole expectedAccountRole = new AccountRole().setRole("Some Role").setAccountName("Some Name");
+        assertThat(role, is(expectedAccountRole));
     }
 
 }

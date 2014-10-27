@@ -57,6 +57,11 @@ public class ItemValidationTest {
     }
 
     @Test
+    public void shouldReturnErrorWhenItemHasZeroValue(){
+        assertFieldError(someItem().setQuantity(0l), "quantity", "Please enter positive quantity");
+    }
+
+    @Test
     public void shouldErrorWhenThereIsNoType() {
         assertFieldError(someItem().setType(null), "type", "Please enter Item Type");
     }

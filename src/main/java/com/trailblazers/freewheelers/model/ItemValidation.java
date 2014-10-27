@@ -22,6 +22,8 @@ public class ItemValidation {
 
         if (item.getQuantity() == null) {
             errors.put("quantity", "Please enter Item Quantity");
+        } else if (item.getQuantity() == 0) {
+            errors.put("quantity", "Please enter positive quantity");
         }
 
         if (item.getType() == null) {

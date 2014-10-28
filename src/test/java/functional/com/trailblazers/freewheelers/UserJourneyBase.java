@@ -8,7 +8,8 @@ import functional.com.trailblazers.freewheelers.pages.NetPromoterScoreSurveyForm
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class UserJourneyBase {
 
@@ -21,10 +22,11 @@ public class UserJourneyBase {
     // Specific for NPS Flow
     protected static NetPromoterScoreSurveyForm npsSurveyForm;
     protected static NetPromoterScoreReportPage npsReportPage;
+    private static DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 
     @BeforeClass
     public static void before() {
-        driver = new FirefoxDriver();
+        driver = new PhantomJSDriver(desiredCapabilities);
 
         admin = new AdminApi();
         user = new UserApi(driver);

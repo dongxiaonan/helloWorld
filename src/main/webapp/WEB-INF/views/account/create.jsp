@@ -74,7 +74,10 @@
     <div>
         <label for="fld_street2">Street 2</label>
         <div class="controls">
-            <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${param.street2}" maxlength="255">
+            <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${empty validationMessage.errors['street2'] ? param.street2: ''}" maxlength="255">
+            <c:if test="${not empty validationMessage.errors['street2']}">
+                <span class="text-error">${validationMessage.errors["street2"]}</span>
+            </c:if>
         </div>
     </div>
 

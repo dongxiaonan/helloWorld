@@ -16,7 +16,7 @@ describe("RowSelector", function () {
         });
 
         it("toggles a row if target is a row", function () {
-            target.isRow.andReturn(true);
+            target.isRow.and.returnValue(true);
 
             RowSelector.clickHandler({});
 
@@ -24,7 +24,7 @@ describe("RowSelector", function () {
         });
 
         it("toggles all the rows if target is toggleAll", function () {
-            target.isToggleAll.andReturn(true);
+            target.isToggleAll.and.returnValue(true);
 
             RowSelector.clickHandler({});
 

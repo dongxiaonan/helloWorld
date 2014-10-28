@@ -64,7 +64,7 @@
     <div>
         <label for="fld_street1">Street 1</label>
         <div class="controls">
-            <input type="text" id="fld_street1" placeholder="Your Street Address" name="street1" value="${empty validationMessage.errors['street1'] ? param.street1 : ''}">
+            <input type="text" id="fld_street1" placeholder="Your Street Address" name="street1" value="${empty validationMessage.errors['street1'] ? param.street1 : ''}" maxlength="255">
             <c:if test="${not empty validationMessage.errors['street1']}">
                 <span class="text-error">${validationMessage.errors["street1"]}</span>
             </c:if>
@@ -74,14 +74,14 @@
     <div>
         <label for="fld_street2">Street 2</label>
         <div class="controls">
-            <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${param.street2}">
+            <input type="text" id="fld_street2" placeholder="Continuation of Your Street Address" name="street2" value="${param.street2}" maxlength="255">
         </div>
     </div>
 
     <div>
         <label for="fld_city">City</label>
         <div class="controls">
-            <input type="text" id="fld_city" placeholder="Your City" name="city" value="${empty validationMessage.errors['city'] ? param.city: ''}">
+            <input type="text" id="fld_city" placeholder="Your City" name="city" value="${empty validationMessage.errors['city'] ? param.city: ''}" maxlength="100">
             <c:if test="${not empty validationMessage.errors['city']}">
                 <span class="text-error">${validationMessage.errors["city"]}</span>
             </c:if>
@@ -91,7 +91,7 @@
     <div>
         <label for="fld_stateProvince">State/Province</label>
         <div class="controls">
-            <input type="text" id="fld_stateProvince" placeholder="Your State/Province" name="stateProvince" value="${param.stateProvince}">
+            <input type="text" id="fld_stateProvince" placeholder="Your State/Province" name="stateProvince" value="${param.stateProvince}" maxlength="100">
         </div>
     </div>
 
@@ -113,7 +113,7 @@
     <div>
         <label for="fld_postcode">Postcode</label>
         <div class="controls">
-            <input type="text" id="fld_postcode" placeholder="Your Post Code" name="postcode" value="${empty validationMessage.errors['postcode'] ? param.postcode :''}">
+            <input type="text" id="fld_postcode" placeholder="Your Post Code" name="postcode" value="${empty validationMessage.errors['postcode'] ? param.postcode :''}" maxlength="10">
             <c:if test="${not empty validationMessage.errors['postcode']}">
                 <span class="text-error">${validationMessage.errors["postcode"]}</span>
             </c:if>

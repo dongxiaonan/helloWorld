@@ -63,24 +63,6 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void shouldComplainWhenStreet1StartWithDash() throws Exception {
-        String street1 = "-street1";
-        account.setStreet1(street1);
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("street1", "enter a street", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenStreet1EndWithDash() throws Exception {
-        String street1 = "street1-";
-        account.setStreet1(street1);
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("street1", "enter a street", errors);
-    }
-
-    @Test
     public void shouldComplainWhenStreet1ContainsSpecialCharacters() throws Exception {
         String street1 = "!@#";
         account.setStreet1(street1);
@@ -103,26 +85,6 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void shouldComplainWhenStreet2StartWithDash() throws Exception {
-        String street2 = "-a";
-        account.setStreet2(street2);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("street2", "Enter a valid street", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenStreet2EndWithDash() throws Exception {
-        String street2 = "a-";
-        account.setStreet2(street2);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("street2", "Enter a valid street", errors);
-    }
-
-    @Test
     public void shouldComplainWhenStreet2ContainsSpecialCharacters() throws Exception {
         String street2 = "!@#";
         account.setStreet2(street2);
@@ -134,7 +96,7 @@ public class AddressValidationTest {
 
     @Test
     public void shouldComplainWhenCityContainsSpecialCharacter() throws Exception {
-        String city = "!@#!";
+        String city = "aaa22@33aaa";
 
         account.setCity(city);
 
@@ -148,27 +110,6 @@ public class AddressValidationTest {
         char[] chars = new char[101];
         Arrays.fill(chars, 'a');
         String city = new String(chars);
-        account.setCity(city);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("city", "enter a city", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenCityStartWithDash() throws Exception {
-        String city = "-city12";
-        account.setCity(city);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("city", "enter a city", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenCityEndWithDash() throws Exception {
-        String city = "wer12-";
-
         account.setCity(city);
 
         HashMap errors = verifyInputs(account);
@@ -202,26 +143,6 @@ public class AddressValidationTest {
     public void shouldComplainWhenAPostcodeNotIn1to10() throws Exception {
         String postcode = "12345678901";
 
-        account.setPostcode(postcode);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("postcode", "enter a post code", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPostcodeStartWithDash() throws Exception {
-        String postcode = "-2222";
-        account.setPostcode(postcode);
-
-        HashMap errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("postcode", "enter a post code", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPostcodeEndWithDash() throws Exception {
-        String postcode = "2222-";
         account.setPostcode(postcode);
 
         HashMap errors = verifyInputs(account);

@@ -2,7 +2,6 @@ package com.trailblazers.freewheelers.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +35,7 @@ public class AccountValidationTest {
                 .setStreet1(SOME_STREET)
                 .setStreet2("")
                 .setCity(SOME_CITY)
+                .setState_Province("")
                 .setPostcode(SOME_POSTCODE)
                 .setEnabled(true);
 

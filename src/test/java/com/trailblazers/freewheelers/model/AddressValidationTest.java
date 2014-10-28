@@ -35,6 +35,7 @@ public class AddressValidationTest {
                 .setStreet1(SOME_STREET)
                 .setStreet2(SOME_STREET)
                 .setCity(SOME_CITY)
+                .setState_Province("")
                 .setPostcode(SOME_POSTCODE)
                 .setEnabled(true);
 
@@ -127,6 +128,28 @@ public class AddressValidationTest {
         assertThereIsOneErrorFor("city", "enter a city", errors);
     }
 
+    @Test
+    public void shouldComplainWhenStateProvinceContainsSpecialCharacter() throws Exception {
+        String stateProvince = "aaa22@33aaa";
+
+        account.setState_Province(stateProvince);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("stateProvince", "enter a valid state or province", errors);
+    }
+
+    @Test
+    public void shouldComplainWhenStateProvinceLengthIsBeyond100() throws Exception {
+        char[] chars = new char[101];
+        Arrays.fill(chars, 'a');
+        String stateProvince = new String(chars);
+        account.setState_Province(stateProvince);
+
+        HashMap errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("stateProvince", "enter a valid state or province", errors);
+    }
 
     @Test
     public void shouldComplainAboutAnEmptyPostcode() throws Exception {
@@ -140,7 +163,7 @@ public class AddressValidationTest {
     }
 
     @Test
-    public void shouldComplainWhenAPostcodeNotIn1to10() throws Exception {
+    public void shouldComplainWhenAPostcodeNotIn4to10() throws Exception {
         String postcode = "12345678901";
 
         account.setPostcode(postcode);

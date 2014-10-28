@@ -8,6 +8,7 @@ public class AccountValidation {
     public static final String street1Requirement = "^[0-9a-zA-Z\\-\\'\\ ]{1,255}$";
     public static final String street2Requirement = "^[0-9a-zA-Z\\-\\'\\ ]{0,255}$";
     public static final String cityRequirment = "^[0-9a-zA-Z\\-\\'\\ ]{1,100}$";
+    public static final String stateProvinceRequirement = "^[0-9a-zA-Z\\-\\'\\ ]{0,100}$";
 
     public static HashMap verifyInputs(Account account) {
         HashMap errors = new HashMap();
@@ -34,6 +35,10 @@ public class AccountValidation {
 
         if(!account.getCity().matches(cityRequirment)) {
             errors.put("city","Must enter a city!");
+        }
+
+        if(!account.getState_Province().matches(stateProvinceRequirement)) {
+            errors.put("stateProvince","Must enter a valid state or province!");
         }
 
         if(!account.getPostcode().matches("^[0-9\\-]{4,10}$")) {

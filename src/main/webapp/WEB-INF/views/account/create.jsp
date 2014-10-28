@@ -89,7 +89,7 @@
     </div>
 
     <div>
-        <label for="fld_stateProvince">City</label>
+        <label for="fld_stateProvince">State/Province</label>
         <div class="controls">
             <input type="text" id="fld_stateProvince" placeholder="Your State/Province" name="stateProvince" value="${empty validationMessage.errors['stateProvince'] ? param.stateProvince: ''}" maxlength="100">
             <c:if test="${not empty validationMessage.errors['stateProvince']}">
@@ -97,7 +97,7 @@
             </c:if>
         </div>
     </div>
-    
+
     <div>
         <label for="sel_country">Country</label>
         <div class="controls">

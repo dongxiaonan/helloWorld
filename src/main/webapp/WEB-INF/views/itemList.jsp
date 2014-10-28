@@ -27,7 +27,11 @@
                 <div>
                     <form:label for="price" path="price">Price</form:label>
                     <div class="controls">
-                        <form:input path="price" />
+                        <form:input pattern="\d+|\d+.\d+" path="price"
+                                title="Price should be a positive decimal number only"
+                                oninvalid="setCustomValidity('Price should be a positive decimal number only')"
+                                oninput="try{setCustomValidity('')}catch(e){}"
+                                />
                         <c:if test="${not empty errors['price']}">
                             <span class="text-error">${errors['price']}</span>
                         </c:if>

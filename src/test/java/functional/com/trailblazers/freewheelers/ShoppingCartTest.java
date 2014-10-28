@@ -32,12 +32,12 @@ public class ShoppingCartTest extends UserJourneyBase{
         user
                 .visits_home_page()
                 .visits_shopping_cart();
-//        screen
-//                .should_list_item_in_shopping_cart(Simplon_Frame);
-//        user
-//                .check_out_item();
-//        screen
-//                .should_visit_confirmation_page();
+        screen
+                .should_list_item_in_shopping_cart(Simplon_Frame);
+        user
+                .check_out_item();
+        screen
+                .should_visit_confirmation_page();
     }
 
     @Test

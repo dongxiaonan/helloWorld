@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,7 +54,7 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = {"/confirmation"}, method = RequestMethod.POST, params = "checkout=Checkout")
-    public void checkoutItem(Model model, Principal principal, @ModelAttribute Item item) {
+    public void checkoutItem(Model model, Principal principal, @ModelAttribute Item item, HttpServletRequest request) {
         Item itemToReserve =  itemService.getById(item.getItemId());
         String userName = principal.getName();
         Account account =  accountService.getAccountByName(userName);
@@ -64,6 +65,15 @@ public class ShoppingCartController {
         reserveOrderService.save(reserveOrder);
         itemService.decreaseQuantityByOne(itemToReserve);
 
+        request.getSession().setAttribute(sessionItem, null);
+
         model.addAttribute("item", itemToReserve);
+    }
+
+    @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)
+    public String clearShoppingCart(HttpServletRequest request) {
+        request.getSession().setAttribute(sessionItem, null);
+
+        return "redirect:/";
     }
 }

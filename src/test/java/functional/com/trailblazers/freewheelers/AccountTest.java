@@ -52,9 +52,15 @@ public class AccountTest extends UserJourneyBase {
         String Hugo = "Hugo Huser";
         String Arno = "Arno Admin";
 
+        String item = "Test ITEM";
+
+
         admin
                 .there_is_a_user(Hugo, SOME_PASSWORD)
-                .there_is_an_admin(Arno, SOME_PASSWORD);
+                .there_is_an_admin(Arno, SOME_PASSWORD)
+                .there_is_no_item(item)
+                .there_is_a_frame(item,10l);
+
         user
                 .is_logged_out()
                 .visits_his_profile();
@@ -82,7 +88,7 @@ public class AccountTest extends UserJourneyBase {
 
         user
                 .is_logged_out()
-                .click_add_to_shopping_cart();
+                .add_item_to_shopping_cart(item);
         screen
                 .shows_login();
 

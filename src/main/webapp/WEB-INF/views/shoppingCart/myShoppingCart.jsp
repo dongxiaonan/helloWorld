@@ -66,11 +66,11 @@
         </td>
         <td></td>
         <td>
-            <a href="<c:url value='/' />">
-                <button class="clear-button" type="submit" onsubmit=<%session.setAttribute("sessionItem", null);%> name="clear" id="clear" value="clear">
+            <form:form action="/shoppingCart/clear" method="post" modelAttribute="item">
+                <button class="clear-button" type="submit" name="clear" id="clear" value="clear">
                     Clear Shopping Cart
                 </button>
-            </a>
+            </form:form>
         </td>
     </tr>
 </table>

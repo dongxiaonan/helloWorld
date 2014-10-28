@@ -23,6 +23,8 @@ import java.security.Principal;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -66,12 +68,40 @@ public class ShoppingCartControllerTest {
         Account account = new Account();
         account.setAccount_id(2L);
         ReserveOrder reserveOrder = new ReserveOrder(2L, 739L, new Date());
+
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        HttpSession httpSession = new MockHttpSession();
+        HttpSession spy = spy(httpSession);
+        spy.setAttribute("sessionItem", item);
+
+        when(httpServletRequest.getSession()).thenReturn(spy);
+
         when(itemService.getById(739L)).thenReturn(item);
         when(accountService.getAccountByName("UserCat")).thenReturn(account);
 
-        shoppingCartController.checkoutItem(model, principle, item);
+
+        shoppingCartController.checkoutItem(model, principle, item, httpServletRequest);
 
         verify(reserveOrderService, times(1)).save(reserveOrder);
         verify(itemService, times(1)).decreaseQuantityByOne(item);
+        assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is(nullValue()));
+    }
+
+    @Test
+    public void shouldClearItemFromSessionWhenClearCartIsClicked (){
+        Item item = new Item();
+        item.setItemId(739L);
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        HttpSession httpSession = new MockHttpSession();
+        HttpSession spy = spy(httpSession);
+        spy.setAttribute("sessionItem", item);
+
+        when(httpServletRequest.getSession()).thenReturn(spy);
+
+        String redirect = shoppingCartController.clearShoppingCart(httpServletRequest);
+
+        assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is(nullValue()));
+        assertEquals(redirect, "redirect:/");
+
     }
 }

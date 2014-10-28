@@ -6,7 +6,8 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -17,7 +18,7 @@ public class HumansTxtTest {
 
     @BeforeClass
     public static void before() {
-        driver = new FirefoxDriver();
+        driver = new PhantomJSDriver(new DesiredCapabilities());
     }
 
     @AfterClass

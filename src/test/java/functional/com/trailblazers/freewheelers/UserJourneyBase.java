@@ -26,6 +26,8 @@ public class UserJourneyBase {
 
     @BeforeClass
     public static void before() {
+        desiredCapabilities.setJavascriptEnabled(true);
+        desiredCapabilities.setCapability("takesScreenshot", true);
         driver = new PhantomJSDriver(desiredCapabilities);
 
         admin = new AdminApi();

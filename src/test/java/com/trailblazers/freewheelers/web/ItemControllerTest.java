@@ -33,7 +33,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @WebAppConfiguration
-@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/*",})
+@ContextConfiguration(locations={"file:src/main/webapp/WEB-INF/spring/app-config.xml",
+                                 "file:src/main/webapp/WEB-INF/spring/mvc-config.xml",
+                                 "file:src/main/webapp/WEB-INF/spring/persistence-config.xml",
+                                 "file:src/main/webapp/WEB-INF/spring/security-app-context.xml"})
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ItemControllerTest {

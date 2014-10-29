@@ -41,8 +41,9 @@ public class UserJourneyBase {
 
     @AfterClass
     public static void after() {
-        driver.close();
-        driver.quit();
+        if(driver != null) {
+            driver.close();
+            driver.quit();
+        }
     }
-
 }

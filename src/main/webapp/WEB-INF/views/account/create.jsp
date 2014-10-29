@@ -25,12 +25,6 @@
         </div>
     </div>
 
-    <div class="note">
-        <text>Password needs to be between 8 and 20 characters, and contain at least 1 number, 1 lowercase letter, 1
-            uppercase letter, and 1 special character.
-        </text>
-    </div>
-
     <div>
         <label for="fld_password">Password<span>*</span></label>
         <div class="controls">
@@ -40,6 +34,12 @@
             </c:if>
             </div>
         </div>
+
+    <div class="note">
+        <text>Password needs to be between 8 and 20 characters, and contain at least 1 number, 1 lowercase letter, 1
+            uppercase letter, and 1 special character.
+        </text>
+    </div>
 
     <div>
         <label for="fld_confirmedPassword">Confirm Password<span>*</span></label>

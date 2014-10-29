@@ -54,9 +54,17 @@ public class AccountValidationTest {
         invalidEmails.add("invalid.email.address");
         invalidEmails.add("inva|id@email.com");
         invalidEmails.add("invalid@emai|.com");
+        invalidEmails.add("2invalid@email.com");
+        invalidEmails.add("invalid__a@email.com");
+        invalidEmails.add("invalid_@email.com");
+        invalidEmails.add("invalid@email-.com");
+        invalidEmails.add("invalid@-email.com");
+        invalidEmails.add("invalid@email.c.o");
+        invalidEmails.add("invalid@email.co.org.in");
 
-        for(String invaliEmail:invalidEmails) {
-            account.setEmail_address(invaliEmail);
+
+        for(String invalidEmail :invalidEmails) {
+            account.setEmail_address(invalidEmail);
             HashMap errors = verifyInputs(account);
 
             assertThereIsOneErrorFor("email", "enter a valid email", errors);
@@ -68,9 +76,13 @@ public class AccountValidationTest {
         List<String> validEmails = new ArrayList<String>();
         validEmails.add(SOME_EMAIL);
         validEmails.add("valid@email.co.in");
+        validEmails.add("valid1_c@email.com");
+        validEmails.add("valid+a@email.com");
+        validEmails.add("valid@e-mail.com");
+        validEmails.add("valid@9mail9.com");
 
-        for(String invaliEmail:validEmails) {
-            account.setEmail_address(invaliEmail);
+        for(String validEmail:validEmails) {
+            account.setEmail_address(validEmail);
             HashMap errors = verifyInputs(account);
 
             assertThat(errors.size(),is(0));

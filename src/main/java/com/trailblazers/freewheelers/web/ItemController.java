@@ -4,9 +4,10 @@ import com.trailblazers.freewheelers.model.Item;
 import com.trailblazers.freewheelers.model.ItemType;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ServiceResult;
-import com.trailblazers.freewheelers.service.impl.ItemServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +19,9 @@ public class ItemController{
 	static final String ITEM_PAGE = "/item";
 	static final String ITEM_LIST_PAGE = "/itemList";
 
-    ItemService itemService = new ItemServiceImpl();
+    @Autowired
+    ItemService itemService;
+
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String get(Model model, @ModelAttribute Item item) {
@@ -29,7 +32,11 @@ public class ItemController{
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute Item item) {
+	public String post(Model model, @ModelAttribute("item") Item item, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors() && bindingResult.getFieldError("quantity") != null){
+            item.setQuantity(0l);
+        }
         ServiceResult<Item> result = itemService.saveItem(item);
 
         if (result.hasErrors()) {
@@ -41,6 +48,7 @@ public class ItemController{
 		}
 		return "redirect:" + ITEM_PAGE;
 	}
+
 
     @RequestMapping(method = RequestMethod.POST, params="update=Update all enabled items")
 	public String updateItem(@ModelAttribute ItemGrid itemGrid) {

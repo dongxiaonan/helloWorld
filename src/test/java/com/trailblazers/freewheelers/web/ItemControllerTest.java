@@ -7,9 +7,19 @@ import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +27,17 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@WebAppConfiguration
+@ContextConfiguration(locations={"/spring/mvc-config.xml",
+                                 "/spring/app-config.xml",
+                                 "/spring/persistence-config.xml",
+                                 "/spring/security-app-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ItemControllerTest {
 
     @Mock
@@ -28,7 +45,11 @@ public class ItemControllerTest {
     @Mock
     SqlSession sqlSession;
 
-    Model model;
+    @Autowired
+    protected WebApplicationContext webAppContext;
+    protected MockMvc mockMVC;
+
+    Model responseModel;
     ItemGrid itemGrid;
     Item item;
     ItemController itemController;
@@ -38,14 +59,15 @@ public class ItemControllerTest {
         initMocks(this);
         itemController = new ItemController();
         itemController.itemService = itemService;
-        model = new ExtendedModelMap();
+        responseModel = new ExtendedModelMap();
         item = new Item();
         itemGrid = new ItemGrid(asList(item));
+        mockMVC = webAppContextSetup(webAppContext).build();
     }
 
     @Test
     public void shouldRenderItemListView() throws Exception {
-        String returnedPath = itemController.get(model, item);
+        String returnedPath = itemController.get(responseModel, item);
         assertThat(returnedPath, is(ItemController.ITEM_LIST_PAGE));
     }
 
@@ -55,12 +77,12 @@ public class ItemControllerTest {
         itemGrid = new ItemGrid();
         when(itemService.findAll()).thenReturn(itemGrid.getItems());
 
-        itemController.get(model, item);
+        itemController.get(responseModel, item);
 
         verify(itemService).findAll();
-        ItemGrid returnedItemGrid = (ItemGrid) model.asMap().get("itemGrid");
+        ItemGrid returnedItemGrid = (ItemGrid) responseModel.asMap().get("itemGrid");
         assertThat(returnedItemGrid.getItems(), is(itemGrid.getItems()));
-        assertThat((ItemType[])model.asMap().get("itemTypes"), is(ItemType.values()));
+        assertThat((ItemType[]) responseModel.asMap().get("itemTypes"), is(ItemType.values()));
 
     }
 
@@ -71,7 +93,7 @@ public class ItemControllerTest {
         ServiceResult<Item> serviceResultNoErrors = new ServiceResult<Item>(errors, item);
         when(itemService.saveItem(item)).thenReturn(serviceResultNoErrors);
 
-        String returnedPath = itemController.post(model, item);
+        String returnedPath = itemController.post(responseModel, item, mock(BindingResult.class));
 
         verify(itemService).saveItem(item);
         assertThat(returnedPath, is("redirect:" + ItemController.ITEM_PAGE));
@@ -88,14 +110,28 @@ public class ItemControllerTest {
         when(itemService.saveItem(item)).thenReturn(serviceResultWithErrors);
         when(itemService.findAll()).thenReturn(asList(item));
 
-        String returnedPath = itemController.post(model, item);
+        String returnedPath = itemController.post(responseModel, item, mock(BindingResult.class));
 
-        assertThat((HashMap<String, String>) model.asMap().get("errors"), is(errors));
+        assertThat((HashMap<String, String>) responseModel.asMap().get("errors"), is(errors));
         verify(itemService).findAll();
-        ItemGrid returnedItemGrid = (ItemGrid) model.asMap().get("itemGrid");
+        ItemGrid returnedItemGrid = (ItemGrid) responseModel.asMap().get("itemGrid");
         assertThat(returnedItemGrid.getItems(), is(itemGrid.getItems()));
-        assertThat((ItemType[])model.asMap().get("itemTypes"), is(ItemType.values()));
+        assertThat((ItemType[]) responseModel.asMap().get("itemTypes"), is(ItemType.values()));
         assertThat(returnedPath, is(ItemController.ITEM_LIST_PAGE));
+    }
 
+    @Test
+    public void shouldReturnModelWithErrorKeyInItWhenPostingRequestWithACharForQuantity() throws Exception{
+        RequestBuilder requestBuilder = post(ItemController.ITEM_PAGE)
+                                            .param("name", "item")
+                                            .param("price", "1")
+                                            .param("type", "ACCESSORIES")
+                                            .param("description", "some descripton")
+                                            .param("quantity", "a");
+
+        MvcResult result = mockMVC.perform(requestBuilder).andReturn();
+        Map<String, String> quantityError = (Map<String, String>) result.getModelAndView().getModel().get("errors");
+
+        assertThat(quantityError.containsKey("quantity"), is(true));
     }
 }

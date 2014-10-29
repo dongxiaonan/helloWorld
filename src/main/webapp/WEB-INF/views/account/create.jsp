@@ -16,7 +16,7 @@
 
 <form action="/account/create" method="post">
     <div>
-        <label for="fld_email">Email</label>
+        <label for="fld_email">Email<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_email" placeholder="somebody@something.com" name="email" value="${empty validationMessage.errors['email'] ? param.email : ''}">
             <c:if test="${not empty validationMessage.errors['email']}">
@@ -32,7 +32,7 @@
     </div>
 
     <div>
-        <label for="fld_password">Password</label>
+        <label for="fld_password">Password<span>*</span></label>
         <div class="controls">
             <input type="password" id="fld_password" placeholder="secret password" name="password">
             <c:if test="${not empty validationMessage.errors['password']}">
@@ -42,7 +42,7 @@
         </div>
 
     <div>
-        <label for="fld_confirmedPassword">Confirm Password</label>
+        <label for="fld_confirmedPassword">Confirm Password<span>*</span></label>
         <div class="controls">
             <input type="password" id="fld_confirmedPassword" placeholder="secret password" name="confirmedPassword">
             <c:if test="${not empty validationMessage.errors['confirmedPassword']}">
@@ -52,7 +52,7 @@
         </div>
 
     <div>
-        <label for="fld_name">Name</label>
+        <label for="fld_name">Name<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_name" placeholder="Your Name" name="name" value="${empty validationMessage.errors['name'] ? param.name: ''}">
             <c:if test="${not empty validationMessage.errors['name']}">
@@ -62,7 +62,7 @@
     </div>
 
     <div>
-        <label for="fld_street1">Street 1</label>
+        <label for="fld_street1">Street 1<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_street1" placeholder="Your Street Address" name="street1" value="${empty validationMessage.errors['street1'] ? param.street1 : ''}" maxlength="255">
             <c:if test="${not empty validationMessage.errors['street1']}">
@@ -82,7 +82,7 @@
     </div>
 
     <div>
-        <label for="fld_city">City</label>
+        <label for="fld_city">City<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_city" placeholder="Your City" name="city" value="${empty validationMessage.errors['city'] ? param.city: ''}" maxlength="100">
             <c:if test="${not empty validationMessage.errors['city']}">
@@ -102,7 +102,7 @@
     </div>
 
     <div>
-        <label for="sel_country">Country</label>
+        <label for="sel_country">Country<span>*</span></label>
         <div class="controls">
             <select id="sel_country" name="country" >
                 <option value="">Select</option>
@@ -117,7 +117,7 @@
     </div>
 
     <div>
-        <label for="fld_postcode">Postcode</label>
+        <label for="fld_postcode">Postcode<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_postcode" placeholder="Your Post Code" name="postcode" value="${empty validationMessage.errors['postcode'] ? param.postcode :''}" maxlength="10">
             <c:if test="${not empty validationMessage.errors['postcode']}">
@@ -127,7 +127,7 @@
     </div>
 
     <div>
-        <label for="fld_phoneNumber">Phone Number</label>
+        <label for="fld_phoneNumber">Phone Number<span>*</span></label>
         <div class="controls">
             <input type="text" id="fld_phoneNumber" placeholder="555-123456" name="phoneNumber" value="${empty validationMessage.errors['phoneNumber'] ? param.phoneNumber :''}">
             <c:if test="${not empty validationMessage.errors['phoneNumber']}">

@@ -28,7 +28,7 @@
     <div>
         <label for="fld_password">Password<span>*</span></label>
         <div class="controls">
-            <input type="password" id="fld_password" placeholder="Password" name="password"  value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword']? param.password : ""}">
+            <input type="password" id="fld_password" placeholder="password" name="password"  value="${empty validationMessage.errors['password'] && empty validationMessage.errors['confirmedPassword'] ? param.password : ''}">
             <c:if test="${not empty validationMessage.errors['password']}">
                 <span class="text-error">${validationMessage.errors["password"]}</span>
             </c:if>
@@ -38,7 +38,7 @@
     <div>
         <label for="fld_confirmedPassword">Confirm Password<span>*</span></label>
         <div class="controls">
-            <input type="password" id="fld_confirmedPassword" placeholder="Password" name="confirmedPassword" value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword'] ? param.password : ""}">
+            <input type="password" id="fld_confirmedPassword" placeholder="password" name="confirmedPassword" value="${empty validationMessage.errors['password'] && empty validationMessage.errors['confirmedPassword'] ? param.password : ''}">
             <c:if test="${not empty validationMessage.errors['confirmedPassword']}">
                 <span class="text-error">${validationMessage.errors["confirmedPassword"]}</span>
             </c:if>

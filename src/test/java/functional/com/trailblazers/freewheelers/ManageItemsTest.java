@@ -50,6 +50,12 @@ public class ManageItemsTest extends UserJourneyBase {
                 .shows_error("Please enter positive quantity");
 
         user
+                .creates_an_item(Simplon_Frame, "FRAME", "-2", REALLY_EXPENSIVE, SOME_DESCRIPTION);
+
+        screen
+                .shows_error("Please enter positive quantity");
+
+        user
                 .creates_an_item(ZeroPriceItem, "FRAME", A_LOT, ZERO_VALUE, SOME_DESCRIPTION);
 
         screen

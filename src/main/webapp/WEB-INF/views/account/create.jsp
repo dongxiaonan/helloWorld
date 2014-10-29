@@ -28,29 +28,28 @@
     <div>
         <label for="fld_password">Password<span>*</span></label>
         <div class="controls">
-            <input type="password" id="fld_password" placeholder="secret password" name="password"  value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword']? param.password : ""}">
+            <input type="password" id="fld_password" placeholder="Password" name="password"  value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword']? param.password : ""}">
             <c:if test="${not empty validationMessage.errors['password']}">
                 <span class="text-error">${validationMessage.errors["password"]}</span>
             </c:if>
             </div>
         </div>
 
-    <div class="note">
-        <text>Password needs to be between 8 and 20 characters, and contain at least<br /> 1 number, 1 lowercase letter, 1
-            uppercase letter, and 1 special character.
-        </text>
-    </div>
-
     <div>
         <label for="fld_confirmedPassword">Confirm Password<span>*</span></label>
         <div class="controls">
-            <input type="password" id="fld_confirmedPassword" placeholder="secret password" name="confirmedPassword" value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword'] ? param.password : ""}">
+            <input type="password" id="fld_confirmedPassword" placeholder="Password" name="confirmedPassword" value="${empty validationMessage.errors['password'] || empty validationMessage.errors['confirmedPassword'] ? param.password : ""}">
             <c:if test="${not empty validationMessage.errors['confirmedPassword']}">
                 <span class="text-error">${validationMessage.errors["confirmedPassword"]}</span>
             </c:if>
-            </div>
         </div>
+    </div>
 
+    <div class="note">
+        <text>Password needs to be between 8 and 20 characters, and contain at least 1 number, 1 lowercase letter, 1
+            uppercase letter, and 1 special character.
+        </text>
+    </div>
     <div>
         <label for="fld_name">Name<span>*</span></label>
         <div class="controls">
@@ -129,7 +128,7 @@
     <div>
         <label for="fld_phoneNumber">Phone Number<span>*</span></label>
         <div class="controls">
-            <input type="text" id="fld_phoneNumber" placeholder="1234-5678" name="phoneNumber" value="${empty validationMessage.errors['phoneNumber'] ? param.phoneNumber :''}">
+            <input type="text" id="fld_phoneNumber" placeholder="1234567890" name="phoneNumber" value="${empty validationMessage.errors['phoneNumber'] ? param.phoneNumber :''}">
             <c:if test="${not empty validationMessage.errors['phoneNumber']}">
                 <span class="text-error">${validationMessage.errors["phoneNumber"]}</span>
             </c:if>

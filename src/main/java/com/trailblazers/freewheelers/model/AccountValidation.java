@@ -5,10 +5,10 @@ import java.util.HashMap;
 public class AccountValidation {
     private static final String passwordRequirement = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`]).{8,20}$";
     private static final String emailFormat = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-    public static final String street1Requirement = "^[0-9a-zA-Z\\-\\'\\ ]{1,255}$";
-    public static final String street2Requirement = "^[0-9a-zA-Z\\-\\'\\ ]{0,255}$";
-    public static final String cityRequirment = "^[0-9a-zA-Z\\-\\'\\ ]{1,100}$";
-    public static final String stateProvinceRequirement = "^[0-9a-zA-Z\\-\\'\\ ]{0,100}$";
+    public static final String street1Requirement = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,255}$";
+    public static final String street2Requirement = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,255}$";
+    public static final String cityRequirment = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,100}$";
+    public static final String stateProvinceRequirement = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,100}$";
 
     public static HashMap verifyInputs(Account account) {
         HashMap errors = new HashMap();
@@ -41,7 +41,7 @@ public class AccountValidation {
             errors.put("stateProvince","Must enter a valid state or province!");
         }
 
-        if(!account.getPostcode().matches("^[0-9\\-]{4,10}$")) {
+        if(!account.getPostcode().matches("^[0-9a-zA-Z\\-]{4,10}$")) {
             errors.put("postcode","Must enter a post code!");
         }
 

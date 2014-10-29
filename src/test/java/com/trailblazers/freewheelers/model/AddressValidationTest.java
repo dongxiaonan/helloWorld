@@ -9,7 +9,7 @@ import java.util.HashMap;
 import static com.trailblazers.freewheelers.model.AccountValidation.verifyInputs;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class AddressValidationTest {
 
@@ -74,6 +74,16 @@ public class AddressValidationTest {
     }
 
     @Test
+    public void shouldAcceptStreet1WithCommaDashPeriodApostrophe() throws Exception {
+        String street1 = ",-.'djfiodjsf";
+        account.setStreet1(street1);
+
+        HashMap errors = verifyInputs(account);
+
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
     public void shouldComplainWhenStreet2LengthIsBeyond255() throws Exception {
         char[] chars = new char[256];
         Arrays.fill(chars, 'a');
@@ -93,6 +103,16 @@ public class AddressValidationTest {
         HashMap errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street2", "Enter a valid street", errors);
+    }
+
+    @Test
+    public void shouldAcceptStreet2WithCommaDashPeriodApostrophe() throws Exception {
+        String street2 = ",-.'djfiodjsf";
+        account.setStreet2(street2);
+
+        HashMap errors = verifyInputs(account);
+
+        assertTrue(errors.isEmpty());
     }
 
     @Test
@@ -129,6 +149,16 @@ public class AddressValidationTest {
     }
 
     @Test
+    public void shouldAcceptCityWithCommaDashPeriodApostrophe() throws Exception {
+        String city = ",-.'djfiodjsf";
+        account.setCity(city);
+
+        HashMap errors = verifyInputs(account);
+
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
     public void shouldComplainWhenStateProvinceContainsSpecialCharacter() throws Exception {
         String stateProvince = "aaa22@33aaa";
 
@@ -152,6 +182,16 @@ public class AddressValidationTest {
     }
 
     @Test
+    public void shouldAcceptStateProvinceWithCommaDashPeriodApostrophe() throws Exception {
+        String stateProvince = ",-.'djfiodjsf";
+        account.setState_Province(stateProvince);
+
+        HashMap errors = verifyInputs(account);
+
+        assertTrue(errors.isEmpty());
+    }
+
+    @Test
     public void shouldComplainAboutAnEmptyPostcode() throws Exception {
         String emptyPostcode = "";
 
@@ -171,6 +211,16 @@ public class AddressValidationTest {
         HashMap errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("postcode", "enter a post code", errors);
+    }
+
+    @Test
+    public void shouldAcceptPostcodeWithDashLetterNumber() throws Exception {
+        String postcode = "weWE-12";
+        account.setPostcode(postcode);
+
+        HashMap errors = verifyInputs(account);
+
+        assertTrue(errors.isEmpty());
     }
 
     private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {

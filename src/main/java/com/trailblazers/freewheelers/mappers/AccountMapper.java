@@ -93,5 +93,21 @@ public interface AccountMapper {
     @Options(flushCache = true)
     void delete(Account account);
 
+    @Select(
 
+            "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled " +
+                    "FROM account " +
+                    "WHERE email_address = #{email} "
+    )
+    @Results(value = {
+            @Result(property="account_id"),
+            @Result(property="account_name"),
+            @Result(property="emailAddress", column="email_address"),
+            @Result(property="password"),
+            @Result(property ="country", column="country_id", javaType = Country.class,
+                    one = @One(select = "com.trailblazers.freewheelers.mappers.CountryMapper.getById")),
+            @Result(property="phoneNumber", column="phone_number"),
+            @Result(property="enabled")
+    })
+    Account getByEmail(String email);
 }

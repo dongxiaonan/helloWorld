@@ -12,6 +12,7 @@ public class SyntaxSugar {
     public static final String SOME_INVALID_CONFIRMEDPASSWORD = "WRONG V3ry Secure!";
     public static final String SOME_EMAIL = "somebody@something.de";
     public static final String SOME_INVALID_EMAIL = "someb__ody@something.de";
+    public static final String VERIFICATION_ID = "736f6d65626f647940736f6d657468696e672e6465";
     public static final BigDecimal SOME_PRICE = valueOf(49.99);
     public static final String EMPTY_COUNTRY = "Select";
     public static final String VALID_COUNTRY = "United Kingdom";

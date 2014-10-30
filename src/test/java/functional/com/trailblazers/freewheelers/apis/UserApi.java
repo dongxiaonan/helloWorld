@@ -207,7 +207,7 @@ public class UserApi {
 
     public UserApi tries_to_view_profile_of(String username) {
 
-        driver.get(URLs.userProfile()+"/" + username);
+        driver.get(URLs.userProfile() + "/" + username);
         return this;
 
     }
@@ -234,6 +234,11 @@ public class UserApi {
 
     public UserApi clickClearItemsInShoppingCart() {
         driver.findElement(By.id("clear")).click();
+        return this;
+    }
+
+    public UserApi verifies_email_wih_link(String verificationId) {
+        driver.get(URLs.verifyEmail(verificationId));
         return this;
     }
 }

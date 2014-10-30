@@ -1,25 +1,25 @@
-package com.trailblazers.freewheelers.web;
+package com.trailblazers.freewheelers.service;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class EmailControllerTest {
+public class EmailServiceTest {
     @Test
     public void shouldNotInvokeTransportSendMethod() throws Exception {
-        EmailController expectedEmailController = new EmailController();
-        assertFalse(expectedEmailController.send(null, null, null, null));
+        EmailService expectedEmailService = new EmailService();
+        assertFalse(expectedEmailService.send(null, null, null, null));
     }
 
     @Test
     public void shouldInvokeTransportSendMethod() throws Exception {
-        EmailController expectedEmailController = new EmailController();
+        EmailService expectedEmailService = new EmailService();
         String subject = "Account Validation Email";
         String userName = "testName";
         String userEmail = "test@testtest.com";
         String message = "please validate your account";
 
-        assertTrue(expectedEmailController.send(userName, userEmail, message, subject));
+        assertTrue(expectedEmailService.send(userName, userEmail, message, subject));
     }
 }

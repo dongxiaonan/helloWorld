@@ -13,8 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -94,13 +96,21 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void shouldHaveErrorForKeyEmailWhenCreatingAccountWithExistingEmail(){
+    public void shouldHaveErrorForKeyEmailWhenCreatingAccountWithExistingEmail() {
         PersistenceException persistenceException = new PersistenceException("account_email_address");
         when(accountMapper.insert(any(Account.class))).thenThrow(persistenceException);
 
         ServiceResult<Account> serviceResult = accountService.createAccount(getAccountWithoutErrors());
 
         assertThat(serviceResult.getErrors().get("email"), is("Email address is already being used."));
+    }
+
+    @Test
+    public void shouldGetTheAccountByEmailID() throws Exception {
+
+        accountService.getAccountIdByEmail("some.body@email.com");
+
+        verify(accountMapper,times(1)).getByEmail(eq("some.body@email.com"));
     }
 
     private Account getAccountWithoutErrors() {

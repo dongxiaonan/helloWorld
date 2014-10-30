@@ -1,4 +1,6 @@
-package com.trailblazers.freewheelers.web;
+package com.trailblazers.freewheelers.service;
+
+import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -11,9 +13,10 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EmailController {
+@Service
+public class EmailService {
 
-    public static final Logger logger = Logger.getLogger(EmailController.class.getName());
+    public static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
     public boolean send(String userName, String userEmail, String message, String subject) {
         if (userName == null || userEmail == null || message == null || subject == null) {
@@ -29,7 +32,7 @@ public class EmailController {
             Message msg = createMessage(session, userEmail, userName, message, subject);
             Transport.send(msg);
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Caught Exception while sending an email!", e);
+            logger.log(Level.INFO, "Caught Exception while sending an email!", e);
             return false;
         }
 
@@ -37,11 +40,11 @@ public class EmailController {
     }
 
     private Message createMessage(Session session, String userEmail, String userName, String message, String subject) throws MessagingException, UnsupportedEncodingException {
-        Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("supportteam@freewheelers.com", "FreeWheelers Team")); // TODO: change the email address to a real one
-        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, userName));
-        msg.setSubject(subject);
-        msg.setText(message);
-        return msg;
+        Message mimeMessage = new MimeMessage(session);
+        mimeMessage.setFrom(new InternetAddress("no-reply@freewheelers.com", "FreeWheelers Team"));
+        mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, userName));
+        mimeMessage.setSubject(subject);
+        mimeMessage.setContent(message, "text/html; charset=utf-8");
+        return mimeMessage;
     }
 }

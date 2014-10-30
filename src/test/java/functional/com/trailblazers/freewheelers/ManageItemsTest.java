@@ -26,7 +26,6 @@ public class ManageItemsTest extends UserJourneyBase {
                 .there_is_no_item(New_Simplon_Name)
                 .there_is_no_item(New_Spoke_Name)
                 .there_is_no_item(ZeroPriceItem);
-
         user
                 .logs_in_with(Arno, SOME_PASSWORD)
                 .wants_to_manage_items();

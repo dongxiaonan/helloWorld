@@ -2,12 +2,11 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.AccountValidation;
-import com.trailblazers.freewheelers.service.AccountService;
-import com.trailblazers.freewheelers.service.CountryService;
-import com.trailblazers.freewheelers.service.ServiceResult;
+import com.trailblazers.freewheelers.service.*;
 import com.trailblazers.freewheelers.service.impl.AccountServiceImpl;
 import com.trailblazers.freewheelers.service.impl.CountryServiceImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -18,20 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-
 
 @Controller
 @RequestMapping("/account")
@@ -40,13 +27,18 @@ public class AccountController {
 
     AccountService accountService;
     CountryService countryService;
+    EncryptionService encryptionService;
     private Account account;
     private String confirmedPassword;
+
+    @Autowired
+    protected EmailService emailService;
 
     public AccountController() {
         accountService = new AccountServiceImpl();
         countryService = new CountryServiceImpl();
         this.logger = Logger.getLogger(AccountController.class);
+        encryptionService = new EncryptionService();
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
@@ -70,8 +62,7 @@ public class AccountController {
         String postcode = request.getParameter("postcode");
         String phoneNumber = request.getParameter("phoneNumber");
         confirmedPassword = request.getParameter("confirmedPassword");
-
-        // todo: add a field to store verification status
+        String serverURL = request.getServerName() + ":" + request.getServerPort();
 
         account = new Account()
                 .setEmail_address(email)
@@ -84,7 +75,7 @@ public class AccountController {
                 .setState_Province(stateProvince)
                 .setPostcode(postcode)
                 .setPhoneNumber(phoneNumber)
-                .setEnabled(true);
+                .setEnabled(false);
 
         try {
 
@@ -101,7 +92,7 @@ public class AccountController {
                 return showErrors(result.getErrors());
             }
 
-            // todo: send email to customer
+            sendVerificationEmail(serverURL);
 
             return showSuccess(result.getModel());
         } catch (Exception e) {
@@ -137,7 +128,23 @@ public class AccountController {
         return confirmedPassword != null && confirmedPassword.equals(account.getPassword());
     }
 
-    public void sendVerificationEmail(String userEmailAddress, String userName) {
-        // todo add: do not reply to this email
+    private void sendVerificationEmail(String serverURL) {
+        String verificationID = encryptionService.getStringToHex(account.getEmail_address());
+
+        String subject = "FreeWheelers Account Verification";
+        StringBuilder text = new StringBuilder();
+        text.append("<html><header></header><body>");
+        text.append("Dear ").append(account.getAccount_name()).append(",<br><br>");
+        text.append("This is an auto-generated email to verify your email address. Please do not reply to this email.<br>");
+        text.append("To verify your account please click the link below:<br><br>");
+        text.append("<a href=\"http://").append(serverURL).append("/emailverification?q.=");
+        text.append(verificationID);
+        text.append("\">Click here to verify your email address</a>");
+        text.append("<br><br>Yours,<br>FreeWheelers Team!<br><br>");
+        text.append("<a href=\"").append(serverURL).append("\">");
+        text.append("<img width = \"30px\" src=\"").append(serverURL).append("/images/logo.png\" alt=\"FreeWheeler Logo\"></a>");
+        text.append("</body></html>");
+        emailService.send(account.getAccount_name(), account.getEmail_address(), text.toString(), subject);
     }
+
 }

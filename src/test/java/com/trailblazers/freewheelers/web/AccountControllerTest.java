@@ -2,19 +2,18 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Country;
-import com.trailblazers.freewheelers.service.AccountService;
-import com.trailblazers.freewheelers.service.CountryService;
-import com.trailblazers.freewheelers.service.ServiceResult;
+import com.trailblazers.freewheelers.service.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.Transport;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
@@ -24,11 +23,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import javax.mail.Message;
-
+@RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {
-
-    private AccountController accountController;
 
     @Mock
     private AccountService accountService;
@@ -36,14 +32,11 @@ public class AccountControllerTest {
     @Mock
     private CountryService countryService;
 
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);
+    @Mock
+    private EncryptionService encryptionService;
 
-        accountController = new AccountController();
-        accountController.accountService = accountService;
-        accountController.countryService = countryService;
-    }
+    @InjectMocks
+    private AccountController accountController = new AccountController();
 
     private Account getEmptyUserAccount() {
         return new Account()
@@ -80,8 +73,11 @@ public class AccountControllerTest {
         when(accountService.createAccount(any(Account.class))).thenReturn(success);
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 
-        when(mockRequest.getParameter("password")).thenReturn("somePassword");
-        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
+        EmailService emailMock = mock(EmailService.class);
+        accountController.emailService = emailMock;
+        when(encryptionService.getStringToHex(anyString())).thenReturn("");
+        when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         ModelAndView createView = accountController.processCreate(mockRequest);
 
         ModelMap model = new ModelMap();
@@ -95,10 +91,11 @@ public class AccountControllerTest {
 
     @Test
     public void shouldCreateAnAccountFromTheHttpRequest() throws Exception {
+        Account expectedAccount = getSomeAccount();
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("email@fake.com");
-        when(request.getParameter("password")).thenReturn("password");
-        when(request.getParameter("confirmedPassword")).thenReturn("password");
+        when(request.getParameter("password")).thenReturn("V3rySecure!");
+        when(request.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("street1")).thenReturn("Greenwood Avenue");
@@ -113,20 +110,26 @@ public class AccountControllerTest {
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(accountService).createAccount(captor.capture());
+        Account account= captor.getValue();
 
-        Account account = captor.getValue();
-        assertThat(account.getEmail_address(), is("email@fake.com"));
-        assertThat(account.getPassword(), is("password"));
-        assertThat(account.getAccount_name(), is("john smith"));
-        assertThat(account.getCountry(), is(new Country(1,"United Kingdom")));
-        assertThat(account.getStreet1(), is("Greenwood Avenue"));
-        assertThat(account.getStreet2(), is("Apartment 202"));
-        assertThat(account.getCity(), is("London"));
-        assertThat(account.getState_Province(), is("Somewhere"));
-        assertThat(account.getPostcode(), is("12453"));
-        assertThat(account.getPhoneNumber(), is("123456789"));
-        assertThat(account.isEnabled(), is(true));
-        assertThat(accountController.getConfirmedPassword(), is("password"));
+
+        assertThat(account,is(expectedAccount));
+        assertThat(accountController.getConfirmedPassword(), is("V3rySecure!"));
+    }
+
+    private Account getSomeAccount() {
+        return new Account()
+                .setEmail_address("email@fake.com")
+                .setPassword("V3rySecure!")
+                .setAccount_name("john smith")
+                .setCity("London")
+                .setStreet1("Greenwood Avenue")
+                .setStreet2("Apartment 202")
+                .setCountry(new Country(1,"United Kingdom"))
+                .setState_Province("Somewhere")
+                .setPostcode("12453")
+                .setPhoneNumber("123456789")
+                .setEnabled(false);
     }
 
     @Test
@@ -173,8 +176,8 @@ public class AccountControllerTest {
         ServiceResult<Account> failure = new ServiceResult<Account>(errors, new Account());
         when(accountService.createAccount(any(Account.class))).thenReturn(failure);
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
-        when(mockRequest.getParameter("password")).thenReturn("somePassword");
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
+        when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
 
         ModelAndView createView = accountController.processCreate(mockRequest);
 
@@ -193,8 +196,8 @@ public class AccountControllerTest {
         when(accountService.createAccount(any(Account.class))).thenThrow(new RuntimeException("validation errors"));
 
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
-        when(mockRequest.getParameter("confirmedPassword")).thenReturn("somePassword");
-        when(mockRequest.getParameter("password")).thenReturn("somePassword");
+        when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
+        when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
 
         ModelAndView createView = accountController.processCreate(mockRequest);
 
@@ -205,8 +208,8 @@ public class AccountControllerTest {
     public void shouldRetainTheCorrectDataWhenThereIsSomeError() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("");
-        when(request.getParameter("password")).thenReturn("password");
-        when(request.getParameter("confirmedPassword")).thenReturn("password");
+        when(request.getParameter("password")).thenReturn("V3rySecure!");
+        when(request.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         when(request.getParameter("name")).thenReturn("john smith");
         when(request.getParameter("country")).thenReturn("United Kingdom");
         when(request.getParameter("street1")).thenReturn("Greenwood Avenue");
@@ -223,43 +226,25 @@ public class AccountControllerTest {
         verify(accountService).createAccount(captor.capture());
 
         Account account = captor.getValue();
-        assertThat(account.getEmail_address(), is(""));
-        assertThat(account.getPassword(), is("password"));
-        assertThat(account.getAccount_name(), is("john smith"));
-        assertThat(account.getCountry(),is(new Country(1,"United Kingdom")));
-        assertThat(account.getStreet1(), is("Greenwood Avenue"));
-        assertThat(account.getStreet2(), is("Apartment 202"));
-        assertThat(account.getCity(), is("London"));
-        assertThat(account.getState_Province(), is("Somewhere"));
-        assertThat(account.getPostcode(), is("12453"));
-        assertThat(account.getPhoneNumber(), is("123456789"));
-        assertThat(account.isEnabled(), is(true));
-
+        assertThat(account,is(getSomeAccount().setEmail_address("")));
     }
 
     @Test
     public void shouldSendEmailToCustomerWithRightEmailAddress() throws Exception {
-//        AccountController con = new AccountController();
-//        AccountController.Sender senderMock = mock(AccountController.Sender.class);
-//
-//        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy", senderMock);
-//
-//        verify(senderMock).send(Matchers.<Message>any());
+        ServiceResult<Account> success = new ServiceResult<Account>(new HashMap<String, String>(), getEmptyUserAccount().setAccount_name("john smith"));
+        when(accountService.createAccount(any(Account.class))).thenReturn(success);
+        EmailService emailMock = mock(EmailService.class);
+        accountController.emailService = emailMock;
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getParameter("email")).thenReturn("ssr.957@gmail.com");
+        when(request.getParameter("password")).thenReturn("V3rySecure!");
+        when(request.getParameter("name")).thenReturn("Sammy");
+        when(request.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
 
-        AccountController con = new AccountController();
-        Transport transport = mock(Transport.class);
+        accountController.processCreate(request);
 
-        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy");
-// todo
-        verify(transport).send(Matchers.<Message>any());
+        verify(emailMock, times(1)).send(eq("Sammy"),eq("ssr.957@gmail.com"),anyString(),eq("FreeWheelers Account Verification"));
     }
 
-    @Test
-    public void should() throws Exception { // todo: delete!
-        AccountController con = new AccountController();
-
-        con.sendVerificationEmail("fschloss@thoughtworks.com", "sammy");
-        // todo
-    }
 
 }

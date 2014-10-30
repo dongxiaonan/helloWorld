@@ -138,11 +138,17 @@ public class Account {
         if (account_id != null ? !account_id.equals(account.account_id) : account.account_id != null) return false;
         if (account_name != null ? !account_name.equals(account.account_name) : account.account_name != null)
             return false;
+        if (city != null ? !city.equals(account.city) : account.city != null) return false;
         if (country != null ? !country.equals(account.country) : account.country != null) return false;
         if (emailAddress != null ? !emailAddress.equals(account.emailAddress) : account.emailAddress != null)
             return false;
         if (password != null ? !password.equals(account.password) : account.password != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(account.phoneNumber) : account.phoneNumber != null) return false;
+        if (postcode != null ? !postcode.equals(account.postcode) : account.postcode != null) return false;
+        if (stateProvince != null ? !stateProvince.equals(account.stateProvince) : account.stateProvince != null)
+            return false;
+        if (street1 != null ? !street1.equals(account.street1) : account.street1 != null) return false;
+        if (street2 != null ? !street2.equals(account.street2) : account.street2 != null) return false;
 
         return true;
     }
@@ -156,6 +162,11 @@ public class Account {
         result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (street1 != null ? street1.hashCode() : 0);
+        result = 31 * result + (street2 != null ? street2.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (stateProvince != null ? stateProvince.hashCode() : 0);
+        result = 31 * result + (postcode != null ? postcode.hashCode() : 0);
         return result;
     }
 }

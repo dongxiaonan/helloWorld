@@ -29,19 +29,7 @@ public class AccountTest extends UserJourneyBase {
                 .shows_error_alert("There were errors");
 
         user
-                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, EMPTY_COUNTRY, EMPTY_PASSWORD, SOME_CONFIRMEDPASSWORD);
-
-        screen
-                .shows_error_alert("There were errors");
-
-        user
                 .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_INVALID_CONFIRMEDPASSWORD);
-
-        screen
-                .shows_error_alert("There were errors");
-
-        user
-                .creates_an_account(jan, SOME_INVALID_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
 
         screen
                 .shows_error_alert("There were errors");
@@ -59,9 +47,16 @@ public class AccountTest extends UserJourneyBase {
         user
                 .is_logged_out()
                 .logs_in_with(jan, SOME_PASSWORD);
-
         screen
-                .shows_in_navbar("Welcome " + jan);
+                .shows_error_alert("Your login attempt was not successful, try again.");
+        user
+                .verifies_email_wih_link(VERIFICATION_ID);
+        screen
+                .shows_message("Thank you for verifying your email address!");
+        user
+                .logs_in_with(jan,SOME_PASSWORD);
+        screen
+                .shows_profile_for(jan);
     }
 
     @Test

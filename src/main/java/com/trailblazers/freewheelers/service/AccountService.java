@@ -22,4 +22,8 @@ public interface AccountService {
     ServiceResult<Account> createAccount(Account account);
 
     AccountRole getAccountRoleByName(String admin);
+
+    void updateAccount(Account account);
+
+    Account getAccountIdByEmail(String emailAddress);
 }

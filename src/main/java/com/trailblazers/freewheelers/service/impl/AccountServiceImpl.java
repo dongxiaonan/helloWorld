@@ -85,6 +85,17 @@ public class AccountServiceImpl implements AccountService {
         return accountRoleMapper.getRoleByAccountName(userName);
     }
 
+    @Override
+    public void updateAccount(Account account) {
+        accountMapper.update(account);
+        sqlSession.commit();
+    }
+
+    @Override
+    public Account getAccountIdByEmail(String emailAddress) {
+        return accountMapper.getByEmail(emailAddress);
+    }
+
     private void create(Account account, String role) {
         accountMapper.insert(account);
         accountRoleMapper.insert(roleFor(account, role));

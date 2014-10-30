@@ -10,7 +10,15 @@
     <orderEntry type="library" name="main" level="project" />
     <orderEntry type="library" name="test" level="project" />
     <orderEntry type="module" module-name="main" />
-    <orderEntry type="library" name="javax.mail:mail:1.4.4" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../lib/main/mail-1.4.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

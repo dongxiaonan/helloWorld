@@ -31,4 +31,8 @@ public class URLs {
     public static String shoppingCart() {
         return BASE + "/shoppingCart";
     }
+
+    public static String verifyEmail(String verificationId) {
+        return BASE + "/emailverification?q=" + verificationId;
+    }
 }

@@ -136,7 +136,7 @@ public class AccountTest extends UserJourneyBase {
 
 
     @Test
-    public void shouldDisplayTheCountryOfUserWhenUserProfileIsClicked() throws Exception {
+    public void shouldDisplayTheAddressOfUserWhenUserProfileIsClicked() throws Exception {
         String jan = "Jan Plewka";
 
         admin
@@ -148,11 +148,12 @@ public class AccountTest extends UserJourneyBase {
 
         screen
                 .shows_profile_for(jan)
-                .should_show_country();
+                .shouldShowAddressTitleInUserProfile()
+                .shouldShowAddressOfTheUser();
     }
 
     @Test
-    public void shouldDisplayTheCountryOfAdminWhenAdminProfileIsClicked() throws Exception {
+    public void shouldDisplayTheAddressOfAdminWhenAdminProfileIsClicked() throws Exception {
         String Arno = "Arno Admin";
 
         admin
@@ -164,7 +165,8 @@ public class AccountTest extends UserJourneyBase {
 
         screen
                 .shows_profile_for(Arno)
-                .should_show_country();
+                .shouldShowAddressTitleInUserProfile()
+                .shouldShowAddressOfTheUser();
     }
 
     @Test

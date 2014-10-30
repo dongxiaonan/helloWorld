@@ -5,12 +5,8 @@
 <div class="page-action">Your details</div>
         <div id="user-details" >
             <span class="user-name">${userDetail.account_name}</span> - <span class="email-address">${userDetail.email_address}</span><br />
-            <span class="street1">Street1 : ${userDetail.street1}</span><br />
-            <span class="street2">Street2 : ${userDetail.street2}</span><br />
-            <span class="city">City : ${userDetail.city}</span><br />
-            <span class="state-province">State/Province : ${userDetail.state_Province}</span><br />
-            <span class="country">Country : ${userDetail.country.name}</span><br />
-            <span class="post-code">Post Code : ${userDetail.postcode}</span><br />
+            <span class="user-address-title">Address:</span><br/>
+            <span class="user-address">${address} </span><br />
             <span class="phone-number">Phone Number : ${userDetail.phoneNumber}</span>
         </div>
 

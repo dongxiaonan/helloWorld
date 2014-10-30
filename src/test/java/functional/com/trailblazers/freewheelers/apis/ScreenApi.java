@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -136,6 +137,19 @@ public class ScreenApi {
 
     public ScreenApi shouldGoToHomePage() {
         assertThat(driver.getCurrentUrl(), is(URLs.home()));
+        return this;
+    }
+
+    public ScreenApi shouldShowAddressTitleInUserProfile(){
+        assertThat(driver.findElement(By.className("user-address-title")).getText(), is("Address:"));
+        return this;
+    }
+
+    public ScreenApi shouldShowAddressOfTheUser() {
+        assertThat(driver.findElement(By.className("user-address")).getText(), containsString(SOME_STREET));
+        assertThat(driver.findElement(By.className("user-address")).getText(), containsString(SOME_CITY));
+        assertThat(driver.findElement(By.className("user-address")).getText(), containsString(VALID_COUNTRY));
+        assertThat(driver.findElement(By.className("user-address")).getText(), containsString(SOME_POSTCODE));
         return this;
     }
 }

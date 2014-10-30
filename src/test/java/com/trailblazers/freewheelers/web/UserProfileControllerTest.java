@@ -89,4 +89,16 @@ public class UserProfileControllerTest {
         assertThat(returnedView, is("userProfile"));
     }
 
+    @Test
+    public void shouldReturnAddressInModelWhenShowingUserProfile(){
+        AccountRole adminRole = new AccountRole().setRole("ROLE_ADMIN");
+        when(accountService.getAccountByName("user")).thenReturn(userAccount);
+        when(accountService.getAccountRoleByName("admin")).thenReturn(adminRole);
+        Principal principal = new PrincipalImpl("admin");
+
+        userProfileController.get("user", model, principal);
+
+        verify(model).addAttribute("address", userAccount.getAddress().replaceAll("\\n", "<br />"));
+    }
+
 }

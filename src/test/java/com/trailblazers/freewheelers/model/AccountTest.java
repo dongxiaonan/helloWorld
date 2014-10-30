@@ -32,4 +32,68 @@ public class AccountTest {
         assertThat(account.getPostcode(), is("12453"));
         assertThat(account.getPhoneNumber(), is("123443245"));
     }
+
+    @Test
+    public void shouldReturnFormattedAddressAsStringWithAStateGiven(){
+        String expectedAddress = "Street 1\nStreet 2\nCity, State, Postcode\nCountry";
+        Account account = new Account()
+                                .setStreet1("Street 1")
+                                .setStreet2("Street 2")
+                                .setCity("City")
+                                .setState_Province("State")
+                                .setPostcode("Postcode")
+                                .setCountry(new Country(1,"Country"));
+
+        String actualAddress = account.getAddress();
+
+        assertThat(actualAddress, is(expectedAddress));
+    }
+
+    @Test
+    public void shouldReturnFormattedAddressAsStringWithoutStateGiven(){
+        String expectedAddress = "Street 1\nStreet 2\nCity, Postcode\nCountry";
+        Account account = new Account()
+                .setStreet1("Street 1")
+                .setStreet2("Street 2")
+                .setCity("City")
+                .setPostcode("Postcode")
+                .setState_Province("")
+                .setCountry(new Country(1,"Country"));
+
+        String actualAddress = account.getAddress();
+
+        assertThat(actualAddress, is(expectedAddress));
+    }
+
+
+    @Test
+     public void shouldReturnFormattedAddressAsStringWithoutStreet2Given(){
+        String expectedAddress = "Street 1\nCity, State, Postcode\nCountry";
+        Account account = new Account()
+                .setStreet1("Street 1")
+                .setStreet2("")
+                .setCity("City")
+                .setPostcode("Postcode")
+                .setState_Province("State")
+                .setCountry(new Country(1,"Country"));
+
+        String actualAddress = account.getAddress();
+
+        assertThat(actualAddress, is(expectedAddress));
+    }
+
+    @Test
+    public void shouldReturnEmptyStringWhenTheAddressIsNotGiven(){
+        Account account = new Account()
+                .setStreet1("")
+                .setStreet2("")
+                .setCity("")
+                .setPostcode("")
+                .setState_Province("")
+                .setCountry(null);
+
+        String actualAddress = account.getAddress();
+
+        assertThat(actualAddress, is(""));
+    }
 }

@@ -51,6 +51,7 @@ public class UserProfileController {
 
         model.addAttribute("items", items);
         model.addAttribute("userDetail", account);
+        model.addAttribute("address", account.getAddress().replaceAll("\\n", "<br/>"));
 
         return "userProfile";
     }

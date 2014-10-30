@@ -141,8 +141,8 @@ public class AccountController {
         text.append(verificationID);
         text.append("\">Click here to verify your email address</a>");
         text.append("<br><br>Yours,<br>FreeWheelers Team!<br><br>");
-        text.append("<a href=\"").append(serverURL).append("\">");
-        text.append("<img width = \"30px\" src=\"").append(serverURL).append("/images/logo.png\" alt=\"FreeWheeler Logo\"></a>");
+        text.append("<a href=\"http://").append(serverURL).append("\" style=\"text-decoration:none;\">");
+        text.append("<img width = \"30px\" src=\"cid:image\" alt=\"FreeWheeler Logo\"><h1 style=\"display:inline; font-size:35px; color:#1485E5;\">FreeWheelers</h1></a>");
         text.append("</body></html>");
         emailService.send(account.getAccount_name(), account.getEmail_address(), text.toString(), subject);
     }

@@ -2,12 +2,14 @@ package com.trailblazers.freewheelers.service;
 
 import org.springframework.stereotype.Service;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -44,7 +46,23 @@ public class EmailService {
         mimeMessage.setFrom(new InternetAddress("no-reply@freewheelers.com", "FreeWheelers Team"));
         mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail, userName));
         mimeMessage.setSubject(subject);
-        mimeMessage.setContent(message, "text/html; charset=utf-8");
+
+        MimeMultipart messageParts = new MimeMultipart("related");
+
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setContent(message,"text/html");
+
+        messageParts.addBodyPart(messageBodyPart);
+
+        messageBodyPart = new MimeBodyPart();
+        DataSource fileDataSource = new FileDataSource("src/main/webapp/images/logo.png");
+        messageBodyPart.setDataHandler(new DataHandler(fileDataSource));
+        messageBodyPart.setHeader("Content-ID","<image>");
+
+        messageParts.addBodyPart(messageBodyPart);
+
+        mimeMessage.setContent(messageParts);
+
         return mimeMessage;
     }
 }

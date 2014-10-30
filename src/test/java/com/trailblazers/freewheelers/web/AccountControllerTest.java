@@ -3,7 +3,6 @@ package com.trailblazers.freewheelers.web;
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.*;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -21,7 +20,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest {

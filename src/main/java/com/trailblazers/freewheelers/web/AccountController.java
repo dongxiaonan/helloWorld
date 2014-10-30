@@ -137,7 +137,7 @@ public class AccountController {
         text.append("Dear ").append(account.getAccount_name()).append(",<br><br>");
         text.append("This is an auto-generated email to verify your email address. Please do not reply to this email.<br>");
         text.append("To verify your account please click the link below:<br><br>");
-        text.append("<a href=\"http://").append(serverURL).append("/emailverification?q.=");
+        text.append("<a href=\"http://").append(serverURL).append("/emailverification?q=");
         text.append(verificationID);
         text.append("\">Click here to verify your email address</a>");
         text.append("<br><br>Yours,<br>FreeWheelers Team!<br><br>");

@@ -88,6 +88,11 @@ public class ItemServiceImpl implements ItemService {
         return new ServiceResult<Item>(errors, item);
     }
 
+    @Override
+    public int checkItemsQuantityIsMoreThanZero(long itemId) {
+        return 0;
+    }
+
     private void insertOrUpdate(Item item) {
         if (item.getItemId() == null) {
             itemMapper.insert(item);

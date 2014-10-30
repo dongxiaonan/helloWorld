@@ -62,12 +62,15 @@ public class ShoppingCartController {
 
         ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow );
 
-        reserveOrderService.save(reserveOrder);
-        itemService.decreaseQuantityByOne(itemToReserve);
+        if(itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())>0) {
+            reserveOrderService.save(reserveOrder);
+            itemService.decreaseQuantityByOne(itemToReserve);
+            model.addAttribute("item", itemToReserve);
+        } else {
+            model.addAttribute("error", "The item is not available");
+        }
 
         request.getSession().setAttribute(sessionItem, null);
-
-        model.addAttribute("item", itemToReserve);
     }
 
     @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)

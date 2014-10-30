@@ -6,6 +6,8 @@ import com.trailblazers.freewheelers.model.ReserveOrder;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
+import org.eclipse.jetty.server.session.HashedSession;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -102,6 +104,33 @@ public class ShoppingCartControllerTest {
 
         assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is(nullValue()));
         assertEquals(redirect, "redirect:/");
+    }
 
+    @Test
+    public void shouldCheckIfItemIsAvailableBeforeSavingOrder() {
+        Item item = new Item().setItemId(2l);
+        when(accountService.getAccountByName(anyString())).thenReturn(new Account());
+        when(itemService.getById(2l)).thenReturn(new Item());
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getSession()).thenReturn(new MockHttpSession());
+
+        shoppingCartController.checkoutItem(mock(Model.class), mock(Principal.class), item, request);
+
+        verify(itemService).checkItemsQuantityIsMoreThanZero(2l);
+    }
+
+    @Test
+    public void shouldReturnAErrorMessageWhenTheItemHaveLessThenZeroQuantity() {
+        Item item = new Item().setItemId(2l);
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getSession()).thenReturn(new MockHttpSession());
+        when(accountService.getAccountByName(anyString())).thenReturn(new Account());
+        when(itemService.getById(2l)).thenReturn(new Item());
+        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(0);
+
+        shoppingCartController.checkoutItem(expectedModelMap, mock(Principal.class), item, request);
+
+        assertThat((String) expectedModelMap.asMap().get("error"), is("The item is not available"));
     }
 }

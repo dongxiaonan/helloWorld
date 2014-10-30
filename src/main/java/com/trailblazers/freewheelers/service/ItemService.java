@@ -24,4 +24,6 @@ public interface ItemService {
     void decreaseQuantityByOne(Item item);
 
     ServiceResult<Item> saveItem(Item item);
+
+    int checkItemsQuantityIsMoreThanZero(long itemId);
 }

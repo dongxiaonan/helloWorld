@@ -3,6 +3,7 @@ package integration.com.trailblazers.freewheelers.persistence;
 import com.trailblazers.freewheelers.mappers.AccountMapper;
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Country;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -87,7 +88,15 @@ public class AccountMapperTest extends MapperTestBase {
 
         assertThat(fetched, is(nullValue()));
     }
-    
+
+    @Test(expected = PersistenceException.class)
+    public void shouldRaiseExceptionWhenInsertingTwoAccountsWhenTheSameEmailAddress(){
+        Account anAccount = someAccount();
+        accountMapper.insert(anAccount);
+
+        accountMapper.insert(anAccount);
+    }
+
     private Account someAccount() {
         return new Account()
                 .setAccount_name("Some Body")

@@ -8,6 +8,7 @@ import com.trailblazers.freewheelers.model.AccountRole;
 import com.trailblazers.freewheelers.model.AccountValidation;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ServiceResult;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
@@ -61,11 +62,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public ServiceResult<Account> createAccount(Account account) {
+    public ServiceResult<Account> createAccount(Account account){
         HashMap errors = AccountValidation.verifyInputs(account);
 
         if(errors.isEmpty()) {
-            create(account, USER);
+            try {
+                create(account, USER);
+            }catch (PersistenceException e){
+                sqlSession.rollback();
+               if( e.getMessage().contains("email")){
+                   errors.put("email", "Email address is already being used.");
+               }
+            }
         }
 
         return new ServiceResult(errors, account);

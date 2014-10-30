@@ -7,6 +7,7 @@ import com.trailblazers.freewheelers.model.AccountRole;
 import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ServiceResult;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,6 +91,16 @@ public class AccountServiceImplTest {
         AccountRole accountRole = accountService.getAccountRoleByName("Some Name");
 
         assertThat(accountRole, is(expectedAccountRole));
+    }
+
+    @Test
+    public void shouldHaveErrorForKeyEmailWhenCreatingAccountWithExistingEmail(){
+        PersistenceException persistenceException = new PersistenceException("account_email_address");
+        when(accountMapper.insert(any(Account.class))).thenThrow(persistenceException);
+
+        ServiceResult<Account> serviceResult = accountService.createAccount(getAccountWithoutErrors());
+
+        assertThat(serviceResult.getErrors().get("email"), is("Email address is already being used."));
     }
 
     private Account getAccountWithoutErrors() {

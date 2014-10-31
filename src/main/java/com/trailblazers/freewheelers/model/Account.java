@@ -174,7 +174,7 @@ public class Account {
         if(country == null) return "";
         String anAddress = street1;
         anAddress = anAddress.concat(street2.isEmpty()? "":"\n" + street2);
-        anAddress = anAddress.concat("\n" + city + ", " + (stateProvince.isEmpty()?"": stateProvince + ", " )+ postcode);
+        anAddress = anAddress.concat("\n" + city + (stateProvince.isEmpty()?"":  ", " + stateProvince) + " " + postcode);
         return anAddress.concat("\n" + country.getName());
     }
 }

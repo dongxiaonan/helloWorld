@@ -35,7 +35,7 @@ public class AccountTest {
 
     @Test
     public void shouldReturnFormattedAddressAsStringWithAStateGiven(){
-        String expectedAddress = "Street 1\nStreet 2\nCity, State, Postcode\nCountry";
+        String expectedAddress = "Street 1\nStreet 2\nCity, State Postcode\nCountry";
         Account account = new Account()
                                 .setStreet1("Street 1")
                                 .setStreet2("Street 2")
@@ -51,7 +51,7 @@ public class AccountTest {
 
     @Test
     public void shouldReturnFormattedAddressAsStringWithoutStateGiven(){
-        String expectedAddress = "Street 1\nStreet 2\nCity, Postcode\nCountry";
+        String expectedAddress = "Street 1\nStreet 2\nCity Postcode\nCountry";
         Account account = new Account()
                 .setStreet1("Street 1")
                 .setStreet2("Street 2")
@@ -68,7 +68,7 @@ public class AccountTest {
 
     @Test
      public void shouldReturnFormattedAddressAsStringWithoutStreet2Given(){
-        String expectedAddress = "Street 1\nCity, State, Postcode\nCountry";
+        String expectedAddress = "Street 1\nCity, State Postcode\nCountry";
         Account account = new Account()
                 .setStreet1("Street 1")
                 .setStreet2("")

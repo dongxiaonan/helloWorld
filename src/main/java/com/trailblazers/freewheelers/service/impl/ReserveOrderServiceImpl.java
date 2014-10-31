@@ -11,14 +11,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReserveOrderServiceImpl implements ReserveOrderService{
+public class ReserveOrderServiceImpl implements ReserveOrderService {
 
-    SqlSession sqlSession;
-    ReserveOrderMapper orderMapper;
+    private final SqlSession sqlSession;
+    private final ReserveOrderMapper orderMapper;
 
     public ReserveOrderServiceImpl() {
         sqlSession = MyBatisUtil.getSqlSessionFactory().openSession();
         orderMapper = sqlSession.getMapper(ReserveOrderMapper.class);
+    }
+
+    public ReserveOrderServiceImpl(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+        this.orderMapper = sqlSession.getMapper(ReserveOrderMapper.class);
     }
 
     public void save(ReserveOrder reserveOrder) {

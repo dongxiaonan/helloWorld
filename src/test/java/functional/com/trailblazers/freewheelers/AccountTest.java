@@ -56,7 +56,7 @@ public class AccountTest extends UserJourneyBase {
         user
                 .logs_in_with(jan,SOME_PASSWORD);
         screen
-                .shows_profile_for(jan);
+                .shouldGoToHomePage();
     }
 
     @Test

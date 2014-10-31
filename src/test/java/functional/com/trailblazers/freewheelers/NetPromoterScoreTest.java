@@ -62,7 +62,7 @@ public class NetPromoterScoreTest extends UserJourneyBase {
         //unauthorised user
         user.logs_in_with(username, password);
         screen
-                .should_show_access_denied()
+                .shouldGoToHomePage()
                 .should_not_contain_nps_report_link_in_header();
 
         //show survey report

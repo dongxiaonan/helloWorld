@@ -54,7 +54,6 @@ public class AccountValidationTest {
         invalidEmails.add("invalid.email.address");
         invalidEmails.add("inva|id@email.com");
         invalidEmails.add("invalid@emai|.com");
-        invalidEmails.add("2invalid@email.com");
         invalidEmails.add("invalid__a@email.com");
         invalidEmails.add("invalid_@email.com");
         invalidEmails.add("invalid@email-.com");
@@ -80,6 +79,7 @@ public class AccountValidationTest {
         validEmails.add("valid+a@email.com");
         validEmails.add("valid@e-mail.com");
         validEmails.add("valid@9mail9.com");
+        validEmails.add("12valid@9mail9.com");
 
         for(String validEmail:validEmails) {
             account.setEmail_address(validEmail);

@@ -13,6 +13,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -74,6 +76,18 @@ public class ItemServiceImplTest {
         List<Item> returnedItems = itemService.getItemsWithNonZeroQuantity();
         verify(itemMapper).findAvailable();
         assertThat(returnedItems, is(expectedItems));
+    }
+
+    @Test
+    public void shouldReturnTheItemQuantity() {
+        Long itemId = 1L;
+        long expectedQuantity = 2;
+        when(itemMapper.getById(itemId)).thenReturn(new Item().setQuantity(expectedQuantity));
+
+        long returnedQuantity = itemService.checkItemsQuantityIsMoreThanZero(itemId);
+
+        verify(itemMapper, times(1)).getById(itemId);
+        assertThat(returnedQuantity, is(expectedQuantity));
     }
 
 }

@@ -2,7 +2,12 @@
 <c:set var="pageTitle" scope="request" value="Shopping Cart"/>
 <%@ include file="../header.jsp" %>
 
-<div class="page-action">My Shopping Cart</div>
+    <div class="page-action">My Shopping Cart</div>
+
+<c:if test="${not empty quantityErrorMessage}">
+    <div id="resultMessage" class="page-action error"> ${quantityErrorMessage} </div>
+</c:if>
+
 <div class="controls">
     <c:if test="${empty sessionItem}">
         <td>You have no items in your shopping cart</td>
@@ -55,7 +60,7 @@
 <table>
     <tr>
         <td>
-            <form:form action="/shoppingCart/confirmation" method="post" modelAttribute="item">
+            <form:form action="/shoppingCart/checkout" method="post" modelAttribute="item">
                 <c:if test="${not empty item}">
                     <form:hidden path="itemId" value="${sessionItem.itemId}"/>
                 </c:if>

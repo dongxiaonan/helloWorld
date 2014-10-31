@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class ReserveOrderServiceImpl implements ReserveOrderService{
 
-    private final SqlSession sqlSession;
-    private final ReserveOrderMapper orderMapper;
+    SqlSession sqlSession;
+    ReserveOrderMapper orderMapper;
 
     public ReserveOrderServiceImpl() {
         sqlSession = MyBatisUtil.getSqlSessionFactory().openSession();
@@ -49,5 +49,11 @@ public class ReserveOrderServiceImpl implements ReserveOrderService{
         orderMapper.save(order);
         sqlSession.commit();
     }
+
+    @Override
+    public ReserveOrder getOrderById(Long orderId) {
+        return orderMapper.get(orderId);
+    }
+
 
 }

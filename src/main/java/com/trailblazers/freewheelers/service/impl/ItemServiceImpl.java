@@ -89,8 +89,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public int checkItemsQuantityIsMoreThanZero(long itemId) {
-        return 0;
+    public long checkItemsQuantityIsMoreThanZero(long itemId) {
+        return itemMapper.getById(itemId).getQuantity();
     }
 
     private void insertOrUpdate(Item item) {

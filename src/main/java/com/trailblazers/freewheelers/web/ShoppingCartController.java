@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,15 +37,7 @@ public class ShoppingCartController {
     final String sessionItem = "sessionItem";
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.GET)
-    public void get(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if(session.getAttribute(sessionItem) != null)
-            model.addAttribute("item", request.getSession().getAttribute(sessionItem));
-    }
-
-    @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
     public void reserveItem(Model model, @ModelAttribute Item item, HttpServletRequest request){
-
         Item itemToCheckout =  itemService.getById(item.getItemId());
 
         if(itemToCheckout != null)
@@ -53,8 +46,16 @@ public class ShoppingCartController {
         model.addAttribute("item", itemToCheckout);
     }
 
-    @RequestMapping(value = {"/confirmation"}, method = RequestMethod.POST, params = "checkout=Checkout")
-    public void checkoutItem(Model model, Principal principal, @ModelAttribute Item item, HttpServletRequest request) {
+    @RequestMapping(value = {"/confirmation/{orderId:.*}"}, method = RequestMethod.GET)
+    public String confirmation(Model model, @PathVariable long orderId) {
+        ReserveOrder reserveOrder = reserveOrderService.getOrderById(orderId);
+        Item item = itemService.getById(reserveOrder.getItem_id());
+        model.addAttribute("item", item);
+        return "/shoppingCart/confirmation";
+    }
+
+    @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
+    public String checkoutItem(Model model, Principal principal, @ModelAttribute Item item, HttpServletRequest request) {
         Item itemToReserve =  itemService.getById(item.getItemId());
         String userName = principal.getName();
         Account account =  accountService.getAccountByName(userName);
@@ -67,10 +68,15 @@ public class ShoppingCartController {
             itemService.decreaseQuantityByOne(itemToReserve);
             model.addAttribute("item", itemToReserve);
         } else {
-            model.addAttribute("error", "The item is not available");
+            model.addAttribute("quantityErrorMessage", "Sorry, item is no longer available.");
+            model.addAttribute("item", itemToReserve);
+            request.getSession().setAttribute(sessionItem, null);
+
+            return "/shoppingCart/myShoppingCart";
         }
 
         request.getSession().setAttribute(sessionItem, null);
+        return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
     }
 
     @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)

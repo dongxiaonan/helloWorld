@@ -66,21 +66,19 @@ public class ShoppingCartControllerTest {
         Model model = mock(Model.class);
         Principal principle = new PrincipalImpl("UserCat");
         Item item = new Item();
-        item.setItemId(739L);
+        item.setItemId(739l);
+        item.setQuantity(2l);
         Account account = new Account();
-        account.setAccount_id(2L);
-        ReserveOrder reserveOrder = new ReserveOrder(2L, 739L, new Date());
-
+        account.setAccount_id(2l);
+        ReserveOrder reserveOrder = new ReserveOrder(2l, 739l, new Date());
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
         HttpSession httpSession = new MockHttpSession();
         HttpSession spy = spy(httpSession);
         spy.setAttribute("sessionItem", item);
-
         when(httpServletRequest.getSession()).thenReturn(spy);
-
-        when(itemService.getById(739L)).thenReturn(item);
+        when(itemService.getById(739l)).thenReturn(item);
         when(accountService.getAccountByName("UserCat")).thenReturn(account);
-
+        when(itemService.checkItemsQuantityIsMoreThanZero(739l)).thenReturn(2l);
 
         shoppingCartController.checkoutItem(model, principle, item, httpServletRequest);
 
@@ -127,10 +125,11 @@ public class ShoppingCartControllerTest {
         when(request.getSession()).thenReturn(new MockHttpSession());
         when(accountService.getAccountByName(anyString())).thenReturn(new Account());
         when(itemService.getById(2l)).thenReturn(new Item());
-        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(0);
+        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(0l);
 
         shoppingCartController.checkoutItem(expectedModelMap, mock(Principal.class), item, request);
 
-        assertThat((String) expectedModelMap.asMap().get("error"), is("The item is not available"));
+        assertThat((String) expectedModelMap.asMap().get("quantityErrorMessage"), is("Sorry, item is no longer available."));
     }
+
 }

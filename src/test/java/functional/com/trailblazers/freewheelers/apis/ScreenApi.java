@@ -131,7 +131,7 @@ public class ScreenApi {
     }
 
     public ScreenApi should_visit_confirmation_page() {
-        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/confirmation"));
+        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/checkout"));
         return this;
     }
 

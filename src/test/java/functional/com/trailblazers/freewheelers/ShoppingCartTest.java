@@ -71,4 +71,5 @@ public class ShoppingCartTest extends UserJourneyBase{
                 .should_not_list_item_in_shopping_cart(Simplon_Frame);
 
     }
+
 }

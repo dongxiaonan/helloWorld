@@ -37,13 +37,25 @@ public class ShoppingCartController {
     final String sessionItem = "sessionItem";
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.GET)
-    public void reserveItem(Model model, @ModelAttribute Item item, HttpServletRequest request){
+    public void showShoppingCart(Model model,@ModelAttribute Item item, HttpServletRequest request) {
+        Item itemToCheckout =  itemService.getById(item.getItemId());
+
+        if(itemToCheckout == null) {
+            itemToCheckout = (Item) request.getSession().getAttribute(sessionItem);
+        }
+
+        model.addAttribute("item", itemToCheckout);
+    }
+
+    @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
+    public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request){
         Item itemToCheckout =  itemService.getById(item.getItemId());
 
         if(itemToCheckout != null)
             request.getSession().setAttribute(sessionItem, itemToCheckout);
 
         model.addAttribute("item", itemToCheckout);
+        return "redirect:/?q=t";
     }
 
     @RequestMapping(value = {"/confirmation/{orderId:.*}"}, method = RequestMethod.GET)
@@ -55,28 +67,27 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
-    public String checkoutItem(Model model, Principal principal, @ModelAttribute Item item, HttpServletRequest request) {
+    public String checkoutItem(Model model, Principal principal, @ModelAttribute("item") Item item, HttpServletRequest request) {
         Item itemToReserve =  itemService.getById(item.getItemId());
         String userName = principal.getName();
         Account account =  accountService.getAccountByName(userName);
         Date rightNow = new Date();
 
-        ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow );
 
-        if(itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())>0) {
+        if(itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())) {
+            ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow );
             reserveOrderService.save(reserveOrder);
             itemService.decreaseQuantityByOne(itemToReserve);
             model.addAttribute("item", itemToReserve);
+            request.getSession().setAttribute(sessionItem, null);
+            return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
         } else {
             model.addAttribute("quantityErrorMessage", "Sorry, item is no longer available.");
             model.addAttribute("item", itemToReserve);
             request.getSession().setAttribute(sessionItem, null);
-
             return "/shoppingCart/myShoppingCart";
         }
 
-        request.getSession().setAttribute(sessionItem, null);
-        return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
     }
 
     @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)

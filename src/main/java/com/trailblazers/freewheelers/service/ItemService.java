@@ -25,5 +25,5 @@ public interface ItemService {
 
     ServiceResult<Item> saveItem(Item item);
 
-    long checkItemsQuantityIsMoreThanZero(long itemId);
+    boolean checkItemsQuantityIsMoreThanZero(long itemId);
 }

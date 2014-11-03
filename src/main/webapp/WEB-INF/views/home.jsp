@@ -2,6 +2,9 @@
 <c:set var="pageTitle" scope="request" value="Home"/>
 <%@ include file="header.jsp" %>
 
+<c:if test="${not empty successMessage}">
+    <div id="resultMessage" class="page-action success"> ${successMessage} </div>
+</c:if>
 <table>
     <thead>
     <tr>
@@ -22,7 +25,7 @@
             <td><c:out value="${item.type}"/></td>
             <td><c:out value="${item.quantity}"/></td>
             <td>
-                <form:form action="/shoppingCart/myShoppingCart" method="get" modelAttribute="item">
+                <form:form action="/shoppingCart/myShoppingCart" method="post" modelAttribute="item">
                     <form:hidden path="itemId" value="${item.itemId}"/>
                     <button class="addToCart-button" type="submit" name="addToCart" id="addToCart" value="Add To Cart">
                         Add To Cart

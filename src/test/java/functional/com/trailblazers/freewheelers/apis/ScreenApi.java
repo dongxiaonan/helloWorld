@@ -131,7 +131,7 @@ public class ScreenApi {
     }
 
     public ScreenApi should_visit_confirmation_page() {
-        assertThat(driver.getCurrentUrl(), is(URLs.shoppingCart() + "/checkout"));
+        assertThat(driver.getCurrentUrl(), containsString(URLs.shoppingCart() + "/confirmation"));
         return this;
     }
 
@@ -150,6 +150,12 @@ public class ScreenApi {
         assertThat(driver.findElement(By.className("user-address")).getText(), containsString(SOME_CITY));
         assertThat(driver.findElement(By.className("user-address")).getText(), containsString(VALID_COUNTRY));
         assertThat(driver.findElement(By.className("user-address")).getText(), containsString(SOME_POSTCODE));
+        return this;
+    }
+
+    public ScreenApi shouldShowSuccessAtHomePageForAddingItemToCart() {
+        assertThat(driver.getCurrentUrl(),is(URLs.home()+"?q=t"));
+        assertThat(driver.findElement(By.id("resultMessage")).getText(),is("Item has been added to your shopping cart."));
         return this;
     }
 }

@@ -9,15 +9,24 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("/")
 public class HomeController {
 
-    ItemService itemService = new ItemServiceImpl();
+    private ItemService itemService ;
+
+    public HomeController() {
+        itemService = new ItemServiceImpl();
+    }
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String get(Model model, @ModelAttribute("item") Item item) {
+	public String get(Model model, @ModelAttribute("item") Item item, HttpServletRequest request) {
         model.addAttribute("items", itemService.getItemsWithNonZeroQuantity());
+        if(request.getParameter("q") != null && request.getParameter("q").equals("t")) {
+            model.addAttribute("successMessage", "Item has been added to your shopping cart.");
+        }
         return "home";
 	}
 

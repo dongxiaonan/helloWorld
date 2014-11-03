@@ -6,13 +6,10 @@ import com.trailblazers.freewheelers.model.ReserveOrder;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
-import org.eclipse.jetty.server.session.HashedSession;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ExtendedModelMap;
@@ -54,7 +51,7 @@ public class ShoppingCartControllerTest {
         when(itemService.getById(739L)).thenReturn(item);
         when(httpServletRequest.getSession()).thenReturn(httpSession);
 
-        shoppingCartController.reserveItem(expectedModelMap, item, httpServletRequest);
+        shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
 
         assertTrue(expectedModelMap.containsValue(item));
         assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is((Object)item));
@@ -78,7 +75,7 @@ public class ShoppingCartControllerTest {
         when(httpServletRequest.getSession()).thenReturn(spy);
         when(itemService.getById(739l)).thenReturn(item);
         when(accountService.getAccountByName("UserCat")).thenReturn(account);
-        when(itemService.checkItemsQuantityIsMoreThanZero(739l)).thenReturn(2l);
+        when(itemService.checkItemsQuantityIsMoreThanZero(739l)).thenReturn(true);
 
         shoppingCartController.checkoutItem(model, principle, item, httpServletRequest);
 
@@ -125,11 +122,30 @@ public class ShoppingCartControllerTest {
         when(request.getSession()).thenReturn(new MockHttpSession());
         when(accountService.getAccountByName(anyString())).thenReturn(new Account());
         when(itemService.getById(2l)).thenReturn(new Item());
-        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(0l);
+        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(false);
 
         shoppingCartController.checkoutItem(expectedModelMap, mock(Principal.class), item, request);
 
         assertThat((String) expectedModelMap.asMap().get("quantityErrorMessage"), is("Sorry, item is no longer available."));
+    }
+
+    @Test
+    public void shouldReturnToHomePageWhenAnItemIsAddedToShoppingCart() throws Exception {
+        Item item = new Item();
+        item.setItemId(739L);
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        MockHttpSession httpSession = new MockHttpSession();
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+
+        when(itemService.getById(739L)).thenReturn(item);
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+
+        String result = shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
+
+        assertTrue(expectedModelMap.containsValue(item));
+        assertThat(httpServletRequest.getSession().getAttribute("sessionItem"), is((Object)item));
+        assertThat(result,is("redirect:/?q=t"));
+
     }
 
 }

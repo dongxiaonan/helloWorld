@@ -84,10 +84,10 @@ public class ItemServiceImplTest {
         long expectedQuantity = 2;
         when(itemMapper.getById(itemId)).thenReturn(new Item().setQuantity(expectedQuantity));
 
-        long returnedQuantity = itemService.checkItemsQuantityIsMoreThanZero(itemId);
+        boolean isQuantityMoreThanZero = itemService.checkItemsQuantityIsMoreThanZero(itemId);
 
         verify(itemMapper, times(1)).getById(itemId);
-        assertThat(returnedQuantity, is(expectedQuantity));
+        assertThat(isQuantityMoreThanZero, is(true));
     }
 
 }

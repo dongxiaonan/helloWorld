@@ -27,6 +27,7 @@ public class OrderTest extends UserJourneyBase {
 
         user
                 .add_to_cart(Simplon_Frame)
+                .visits_shopping_cart()
                 .check_out_item()
                 .visits_home_page();
 

@@ -26,9 +26,8 @@ public class ShoppingCartTest extends UserJourneyBase{
 
         user
                 .add_item_to_shopping_cart(Simplon_Frame);
-
         screen
-                .should_list_item_in_shopping_cart(Simplon_Frame);
+                .shouldShowSuccessAtHomePageForAddingItemToCart();
         user
                 .visits_home_page()
                 .visits_shopping_cart();
@@ -57,8 +56,8 @@ public class ShoppingCartTest extends UserJourneyBase{
                 .should_list_item(Simplon_Frame);
 
         user
-                .add_item_to_shopping_cart(Simplon_Frame);
-
+                .add_item_to_shopping_cart(Simplon_Frame)
+                .visits_shopping_cart();
         screen
                 .should_list_item_in_shopping_cart(Simplon_Frame);
         user

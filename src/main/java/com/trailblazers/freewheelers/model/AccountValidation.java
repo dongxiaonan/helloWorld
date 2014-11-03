@@ -96,7 +96,7 @@ public class AccountValidation {
         boolean doesPhoneNumberMatchRequirement = !account.getPhoneNumber().matches(PHONE_NUMBER_FORMAT);
 
         if(isPhoneNumberEmpty || doesPhoneNumberMatchRequirement) {
-            errors.put("phoneNumber", "Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.");
+            errors.put("phoneNumber", "Must enter valid phone number (Not empty, and can only containing: numbers, plus, dash and parenthesis.)");
         }
     }
 

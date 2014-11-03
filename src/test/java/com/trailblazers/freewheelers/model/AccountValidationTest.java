@@ -165,7 +165,7 @@ public class AccountValidationTest {
 
     @Test
     public void shouldComplainWhenPhoneNumberContainsSpecialCharacters() throws Exception {
-        String validPhoneNumberWithParenthesis = "&008&6222222";
+        String validPhoneNumberWithParenthesis = "?0086222222";
         account.setPhoneNumber(validPhoneNumberWithParenthesis);
 
         Map<String, String> errors = verifyInputs(account);

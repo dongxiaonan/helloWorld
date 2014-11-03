@@ -10,7 +10,7 @@ public class AccountValidation {
     private static final String STREET2_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,255}$";
     private static final String CITY_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,100}$";
     private static final String STATE_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,100}$";
-    private static final String PHONE_NUMBER_FORMAT = "[\\+(0-9)?\\-]*";
+    private static final String PHONE_NUMBER_FORMAT = "[\\+(0-9)\\-]*";
 
     public static Map<String, String> verifyInputs(Account account) {
         HashMap<String, String> errors = new HashMap<String, String>();

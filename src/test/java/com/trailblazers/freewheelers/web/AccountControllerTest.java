@@ -2,7 +2,10 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Country;
-import com.trailblazers.freewheelers.service.*;
+import com.trailblazers.freewheelers.service.AccountService;
+import com.trailblazers.freewheelers.service.CountryService;
+import com.trailblazers.freewheelers.service.EmailSender;
+import com.trailblazers.freewheelers.service.ServiceResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +34,7 @@ public class AccountControllerTest {
     private CountryService countryService;
 
     @Mock
-    private EncryptionService encryptionService;
+    private EmailSender emailSender;
 
     @InjectMocks
     private AccountController accountController = new AccountController();
@@ -71,9 +74,6 @@ public class AccountControllerTest {
         when(accountService.createAccount(any(Account.class))).thenReturn(success);
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
 
-        EmailService emailMock = mock(EmailService.class);
-        accountController.emailService = emailMock;
-        when(encryptionService.getStringToHex(anyString())).thenReturn("");
         when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
         when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         ModelAndView createView = accountController.processCreate(mockRequest);
@@ -112,7 +112,6 @@ public class AccountControllerTest {
 
 
         assertThat(account,is(expectedAccount));
-        assertThat(accountController.getConfirmedPassword(), is("V3rySecure!"));
     }
 
     private Account getSomeAccount() {
@@ -228,11 +227,10 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldSendEmailToCustomerWithRightEmailAddress() throws Exception {
+    public void shouldCallEmailSenderWithRightAddressAndAccount() throws Exception {
         ServiceResult<Account> success = new ServiceResult<Account>(new HashMap<String, String>(), getEmptyUserAccount().setAccount_name("john smith"));
         when(accountService.createAccount(any(Account.class))).thenReturn(success);
-        EmailService emailMock = mock(EmailService.class);
-        accountController.emailService = emailMock;
+
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getParameter("email")).thenReturn("ssr.957@gmail.com");
         when(request.getParameter("password")).thenReturn("V3rySecure!");
@@ -241,7 +239,7 @@ public class AccountControllerTest {
 
         accountController.processCreate(request);
 
-        verify(emailMock, times(1)).send(eq("Sammy"),eq("ssr.957@gmail.com"),anyString(),eq("FreeWheelers Account Verification"));
+        verify(emailSender, times(1)).sendVerificationEmail("null:0", new Account().setAccount_name("Sammy").setPassword("V3rySecure!").setEmail_address("ssr.957@gmail.com"));
     }
 
 

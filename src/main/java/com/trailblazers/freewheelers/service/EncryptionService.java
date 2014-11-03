@@ -1,7 +1,9 @@
 package com.trailblazers.freewheelers.service;
 
 import org.springframework.security.crypto.codec.Hex;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EncryptionService {
 
     public String getStringToHex(String stringInput) {

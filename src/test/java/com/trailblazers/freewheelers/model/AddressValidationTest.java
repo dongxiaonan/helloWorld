@@ -4,12 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
 import static com.trailblazers.freewheelers.model.AccountValidation.verifyInputs;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class AddressValidationTest {
 
@@ -46,7 +47,7 @@ public class AddressValidationTest {
         String emptyStreet1 = "";
         account.setStreet1(emptyStreet1);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street1", "enter a street", errors);
     }
@@ -58,7 +59,7 @@ public class AddressValidationTest {
         String street1 = new String(chars);
         account.setStreet1(street1);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street1", "enter a street", errors);
     }
@@ -68,7 +69,7 @@ public class AddressValidationTest {
         String street1 = "!@#";
         account.setStreet1(street1);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street1", "enter a street", errors);
     }
@@ -78,7 +79,7 @@ public class AddressValidationTest {
         String street1 = ",-.'djfiodjsf";
         account.setStreet1(street1);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertTrue(errors.isEmpty());
     }
@@ -90,7 +91,7 @@ public class AddressValidationTest {
         String street2 = new String(chars);
         account.setStreet2(street2);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street2", "Enter a valid street", errors);
     }
@@ -100,7 +101,7 @@ public class AddressValidationTest {
         String street2 = "!@#";
         account.setStreet2(street2);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("street2", "Enter a valid street", errors);
     }
@@ -110,7 +111,7 @@ public class AddressValidationTest {
         String street2 = ",-.'djfiodjsf";
         account.setStreet2(street2);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertTrue(errors.isEmpty());
     }
@@ -121,7 +122,7 @@ public class AddressValidationTest {
 
         account.setCity(city);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("city", "enter a city", errors);
     }
@@ -133,7 +134,7 @@ public class AddressValidationTest {
         String city = new String(chars);
         account.setCity(city);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("city", "enter a city", errors);
     }
@@ -143,7 +144,7 @@ public class AddressValidationTest {
         String city = "";
         account.setCity(city);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("city", "enter a city", errors);
     }
@@ -153,7 +154,7 @@ public class AddressValidationTest {
         String city = ",-.'djfiodjsf";
         account.setCity(city);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertTrue(errors.isEmpty());
     }
@@ -164,7 +165,7 @@ public class AddressValidationTest {
 
         account.setState_Province(stateProvince);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("stateProvince", "enter a valid state or province", errors);
     }
@@ -176,7 +177,7 @@ public class AddressValidationTest {
         String stateProvince = new String(chars);
         account.setState_Province(stateProvince);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("stateProvince", "enter a valid state or province", errors);
     }
@@ -186,7 +187,7 @@ public class AddressValidationTest {
         String stateProvince = ",-.'djfiodjsf";
         account.setState_Province(stateProvince);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertTrue(errors.isEmpty());
     }
@@ -197,7 +198,7 @@ public class AddressValidationTest {
 
         account.setPostcode(emptyPostcode);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("postcode", "enter a post code", errors);
     }
@@ -208,7 +209,7 @@ public class AddressValidationTest {
 
         account.setPostcode(postcode);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("postcode", "enter a post code", errors);
     }
@@ -218,12 +219,12 @@ public class AddressValidationTest {
         String postcode = "weWE-12";
         account.setPostcode(postcode);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String> errors = verifyInputs(account);
 
         assertTrue(errors.isEmpty());
     }
 
-    private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {
+    private void assertThereIsOneErrorFor(String field, String expected, Map<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));
 

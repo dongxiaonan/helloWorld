@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.trailblazers.freewheelers.model.AccountValidation.verifyInputs;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -42,7 +42,7 @@ public class AccountValidationTest {
     }
     @Test
     public void shouldHaveNoErrorsForValidInput() throws Exception {
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThat(errors.size(), is(0));
     }
@@ -64,7 +64,7 @@ public class AccountValidationTest {
 
         for(String invalidEmail :invalidEmails) {
             account.setEmail_address(invalidEmail);
-            HashMap errors = verifyInputs(account);
+            Map<String, String>  errors = verifyInputs(account);
 
             assertThereIsOneErrorFor("email", "enter a valid email", errors);
         }
@@ -83,7 +83,7 @@ public class AccountValidationTest {
 
         for(String validEmail:validEmails) {
             account.setEmail_address(validEmail);
-            HashMap errors = verifyInputs(account);
+            Map<String, String>  errors = verifyInputs(account);
 
             assertThat(errors.size(),is(0));
         }
@@ -95,7 +95,7 @@ public class AccountValidationTest {
 
         account.setPassword(emptyPassword);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -107,7 +107,7 @@ public class AccountValidationTest {
 
         account.setAccount_name(emptyName);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("name", "enter a name", errors);
     }
@@ -118,17 +118,66 @@ public class AccountValidationTest {
 
         account.setPhoneNumber(emptyPhoneNumber);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("phoneNumber", "enter a phone number", errors);
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.", errors);
     }
 
+    @Test
+    public void shouldComplainWhenPhoneNumberContainsCharacter() throws Exception {
+        String invalidPhoneNumber = "a";
+        account.setPhoneNumber(invalidPhoneNumber);
+
+        Map<String, String>  errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.", errors);
+    }
+
+    @Test
+    public void shouldNotComplainWhenPhoneNumberContainsDash() throws Exception {
+        String validPhoneNumberWithDash = "222-222";
+        account.setPhoneNumber(validPhoneNumberWithDash);
+
+        Map<String, String>  errors = verifyInputs(account);
+
+        assertThat(errors.size(), is(0));
+    }
+
+    @Test
+    public void shouldNotComplainWhenPhoneNumberContainsPlus() throws Exception {
+        String validPhoneNumberWithPlus = "+0086222222";
+        account.setPhoneNumber(validPhoneNumberWithPlus);
+
+        Map<String, String>  errors = verifyInputs(account);
+
+        assertThat(errors.size(), is(0));
+    }
+
+    @Test
+    public void shouldNotComplainWhenPhoneNumberContainsParenthesis() throws Exception {
+        String validPhoneNumberWithParenthesis = "(008)6222222";
+        account.setPhoneNumber(validPhoneNumberWithParenthesis);
+
+        Map<String, String> errors = verifyInputs(account);
+
+        assertThat(errors.size(), is(0));
+    }
+
+    @Test
+    public void shouldComplainWhenPhoneNumberContainsSpecialCharacters() throws Exception {
+        String validPhoneNumberWithParenthesis = "&008&6222222";
+        account.setPhoneNumber(validPhoneNumberWithParenthesis);
+
+        Map<String, String> errors = verifyInputs(account);
+
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.", errors);
+    }
 
     @Test
     public void shouldComplainAboutAnEmptyCountry() throws Exception {
         account.setCountry(null);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("country","select a country",errors);
     }
@@ -138,7 +187,7 @@ public class AccountValidationTest {
         String password = "!invalidPassword";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -148,7 +197,7 @@ public class AccountValidationTest {
         String password = "1invalidPassword";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -158,7 +207,7 @@ public class AccountValidationTest {
         String password = "!invalidpassword1";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -168,7 +217,7 @@ public class AccountValidationTest {
         String password = "!1CONFIRMEDPASSWORD";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -178,7 +227,7 @@ public class AccountValidationTest {
         String password = "a!2Pass";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
@@ -188,11 +237,11 @@ public class AccountValidationTest {
         String password = "!invalidPassword123qq";
         account.setPassword(password);
 
-        HashMap errors = verifyInputs(account);
+        Map<String, String>  errors = verifyInputs(account);
 
         assertThereIsOneErrorFor("password", "meet password requirement", errors);
     }
-    private void assertThereIsOneErrorFor(String field, String expected, HashMap<String, String> errors) {
+    private void assertThereIsOneErrorFor(String field, String expected, Map<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));
 

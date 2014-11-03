@@ -12,8 +12,8 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ServiceResult<Account> createAccount(Account account){
-        HashMap errors = AccountValidation.verifyInputs(account);
+        Map<String, String> errors = AccountValidation.verifyInputs(account);
 
         if(errors.isEmpty()) {
             try {

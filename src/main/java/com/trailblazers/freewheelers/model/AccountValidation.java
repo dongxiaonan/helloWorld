@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class AccountValidation {
     private static final String passwordRequirement = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`]).{8,20}$";
@@ -9,9 +10,10 @@ public class AccountValidation {
     public static final String street2Requirement = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,255}$";
     public static final String cityRequirment = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,100}$";
     public static final String stateProvinceRequirement = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,100}$";
+    public static final String PHONE_NUMBER_REQUIREMENT = "[\\+(0-9)?\\-]*";
 
-    public static HashMap verifyInputs(Account account) {
-        HashMap errors = new HashMap();
+    public static Map<String, String> verifyInputs(Account account) {
+        HashMap<String, String> errors = new HashMap<String, String>();
 
         if (!account.getEmail_address().matches(emailFormat)) {
            errors.put("email", "Must enter a valid email!");
@@ -45,14 +47,21 @@ public class AccountValidation {
             errors.put("postcode","Must enter a post code!");
         }
 
-        if(account.getPhoneNumber().isEmpty()) {
-            errors.put("phoneNumber", "Must enter a phone number!");
-        }
+        validatePhoneNumber(account, errors);
 
         if (!account.getPassword().matches(passwordRequirement)){
             errors.put("password", "Must meet password requirement!");
         }
         return errors;
+    }
+
+    private static void validatePhoneNumber(Account account, HashMap<String, String> errors) {
+        boolean isPhoneNumberEmpty = account.getPhoneNumber().isEmpty();
+        boolean doesPhoneNumberMatchRequirement = !account.getPhoneNumber().matches(PHONE_NUMBER_REQUIREMENT);
+
+        if(isPhoneNumberEmpty || doesPhoneNumberMatchRequirement) {
+            errors.put("phoneNumber", "Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.");
+        }
     }
 
 }

@@ -34,6 +34,7 @@ public class SyntaxSugar {
             "shape, screw fastening 4 x red, curved Arrow shape, screw fastening 4 x red, curved Arrow shape, " +
             "screw fastening 4 x red, curved Arrow shape, screw fastening";
     public static final String A_LOT = "1000";
+    public static final String PHONE_NUMBER_WITH_CHARACTERS = "a";
 
 
     public static String emailFor(String userName) {

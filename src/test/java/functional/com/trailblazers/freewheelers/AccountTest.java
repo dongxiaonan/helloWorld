@@ -35,6 +35,12 @@ public class AccountTest extends UserJourneyBase {
                 .shows_error_alert("There were errors");
 
         user
+                .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, PHONE_NUMBER_WITH_CHARACTERS, SOME_CONFIRMEDPASSWORD);
+
+        screen
+                .shows_error("Must enter valid phone number (Not empty, and containing only numbers, plus, dash and parenthesis.");
+
+        user
                 .creates_an_account(jan, SOME_EMAIL, SOME_PASSWORD, SOME_STREET, SOME_STREET, SOME_CITY, SOME_POSTCODE, SOME_STATEPROVINCE, VALID_COUNTRY, SOME_PHONE_NUMBER, SOME_CONFIRMEDPASSWORD);
         screen
                 .shows_message("new account has been created");

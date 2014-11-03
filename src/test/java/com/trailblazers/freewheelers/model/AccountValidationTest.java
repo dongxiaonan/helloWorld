@@ -120,7 +120,7 @@ public class AccountValidationTest {
 
         Map<String, String>  errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only containing: numbers, plus, dash and parenthesis.)", errors);
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis.)", errors);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class AccountValidationTest {
 
         Map<String, String>  errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only containing: numbers, plus, dash and parenthesis.)", errors);
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis.)", errors);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class AccountValidationTest {
 
         Map<String, String> errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only containing: numbers, plus, dash and parenthesis.)", errors);
+        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis.)", errors);
     }
 
     @Test

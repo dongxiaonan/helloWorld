@@ -8,7 +8,7 @@ public class SyntaxSugar {
 
     public static final String SOME_PHONE_NUMBER = "555-123456";
     public static final String SOME_PASSWORD = "V3ry Secure!";
-    public static final String SOME_CONFIRMEDPASSWORD = "V3ry Secure!";
+    public static final String SOME_CONFIRMED_PASSWORD = "V3ry Secure!";
     public static final String SOME_INVALID_CONFIRMEDPASSWORD = "WRONG V3ry Secure!";
     public static final String SOME_EMAIL = "somebody@something.de";
     public static final String SOME_INVALID_EMAIL = "someb__ody@something.de";
@@ -20,7 +20,7 @@ public class SyntaxSugar {
     public static final String SOME_STREET = "Greenwood Avenue";
     public static final String SOME_CITY = "London";
     public static final String SOME_POSTCODE = "12453";
-    public static final String SOME_STATEPROVINCE = "Somewhere";
+    public static final String SOME_STATE = "Somewhere";
 
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";

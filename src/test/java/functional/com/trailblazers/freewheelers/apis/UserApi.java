@@ -241,4 +241,14 @@ public class UserApi {
         driver.get(URLs.verifyEmail(verificationId));
         return this;
     }
+
+    public UserApi updateItemQuantityToZero(String itemName, long newQuantity) {
+        check(driver.findElement(ManageItemTable.toggleAll()));
+
+        WebElement input = driver.findElement(ManageItemTable.quantityFieldFor(itemName));
+        fillField(input, String.valueOf(newQuantity));
+
+        driver.findElement(By.name("update")).click();
+        return this;
+    }
 }

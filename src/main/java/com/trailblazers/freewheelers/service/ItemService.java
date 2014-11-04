@@ -4,6 +4,7 @@ import com.trailblazers.freewheelers.model.Item;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ItemService {
 	
@@ -16,7 +17,7 @@ public interface ItemService {
 	List<Item> findAll();
 
     List<Item> getItemsWithNonZeroQuantity();
-	
+
 	void saveAll(List<Item> items);
 
     void deleteItems(List<Item> items);

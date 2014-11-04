@@ -97,7 +97,7 @@
 					<c:forEach var="itemEntry" items="${itemGrid.itemMap}" varStatus="row">
 						<tr>
 							<td>
-								<form:input type="hidden" disabled="true" path="itemMap[${itemEntry.key}].itemId" />
+								<form:input type="hidden" disabled="${itemGridErrors[itemEntry.key].isEmpty() ? 'false' : 'true'}" path="itemMap[${itemEntry.key}].itemId" />
 								<input type="checkbox" class="rowSelector" />
 							</td>
 							<td>
@@ -119,6 +119,7 @@
      					    <td>
                                 <form:errors path="itemMap[${itemEntry.key}].quantity" class="text-error" />
                                 <form:input path="itemMap[${itemEntry.key}].quantity" disabled="true" />
+                                <span class="text-error">${itemGridErrors[itemEntry.key]["quantity"]}</span>
                             </td>
 						</tr>
 					</c:forEach>

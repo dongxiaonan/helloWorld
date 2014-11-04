@@ -1,16 +1,20 @@
 package functional.com.trailblazers.freewheelers.apis;
 
 import functional.com.trailblazers.freewheelers.helpers.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.LogManager;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ScreenApi {
     private WebDriver driver;
@@ -23,8 +27,11 @@ public class ScreenApi {
         expectMessageWithClass(expectedMessage, "error");
     }
 
-    public void shows_error(String expectedMessage) {
+
+
+    public ScreenApi shows_error(String expectedMessage) {
         expectMessageWithClass(expectedMessage, "text-error");
+        return this;
     }
 
     public void shows_message(String expectedMessage) {
@@ -89,9 +96,13 @@ public class ScreenApi {
     }
 
     private ScreenApi expectMessageWithClass(String expectedMessage, String messageClass) {
-        String errorMessage = driver.findElement(By.className(messageClass)).getText();
+        List<WebElement> elements = driver.findElements(By.className(messageClass));
+        boolean foundElement = false;
+        for (WebElement element : elements){
+            if (element.getText().contains(expectedMessage)) foundElement = true;
 
-        assertThat(errorMessage, containsString(expectedMessage));
+        }
+        assertTrue("Expected error message '" + expectedMessage + "' not found.", foundElement);
         return this;
     }
 
@@ -154,8 +165,24 @@ public class ScreenApi {
     }
 
     public ScreenApi shouldShowSuccessAtHomePageForAddingItemToCart() {
-        assertThat(driver.getCurrentUrl(),is(URLs.home()+"?q=t"));
-        assertThat(driver.findElement(By.id("resultMessage")).getText(),is("Item has been added to your shopping cart."));
+        assertThat(driver.getCurrentUrl(), is(URLs.home() + "?q=t"));
+        assertThat(driver.findElement(By.id("resultMessage")).getText(), is("Item has been added to your shopping cart."));
+        return this;
+    }
+
+    public ScreenApi showsQuantityForItem(String itemName, long newQuantity) {
+        WebElement input = driver.findElement(ManageItemTable.quantityFieldFor(itemName));
+        String value = input.getAttribute("value");
+
+        assertThat(value, is(String.valueOf(newQuantity)));
+        return this;
+    }
+
+    public ScreenApi takeScreenShot() throws IOException {
+        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File destFile = new File("./screenshot_" + System.currentTimeMillis() + ".png");
+        FileUtils.copyFile(srcFile, destFile);
+        Logger.getLogger(this.getClass()).info(destFile.getAbsolutePath());
         return this;
     }
 }

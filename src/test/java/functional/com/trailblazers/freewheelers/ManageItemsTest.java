@@ -1,6 +1,10 @@
 package functional.com.trailblazers.freewheelers;
 
 import org.junit.Test;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+import java.io.File;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 
@@ -14,6 +18,7 @@ public class ManageItemsTest extends UserJourneyBase {
         String forOver255Case = "Simplon Pavo 4 Ultra";
         String Spoke_Reflectors = "Spoke - Reflectors Arrow red";
         String ZeroPriceItem = "I AM FREE";
+        long zeroQuantity = 0;
 
         String New_Simplon_Name = "NEW - Simplon Pavo 3 Ultra";
         String New_Spoke_Name = "NEW - Spoke - Reflectors Arrow red";
@@ -86,6 +91,11 @@ public class ManageItemsTest extends UserJourneyBase {
                 .shows_in_manage_item_list(New_Simplon_Name)
                 .shows_in_manage_item_list(forOver255Case)
                 .shows_in_manage_item_list(New_Spoke_Name);
+        user
+                .updateItemQuantityToZero(New_Simplon_Name, zeroQuantity);
+        screen
+                .shows_error("Please enter positive quantity")
+                .takeScreenShot();
 
         user
                 .delete_item(New_Simplon_Name);

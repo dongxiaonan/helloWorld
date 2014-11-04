@@ -8,6 +8,7 @@ import functional.com.trailblazers.freewheelers.pages.NetPromoterScoreSurveyForm
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -28,7 +29,7 @@ public class UserJourneyBase {
     public static void before() {
         desiredCapabilities.setJavascriptEnabled(true);
         desiredCapabilities.setCapability("takesScreenshot", true);
-        driver = new PhantomJSDriver(desiredCapabilities);
+        driver = new FirefoxDriver(desiredCapabilities);
 
         admin = new AdminApi();
         user = new UserApi(driver);

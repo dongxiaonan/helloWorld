@@ -1,6 +1,4 @@
-package com.trailblazers.freewheelers.web;
-
-import com.trailblazers.freewheelers.model.Item;
+package com.trailblazers.freewheelers.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

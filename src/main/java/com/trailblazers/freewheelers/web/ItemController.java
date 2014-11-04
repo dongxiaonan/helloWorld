@@ -29,6 +29,10 @@ public class ItemController{
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String get(Model model, @ModelAttribute Item item) {
+        return itemList(model);
+    }
+
+    private String itemList(Model model) {
         ItemGrid itemGrid = new ItemGrid(itemService.findAll());
         model.addAttribute("itemGrid", itemGrid);
         model.addAttribute("itemTypes", ItemType.values());
@@ -45,11 +49,7 @@ public class ItemController{
 
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getErrors());
-            ItemGrid itemGrid = new ItemGrid(itemService.findAll());
-
-            model.addAttribute("itemGrid", itemGrid);
-            model.addAttribute("itemTypes", ItemType.values());
-            return ITEM_LIST_PAGE;
+            return itemList(model);
         }
 		return "redirect:" + ITEM_PAGE;
 	}
@@ -63,9 +63,7 @@ public class ItemController{
         if (bindingResult.getFieldErrorCount()>0 || !errors.isEmpty()){
             itemService.saveAll(validation.getItemGridForValidItems(itemGrid).getItems());
             model.addAttribute("item", new Item());
-            model.addAttribute("itemGrid", itemGrid);
-            model.addAttribute("itemTypes", ItemType.values());
-            return ITEM_LIST_PAGE;
+            return itemList(model);
         }
 
         itemService.saveAll(itemGrid.getItems());
@@ -77,5 +75,5 @@ public class ItemController{
         itemService.deleteItems(itemGrid.getItems());
         return "redirect:" + ITEM_PAGE;
     }
-	
+
 }

@@ -45,6 +45,28 @@ public class ItemGridValidationTest {
         assertTrue(error.containsKey(8L));
     }
 
+    @Test
+    public void shouldMergeEmptyItemGrid() throws Exception {
+        ItemGrid itemGrid = new ItemGrid();
+        itemGrid.merge(new ItemGrid());
+        assertThat(itemGrid.getItems().size(), is(0));
+    }
+
+    @Test
+    public void shouldMergeOldAndNewItems() throws Exception {
+        ItemGrid itemGrid = new ItemGrid();
+        itemGrid.merge(new ItemGrid(Arrays.asList(someItem())));
+        assertThat(itemGrid.getItems().size(), is(1));
+    }
+
+    @Test
+    public void shouldReplaceOldItemWithNewItemWhenMerging() throws Exception {
+        ItemGrid itemGrid = new ItemGrid(Arrays.asList(someItem().setItemId(1L).setName("I am old!")));
+        itemGrid.merge(new ItemGrid(Arrays.asList(someItem().setItemId(1L).setName("I am new!"))));
+        assertThat(itemGrid.getItems().size(), is(1));
+        assertThat(itemGrid.getItems().get(0).getName(), is("I am new!"));
+    }
+
     private Item someItem() {
         return new Item()
                 .setName("Some Item")

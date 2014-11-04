@@ -27,8 +27,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static java.math.BigDecimal.valueOf;
 import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -233,23 +233,56 @@ public class ItemControllerTest {
         ItemGrid invalidItemGrid = new ItemGrid(Arrays.asList(invalidItem()));
         con.updateItem(model, invalidItemGrid, mock(BindingResult.class));
 
-        assertModelAttributesAreSetWithCorrectObjects(model);
+        assertModelAttributesAreSetWithCorrectObjects(model, invalidItemGrid);
     }
 
-    private void assertModelAttributesAreSetWithCorrectObjects(Model model) {
+    @Test
+    public void shouldMergeInvalidItemsToTheEmptyListOfTheServer() throws Exception {
+        ItemController con = new ItemController();
+        ItemService serviceMock = mock(ItemServiceImpl.class);
+        Model model = mock(Model.class);
+        con.itemService = serviceMock;
+        when(serviceMock.findAll()).thenReturn(new LinkedList<Item>());
+
+        ItemGrid invalidItemGrid = new ItemGrid(Arrays.asList(invalidItem()));
+        con.updateItem(model, invalidItemGrid, mock(BindingResult.class));
+
+        assertModelAttributesAreSetWithCorrectObjects(model, invalidItemGrid);
+    }
+
+    @Test
+    public void shouldMergeInvalidItemsToTheListOfTheServer() throws Exception {
+        ItemController con = new ItemController();
+        ItemService serviceMock = mock(ItemServiceImpl.class);
+        Model model = mock(Model.class);
+        con.itemService = serviceMock;
+
+        Item itemValid = defaultItem().setItemId(2L);
+        Item itemInvalid = invalidItem().setQuantity(30L);
+
+        when(serviceMock.findAll()).thenReturn(Arrays.asList(itemValid, itemInvalid));
+
+        Item modifiedItem = invalidItem();
+        ItemGrid invalidItemGrid = new ItemGrid(Arrays.asList(modifiedItem));
+        con.updateItem(model, invalidItemGrid, mock(BindingResult.class));
+
+        assertModelAttributesAreSetWithCorrectObjects(model, new ItemGrid(Arrays.asList(itemValid, modifiedItem)));
+    }
+
+    private void assertModelAttributesAreSetWithCorrectObjects(Model model, ItemGrid expectedItemGrid) {
         ArgumentCaptor<Map> errors = ArgumentCaptor.forClass(Map.class);
-        ArgumentCaptor<Item> itemArgumentCaptor = ArgumentCaptor.forClass(Item.class);
-        ArgumentCaptor<ItemGrid> itemGridArgumentCaptor = ArgumentCaptor.forClass(ItemGrid.class);
+        ArgumentCaptor<Item> item = ArgumentCaptor.forClass(Item.class);
+        ArgumentCaptor<ItemGrid> itemGrid = ArgumentCaptor.forClass(ItemGrid.class);
         ArgumentCaptor<ItemType[]> itemTypes = ArgumentCaptor.forClass(ItemType[].class);
 
         verify(model, atLeast(1)).addAttribute(eq("itemGridErrors"), errors.capture());
-        verify(model, atLeast(1)).addAttribute(eq("item"), itemArgumentCaptor.capture());
-        verify(model, atLeast(1)).addAttribute(eq("itemGrid"), itemGridArgumentCaptor.capture());
+        verify(model, atLeast(1)).addAttribute(eq("item"), item.capture());
+        verify(model, atLeast(1)).addAttribute(eq("itemGrid"), itemGrid.capture());
         verify(model, atLeast(1)).addAttribute(eq("itemTypes"), itemTypes.capture());
 
         assertThat(errors.getValue().size(), is(1));
-        assertNotNull(itemArgumentCaptor.getValue());
-        assertThat(itemGridArgumentCaptor.getValue().getItems(). size(), is(0));
+        assertNotNull(item.getValue());
+        assertArrayEquals(expectedItemGrid.getItems().toArray(), itemGrid.getValue().getItems().toArray());
     }
 
     private Item invalidItem() {
@@ -258,6 +291,14 @@ public class ItemControllerTest {
                 .setType(ItemType.ACCESSORIES).setQuantity(0L);
     }
 
-
+    private Item defaultItem() {
+        return new Item()
+                .setItemId(1L)
+                .setName("Some Item")
+                .setDescription("... with a description")
+                .setType(ItemType.ACCESSORIES)
+                .setPrice(valueOf(0.49))
+                .setQuantity(99L);
+    }
 }
 

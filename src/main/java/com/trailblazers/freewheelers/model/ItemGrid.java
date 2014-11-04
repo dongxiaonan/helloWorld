@@ -32,5 +32,8 @@ public class ItemGrid {
 	public void setItemMap(Map<Long, Item> items) {
 		this.itemMap = items;
 	}
-	
+
+    public void merge(ItemGrid itemGrid) {
+        itemMap.putAll(itemGrid.getItemMap());
+    }
 }

@@ -29,11 +29,10 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(Model model, @ModelAttribute Item item) {
-        return itemList(model);
+        return itemList(model, new ItemGrid(itemService.findAll()));
     }
 
-    private String itemList(Model model) {
-        ItemGrid itemGrid = new ItemGrid(itemService.findAll());
+    private String itemList(Model model, ItemGrid itemGrid) {
         model.addAttribute("itemGrid", itemGrid);
         model.addAttribute("itemTypes", ItemType.values());
         return ITEM_LIST_PAGE;
@@ -49,7 +48,7 @@ public class ItemController {
 
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getErrors());
-            return itemList(model);
+            return itemList(model, new ItemGrid(itemService.findAll()));
         }
         return "redirect:" + ITEM_PAGE;
     }
@@ -63,7 +62,10 @@ public class ItemController {
         if (bindingResult.getFieldErrorCount() > 0 || !errors.isEmpty()) {
             itemService.saveAll(validation.getItemGridForValidItems(itemGrid).getItems());
             model.addAttribute("item", new Item());
-            return itemList(model);
+
+            ItemGrid itemGridFromServer = new ItemGrid(itemService.findAll());
+            itemGridFromServer.merge(itemGrid);
+            return itemList(model, itemGridFromServer);
         }
 
         itemService.saveAll(itemGrid.getItems());

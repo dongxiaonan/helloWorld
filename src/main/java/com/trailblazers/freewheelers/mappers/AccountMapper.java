@@ -11,15 +11,15 @@ public interface AccountMapper {
 
     @Insert(
 
-        "INSERT INTO account (account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled) " +
-        "VALUES (#{account_name}, #{emailAddress}, #{password}, #{street1}, #{street2}, #{city}, #{stateProvince}, #{country.countryId}, #{postcode}, #{phoneNumber}, #{enabled})"
+        "INSERT INTO account (account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled, encrypted) " +
+        "VALUES (#{account_name}, #{emailAddress}, #{password}, #{street1}, #{street2}, #{city}, #{stateProvince}, #{country.countryId}, #{postcode}, #{phoneNumber}, #{enabled}, #{encrypted})"
     )
     @Options(keyProperty = "account_id", useGeneratedKeys = true)
     Integer insert(Account account);
 
     @Select(
 
-        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled " +
+        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled, encrypted " +
         "FROM account " +
         "WHERE account_id = #{account_id} "
     )
@@ -31,13 +31,14 @@ public interface AccountMapper {
             @Result(property ="country", column="country_id", javaType = Country.class,
                     one = @One(select = "com.trailblazers.freewheelers.mappers.CountryMapper.getById")),
             @Result(property="phoneNumber", column="phone_number"),
-            @Result(property="enabled")
+            @Result(property="enabled"),
+            @Result(property="encrypted")
     })
     Account getById(Long account_id);
 
     @Select(
 
-        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled " +
+        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled, encrypted " +
         "FROM account " +
         "WHERE account_name = #{account_name} " +
         "LIMIT 1 "
@@ -56,19 +57,20 @@ public interface AccountMapper {
             @Result(property="stateProvince", column="state_province"),
             @Result(property="postcode", column = "postcode"),
             @Result(property="phoneNumber", column="phone_number"),
-            @Result(property="enabled")
+            @Result(property="enabled"),
+            @Result(property="encrypted")
     })
     Account getByName(String accountName);
 
     @Update(
         "UPDATE account " +
-        "SET account_name=#{account_name}, email_address=#{emailAddress}, street1=#{street1}, street2=#{street2}, city=#{city}, state_province=#{stateProvince}, country_id=#{country.countryId}, postcode=#{postcode}, phone_number=#{phoneNumber}, enabled=#{enabled} " +
+        "SET account_name=#{account_name}, email_address=#{emailAddress}, street1=#{street1}, street2=#{street2}, city=#{city}, state_province=#{stateProvince}, country_id=#{country.countryId}, postcode=#{postcode}, phone_number=#{phoneNumber}, enabled=#{enabled}, encrypted=#{encrypted} " +
         "WHERE account_id=#{account_id}"
     )
     void update(Account account);
 
     @Select(
-        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled FROM account"
+        "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled, encrypted FROM account"
     )
     @Results(value = {
             @Result(property="account_id"),
@@ -83,7 +85,8 @@ public interface AccountMapper {
             @Result(property="stateProvince", column="state_province"),
             @Result(property="postcode", column = "postcode"),
             @Result(property="phoneNumber", column="phone_number"),
-            @Result(property="enabled")
+            @Result(property="enabled"),
+            @Result(property="encrypted")
     })
     public List<Account> findAll();
 
@@ -95,7 +98,7 @@ public interface AccountMapper {
 
     @Select(
 
-            "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled " +
+            "SELECT account_id, account_name, email_address, password, street1, street2, city, state_province, country_id, postcode, phone_number, enabled, encrypted " +
                     "FROM account " +
                     "WHERE email_address = #{email} "
     )
@@ -107,7 +110,8 @@ public interface AccountMapper {
             @Result(property ="country", column="country_id", javaType = Country.class,
                     one = @One(select = "com.trailblazers.freewheelers.mappers.CountryMapper.getById")),
             @Result(property="phoneNumber", column="phone_number"),
-            @Result(property="enabled")
+            @Result(property="enabled"),
+            @Result(property="encrypted")
     })
     Account getByEmail(String email);
 }

@@ -14,6 +14,7 @@ public class Account {
     private String city;
     private String stateProvince;
     private String postcode;
+    private boolean encrypted;
 
     public Account() {
         this.account_id = 0L;
@@ -126,6 +127,14 @@ public class Account {
     public String getPostcode() {
         return postcode;
     }
+    public Account setEncrypted(boolean encrypted) {
+        this.encrypted = encrypted;
+        return this;
+    }
+
+    public boolean isEncrypted() {
+        return encrypted;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -177,4 +186,5 @@ public class Account {
         anAddress = anAddress.concat("\n" + city + (stateProvince.isEmpty()?"":  ", " + stateProvince) + " " + postcode);
         return anAddress.concat("\n" + country.getName());
     }
+
 }

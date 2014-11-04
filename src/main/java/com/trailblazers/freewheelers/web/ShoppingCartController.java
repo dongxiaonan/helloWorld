@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Date;
 
@@ -37,10 +35,10 @@ public class ShoppingCartController {
     final String sessionItem = "sessionItem";
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.GET)
-    public void showShoppingCart(Model model,@ModelAttribute Item item, HttpServletRequest request) {
-        Item itemToCheckout =  itemService.getById(item.getItemId());
+    public void showShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request) {
+        Item itemToCheckout = itemService.getById(item.getItemId());
 
-        if(itemToCheckout == null) {
+        if (itemToCheckout == null) {
             itemToCheckout = (Item) request.getSession().getAttribute(sessionItem);
         }
 
@@ -48,14 +46,22 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
-    public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request){
-        Item itemToCheckout =  itemService.getById(item.getItemId());
+    public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request, Principal principal) {
+        String name = principal.getName();
 
-        if(itemToCheckout != null)
+        if (!accountService.getAccountByName(name).isEncrypted()) {
+            model.addAttribute("encryptedErrorMessage", "Sorry, you need to reset your password first.");
+            return "redirect:/?q=t";
+        }
+
+        Item itemToCheckout = itemService.getById(item.getItemId());
+
+        if (itemToCheckout != null)
             request.getSession().setAttribute(sessionItem, itemToCheckout);
 
         model.addAttribute("item", itemToCheckout);
         return "redirect:/?q=t";
+
     }
 
     @RequestMapping(value = {"/confirmation/{orderId:.*}"}, method = RequestMethod.GET)
@@ -68,14 +74,20 @@ public class ShoppingCartController {
 
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
     public String checkoutItem(Model model, Principal principal, @ModelAttribute("item") Item item, HttpServletRequest request) {
-        Item itemToReserve =  itemService.getById(item.getItemId());
+        Item itemToReserve = itemService.getById(item.getItemId());
         String userName = principal.getName();
-        Account account =  accountService.getAccountByName(userName);
+        Account account = accountService.getAccountByName(userName);
         Date rightNow = new Date();
 
+        String name = principal.getName();
 
-        if(itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())) {
-            ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow );
+        if (!accountService.getAccountByName(name).isEncrypted()) {
+            model.addAttribute("encryptedErrorMessage", "Sorry, you need to reset your password first.");
+            return "/shoppingCart/myShoppingCart";
+        }
+
+        if (itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())) {
+            ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), itemToReserve.getItemId(), rightNow);
             reserveOrderService.save(reserveOrder);
             itemService.decreaseQuantityByOne(itemToReserve);
             model.addAttribute("item", itemToReserve);

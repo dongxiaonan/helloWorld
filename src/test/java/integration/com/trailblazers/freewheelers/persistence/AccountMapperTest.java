@@ -11,6 +11,7 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class AccountMapperTest extends MapperTestBase {
@@ -116,6 +117,18 @@ public class AccountMapperTest extends MapperTestBase {
 
         assertThat(accountMapper.getByEmail(account.getEmail_address()),is(account));
     }
+
+    @Test
+    public void shouldReturnFalseForAlreadyExistingAccounts() throws Exception {
+        Account someAccount = someAccount().setAccount_name("Prince");
+        accountMapper.insert(someAccount);
+
+        someAccount.setEnabled(true);
+        accountMapper.update(someAccount);
+
+        Account fetched = accountMapper.getById(someAccount.getAccount_id());
+        assertFalse(fetched.isEncrypted());
+    }
     
     private Account someAccount() {
         return new Account()
@@ -129,7 +142,8 @@ public class AccountMapperTest extends MapperTestBase {
                 .setState_Province("Somewhere")
                 .setPostcode("12453")
                 .setPhoneNumber("12345")
-                .setEnabled(true);
+                .setEnabled(true)
+                .setEncrypted(false);
     }
 
 }

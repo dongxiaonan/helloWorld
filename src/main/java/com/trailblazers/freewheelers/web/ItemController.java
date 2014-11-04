@@ -18,17 +18,17 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(ItemController.ITEM_PAGE)
-public class ItemController{
+public class ItemController {
 
-	static final String ITEM_PAGE = "/item";
-	static final String ITEM_LIST_PAGE = "/itemList";
+    static final String ITEM_PAGE = "/item";
+    static final String ITEM_LIST_PAGE = "/itemList";
 
     @Autowired
     ItemService itemService;
 
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String get(Model model, @ModelAttribute Item item) {
+    @RequestMapping(method = RequestMethod.GET)
+    public String get(Model model, @ModelAttribute Item item) {
         return itemList(model);
     }
 
@@ -40,9 +40,9 @@ public class ItemController{
     }
 
     @RequestMapping(method = RequestMethod.POST)
-	public String post(Model model, @ModelAttribute("item") Item item, BindingResult bindingResult) {
+    public String post(Model model, @ModelAttribute("item") Item item, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors() && bindingResult.getFieldError("quantity") != null){
+        if (bindingResult.hasErrors() && bindingResult.getFieldError("quantity") != null) {
             item.setQuantity(0l);
         }
         ServiceResult<Item> result = itemService.saveItem(item);
@@ -51,16 +51,16 @@ public class ItemController{
             model.addAttribute("errors", result.getErrors());
             return itemList(model);
         }
-		return "redirect:" + ITEM_PAGE;
-	}
+        return "redirect:" + ITEM_PAGE;
+    }
 
 
-    @RequestMapping(method = RequestMethod.POST, params="update=Update all enabled items")
-	public String updateItem(Model model, @ModelAttribute ItemGrid itemGrid, BindingResult bindingResult) {
+    @RequestMapping(method = RequestMethod.POST, params = "update=Update all enabled items")
+    public String updateItem(Model model, @ModelAttribute ItemGrid itemGrid, BindingResult bindingResult) {
         ItemGridValidation validation = new ItemGridValidation();
         Map<Long, Map<String, String>> errors = validation.validateItemGrids(itemGrid);
         model.addAttribute("itemGridErrors", errors);
-        if (bindingResult.getFieldErrorCount()>0 || !errors.isEmpty()){
+        if (bindingResult.getFieldErrorCount() > 0 || !errors.isEmpty()) {
             itemService.saveAll(validation.getItemGridForValidItems(itemGrid).getItems());
             model.addAttribute("item", new Item());
             return itemList(model);
@@ -70,8 +70,8 @@ public class ItemController{
         return "redirect:" + ITEM_PAGE;
     }
 
-    @RequestMapping(method = RequestMethod.POST, params="delete=Delete all enabled items")
-    public String deleteItem( @ModelAttribute ItemGrid itemGrid) {
+    @RequestMapping(method = RequestMethod.POST, params = "delete=Delete all enabled items")
+    public String deleteItem(@ModelAttribute ItemGrid itemGrid) {
         itemService.deleteItems(itemGrid.getItems());
         return "redirect:" + ITEM_PAGE;
     }

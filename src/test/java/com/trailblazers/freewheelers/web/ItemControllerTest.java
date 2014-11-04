@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -232,12 +233,23 @@ public class ItemControllerTest {
         ItemGrid invalidItemGrid = new ItemGrid(Arrays.asList(invalidItem()));
         con.updateItem(model, invalidItemGrid, mock(BindingResult.class));
 
-        //TODO: FS/KP fix the problem with matching any object and any collection
+        assertModelAttributesAreSetWithCorrectObjects(model);
+    }
 
-        verify(model, atLeast(1)).addAttribute(eq("itemGridErrors"), anyCollection());
-        verify(model, atLeast(1)).addAttribute(eq("item"), anyObject());
-        verify(model, atLeast(1)).addAttribute(eq("itemGrid"), anyObject());
-        verify(model, atLeast(1)).addAttribute(eq("itemTypes"), anyObject());
+    private void assertModelAttributesAreSetWithCorrectObjects(Model model) {
+        ArgumentCaptor<Map> errors = ArgumentCaptor.forClass(Map.class);
+        ArgumentCaptor<Item> itemArgumentCaptor = ArgumentCaptor.forClass(Item.class);
+        ArgumentCaptor<ItemGrid> itemGridArgumentCaptor = ArgumentCaptor.forClass(ItemGrid.class);
+        ArgumentCaptor<ItemType[]> itemTypes = ArgumentCaptor.forClass(ItemType[].class);
+
+        verify(model, atLeast(1)).addAttribute(eq("itemGridErrors"), errors.capture());
+        verify(model, atLeast(1)).addAttribute(eq("item"), itemArgumentCaptor.capture());
+        verify(model, atLeast(1)).addAttribute(eq("itemGrid"), itemGridArgumentCaptor.capture());
+        verify(model, atLeast(1)).addAttribute(eq("itemTypes"), itemTypes.capture());
+
+        assertThat(errors.getValue().size(), is(1));
+        assertNotNull(itemArgumentCaptor.getValue());
+        assertThat(itemGridArgumentCaptor.getValue().getItems(). size(), is(0));
     }
 
     private Item invalidItem() {

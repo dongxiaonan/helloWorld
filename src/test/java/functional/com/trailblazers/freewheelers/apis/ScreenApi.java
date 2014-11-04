@@ -178,11 +178,4 @@ public class ScreenApi {
         return this;
     }
 
-    public ScreenApi takeScreenShot() throws IOException {
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        File destFile = new File("./screenshot_" + System.currentTimeMillis() + ".png");
-        FileUtils.copyFile(srcFile, destFile);
-        Logger.getLogger(this.getClass()).info(destFile.getAbsolutePath());
-        return this;
-    }
 }

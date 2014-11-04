@@ -94,8 +94,7 @@ public class ManageItemsTest extends UserJourneyBase {
         user
                 .updateItemQuantityToZero(New_Simplon_Name, zeroQuantity);
         screen
-                .shows_error("Please enter positive quantity")
-                .takeScreenShot();
+                .shows_error("Please enter positive quantity");
 
         user
                 .delete_item(New_Simplon_Name);

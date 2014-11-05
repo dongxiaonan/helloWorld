@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import com.trailblazers.freewheelers.FreeWheelersServer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -42,29 +43,41 @@ public class ShoppingCartController {
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.GET)
     public void showShoppingCart(Model model,@ModelAttribute Item item, HttpServletRequest request) {
-        List<Item> cartItems = (List<Item>) request.getSession().getAttribute(sessionItems);
+        if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
+            List<Item> cartItems = (List<Item>) request.getSession().getAttribute(sessionItems);
 
-        model.addAttribute("items", cartItems);
+            model.addAttribute("items", cartItems);
+        }
     }
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
     public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request){
-        Item itemToCheckout =  itemService.getById(item.getItemId());
-        BigDecimal totalCartPrice =(BigDecimal) request.getSession().getAttribute(this.totalCartPrice);
-        ArrayList<Item> cartItems = (ArrayList<Item>) request.getSession().getAttribute(sessionItems);
+       Item itemToCheckout =  itemService.getById(item.getItemId());
+       ArrayList<Item> cartItems = (ArrayList<Item>) request.getSession().getAttribute(sessionItems);
+       if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
+           BigDecimal totalCartPrice = (BigDecimal) request.getSession().getAttribute(this.totalCartPrice);
 
-        if(cartItems==null) {
-            cartItems = new ArrayList<Item>();
-            totalCartPrice = BigDecimal.valueOf(0.0d) ;
-        }
+           if (cartItems == null) {
+               cartItems = new ArrayList<Item>();
+               totalCartPrice = BigDecimal.valueOf(0.0d);
+           }
 
-        if(itemToCheckout != null) {
-            cartItems.add(itemToCheckout);
-            totalCartPrice = totalCartPrice.add(itemToCheckout.getPrice());
-            request.getSession().setAttribute(this.totalCartPrice,totalCartPrice);
-            request.getSession().setAttribute(sessionItems, cartItems);
-        }
-        model.addAttribute("items", cartItems);
+           if (itemToCheckout != null) {
+               cartItems.add(itemToCheckout);
+               totalCartPrice = totalCartPrice.add(itemToCheckout.getPrice());
+               request.getSession().setAttribute(this.totalCartPrice, totalCartPrice);
+               request.getSession().setAttribute(sessionItems, cartItems);
+           }
+           model.addAttribute("items", cartItems);
+       }
+       else if(itemToCheckout!=null) {
+           cartItems = new ArrayList<Item>();
+           cartItems.add(itemToCheckout);
+           request.getSession().setAttribute(sessionItems,cartItems);
+           request.getSession().setAttribute(this.totalCartPrice,itemToCheckout.getPrice());
+           model.addAttribute("items",cartItems);
+       }
+
         return "redirect:/?q=t";
     }
 

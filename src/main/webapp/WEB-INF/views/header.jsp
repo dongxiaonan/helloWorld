@@ -4,6 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<c:set var="enableMultipleItemsPerCart" scope="application" value="true"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,7 @@
             <li><a href="<c:url value="/survey/report" />" class="header-link">NPS Report</a></li>
         </security:authorize>
         <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
-            <li><a href="<c:url value="/shoppingCart/myShoppingCart" />" class="header-link">My Shopping Cart</a></li>
+            <li><a href="<c:url value="/shoppingCart/myShoppingCart" />" class="header-link ${enableMultipleItemsPerCart == false ? 'disableClick' : ''}">My Shopping Cart</a></li>
         </security:authorize>
         <li><a href="<c:url value='/admin' />" class="header-link">Admin Profile</a></li>
         <li><a href="<c:url value='/userProfile' />" class="header-link">User Profile</a></li>

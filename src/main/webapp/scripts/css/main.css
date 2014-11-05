@@ -128,3 +128,8 @@ tr {
     border-bottom: 1px solid lightskyblue;
     vertical-align: top;
 }
+
+a.disableClick {
+    pointer-events: none;
+    display: none;
+}

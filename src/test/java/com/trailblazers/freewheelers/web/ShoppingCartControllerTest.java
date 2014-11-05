@@ -1,5 +1,6 @@
 package com.trailblazers.freewheelers.web;
 
+import com.trailblazers.freewheelers.FreeWheelersServer;
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Item;
 import com.trailblazers.freewheelers.model.OrderItem;
@@ -65,27 +66,29 @@ public class ShoppingCartControllerTest {
 
     @Test
     public void shouldSaveMultipleItemsIntoSessionWhenAddToCartIsCalled (){
-        List<Item> expectedItemsInCart = new ArrayList<Item>();
-        Item item = new Item();
-        item.setItemId(739L).setPrice(BigDecimal.valueOf(5.78));
-        expectedItemsInCart.add(item);
-        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
-        MockHttpSession httpSession = new MockHttpSession();
-        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
-        BigDecimal expectedTotalPrice = BigDecimal.valueOf(10.0).setScale(2,BigDecimal.ROUND_HALF_UP);
+        if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
+            List<Item> expectedItemsInCart = new ArrayList<Item>();
+            Item item = new Item();
+            item.setItemId(739L).setPrice(BigDecimal.valueOf(5.78));
+            expectedItemsInCart.add(item);
+            HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+            MockHttpSession httpSession = new MockHttpSession();
+            ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+            BigDecimal expectedTotalPrice = BigDecimal.valueOf(10.0).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-        when(itemService.getById(anyLong())).thenReturn(item);
-        when(httpServletRequest.getSession()).thenReturn(httpSession);
+            when(itemService.getById(anyLong())).thenReturn(item);
+            when(httpServletRequest.getSession()).thenReturn(httpSession);
 
-        shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
-        item.setItemId(750L).setPrice(BigDecimal.valueOf(4.22));
-        expectedItemsInCart.add(item);
+            shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
+            item.setItemId(750L).setPrice(BigDecimal.valueOf(4.22));
+            expectedItemsInCart.add(item);
 
-        shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
+            shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
 
-        assertTrue(expectedModelMap.containsValue(expectedItemsInCart));
-        assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object)expectedItemsInCart));
-        assertThat(httpServletRequest.getSession().getAttribute("totalCartPrice"),is((Object)expectedTotalPrice));
+            assertTrue(expectedModelMap.containsValue(expectedItemsInCart));
+            assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object) expectedItemsInCart));
+            assertThat(httpServletRequest.getSession().getAttribute("totalCartPrice"), is((Object) expectedTotalPrice));
+        }
     }
 
     @Test

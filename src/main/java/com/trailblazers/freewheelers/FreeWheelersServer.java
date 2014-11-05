@@ -6,13 +6,18 @@ import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import java.util.ArrayList;
+
 public class FreeWheelersServer {
+
+    public static ArrayList<String> enabledFeatures = new ArrayList<String>();
 
     private final Server server;
 
     public FreeWheelersServer() {
         server = new Server(8080);
         server.setHandler(handlers());
+//        enabledFeatures.add("multipleItemsPerCart");
     }
 
     private void start() throws Exception {

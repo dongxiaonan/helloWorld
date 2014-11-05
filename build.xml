@@ -113,7 +113,7 @@
     </target>
 
     <target name="test-unit"
-            depends="test-unit-without-report, report-tests, check-failed-tests, coverage"
+            depends="test-unit-without-report, report-tests, check-failed-tests, coverage, check-test-coverage"
             description="Run unit tests, report under bin directory"/>
 
     <target name="report-tests" if="unit.tests.failed">
@@ -133,6 +133,10 @@
         <arg value="--path=./db/migrations" />
         <arg value="up" />
       </exec>
+    </target>
+
+    <target name="check-test-coverage">
+        <cobertura-check linerate="65" branchrate="60"/>
     </target>
 
     <target name="init-db" depends="stop" description="Creates the database from scratch and applies all migrations">

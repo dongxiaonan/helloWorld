@@ -10,7 +10,7 @@
 
 <div class="page-action">All orders</div>
 
-<table class="table">
+<table class="table order-table">
     <tbody>
     <c:forEach var="order" items="${reserveOrders}" varStatus="row">
         <tr>

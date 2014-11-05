@@ -9,8 +9,11 @@ import com.trailblazers.freewheelers.model.OrderItem;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
+import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +59,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getItemsWithNonZeroQuantity() {
         sqlSession.clearCache();
-        return itemMapper.findAvailable();
+        List<Item> listFromDB = itemMapper.findAvailable();
+        Collections.sort(listFromDB);
+        return listFromDB;
     }
 
     @Override

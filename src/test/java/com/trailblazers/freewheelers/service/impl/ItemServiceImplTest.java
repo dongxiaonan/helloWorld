@@ -13,10 +13,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ItemServiceImplTest {
@@ -69,13 +66,22 @@ public class ItemServiceImplTest {
     }
 
     @Test
-    public void shouldFindAllAvailableItemsFromMapper(){
-        List<Item> expectedItems = new ArrayList<Item>();
-        when((itemMapper.findAvailable())).thenReturn(expectedItems);
+    public void shouldFindAllAvailableItemsFromMapperWithOrder(){
+        List<Item> listFromDB = new ArrayList<Item>();
+        Item itemB = new Item().setName("B");
+        Item itemC = new Item().setName("C");
+        listFromDB.add(itemC);
+        listFromDB.add(itemB);
+
+        List<Item> expectedList = new ArrayList<Item>();
+        expectedList.add(itemB);
+        expectedList.add(itemC);
+
+        when((itemMapper.findAvailable())).thenReturn(listFromDB);
 
         List<Item> returnedItems = itemService.getItemsWithNonZeroQuantity();
         verify(itemMapper).findAvailable();
-        assertThat(returnedItems, is(expectedItems));
+        assertThat(returnedItems, is(expectedList));
     }
 
     @Test

@@ -2,7 +2,7 @@ package com.trailblazers.freewheelers.model;
 
 import java.math.BigDecimal;
 
-public class Item {
+public class Item implements Comparable<Item> {
 
     private Long itemId;
     private String name;
@@ -54,4 +54,8 @@ public class Item {
         return this;
     }
 
+    @Override
+    public int compareTo(Item item) {
+        return this.getName().compareTo(item.getName()) ;
+    }
 }

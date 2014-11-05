@@ -120,6 +120,10 @@ table {
     color: indianred;
 }
 
+tr {
+    vertical-align: top;
+
+}
 .order-table > tbody > tr > td {
     border-bottom: 1px solid lightskyblue;
     vertical-align: top;

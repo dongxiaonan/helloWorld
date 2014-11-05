@@ -26,5 +26,4 @@ public interface AccountService {
     void updateAccount(Account account);
 
     Account getAccountIdByEmail(String emailAddress);
-
 }

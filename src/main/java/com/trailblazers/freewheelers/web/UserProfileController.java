@@ -3,6 +3,7 @@ package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.Item;
+import com.trailblazers.freewheelers.model.OrderItem;
 import com.trailblazers.freewheelers.model.ReserveOrder;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
@@ -77,7 +78,9 @@ public class UserProfileController {
         List<ReserveOrder> reserveOrders = reserveOrderService.findAllOrdersByAccountId(account.getAccount_id());
         List<Item> items = new ArrayList<Item>();
         for (ReserveOrder reserveOrder : reserveOrders) {
-            items.add(itemService.getById(reserveOrder.getItem_id()));
+            for(OrderItem orderItem:reserveOrder.getOrderItems()) {
+                items.add(itemService.getById(orderItem.getItemId()));
+            }
         }
         return items;
     }

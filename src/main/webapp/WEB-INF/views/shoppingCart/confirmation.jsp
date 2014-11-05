@@ -21,14 +21,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <c:if test="${not empty item}">
-            <td>${item.name}</td>
-            <td>${item.description}</td>
-            <td>${item.price}</td>
-            <td>1</td>
-        </c:if>
-    </tr>
+        <c:forEach var="item" items="${items}" varStatus="row">
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.description}</td>
+                <td>${item.price}</td>
+                <td>${item.quantity}</td>
+            </tr>
+        </c:forEach>
     </tbody>
 </table>
 <hr>
@@ -47,7 +47,7 @@
             Total:
         </td>
         <td>
-            ${item.price}
+            ${totalPrice}
         </td>
     </tr>
     </tbody>

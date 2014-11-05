@@ -1,23 +1,20 @@
-package com.trailblazers.freewheelers.web;
-
-import com.trailblazers.freewheelers.model.Account;
-import com.trailblazers.freewheelers.model.Item;
-import com.trailblazers.freewheelers.model.OrderStatus;
+package com.trailblazers.freewheelers.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReservedOrderDetail  {
 
-    private Item item;
+    private List<Item> items;
     private Account account;
     private Date reserve_time;
     private OrderStatus status;
     private String note;
     private Long orderId;
 
-    public ReservedOrderDetail(Long orderId, Account account, Item item, Date reserve_time, OrderStatus status, String note){
+    public ReservedOrderDetail(Long orderId, Account account, List<Item> items, Date reserve_time, OrderStatus status, String note){
         this.orderId = orderId;
-        this.item = item;
+        this.items = items;
         this.account = account;
         this.reserve_time = reserve_time;
         this.status = status;
@@ -27,12 +24,16 @@ public class ReservedOrderDetail  {
     public ReservedOrderDetail() {
     }
 
-    public Item getItem() {
-        return item;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItems(List<Item> item) {
+        this.items = item;
+    }
+
+    public void addItem(Item item) {
+        this.items.add(item);
     }
 
     public Account getAccount() {

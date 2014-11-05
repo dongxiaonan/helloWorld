@@ -2,8 +2,10 @@ package com.trailblazers.freewheelers.service.impl;
 
 import com.trailblazers.freewheelers.mappers.ItemMapper;
 import com.trailblazers.freewheelers.mappers.MyBatisUtil;
+import com.trailblazers.freewheelers.mappers.OrderItemsMapper;
 import com.trailblazers.freewheelers.model.Item;
 import com.trailblazers.freewheelers.model.ItemValidation;
+import com.trailblazers.freewheelers.model.OrderItem;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
@@ -39,6 +41,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void delete(Item item) {
+        OrderItemsMapper ordertIemMapper = sqlSession.getMapper(OrderItemsMapper.class);
+        ordertIemMapper.deleteByItemId(item.getItemId());
         itemMapper.delete(item);
         sqlSession.commit();
     }

@@ -1,12 +1,12 @@
 package integration.com.trailblazers.freewheelers.persistence;
 
 import com.trailblazers.freewheelers.mappers.ReserveOrderMapper;
+import com.trailblazers.freewheelers.model.OrderItem;
 import com.trailblazers.freewheelers.model.ReserveOrder;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -26,7 +26,6 @@ public class ReserveOrderMapperTest extends MapperTestBase {
     private ReserveOrder someOrder() {
         return new ReserveOrder()
                 .setAccount_id((long) 1)
-                .setItem_id((long) 1)
                 .setReservation_timestamp(new Date());
     }
 
@@ -37,7 +36,7 @@ public class ReserveOrderMapperTest extends MapperTestBase {
         reserveOrderMapper.insert(tobeInserted);
         ReserveOrder fetched = reserveOrderMapper.get(tobeInserted.getOrder_id());
 
-        assertThat(fetched, is(not(nullValue())));
+        assertThat(fetched, is(tobeInserted));
     }
 
     @Test

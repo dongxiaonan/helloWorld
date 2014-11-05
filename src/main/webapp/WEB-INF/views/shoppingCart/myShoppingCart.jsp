@@ -9,7 +9,7 @@
 </c:if>
 
 <div class="controls">
-    <c:if test="${empty sessionItem}">
+    <c:if test="${empty sessionItems}">
         <td>You have no items in your shopping cart</td>
     </c:if>
 </div>
@@ -23,14 +23,14 @@
     </tr>
     </thead>
     <tbody>
-        <tr>
-            <c:if test="${not empty sessionItem}">
-                <td>${sessionItem.name}</td>
-                <td>${sessionItem.description}</td>
-                <td>${sessionItem.price}</td>
+        <c:forEach var="item" items="${sessionItems}" varStatus="row">
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.description}</td>
+                <td>${item.price}</td>
                 <td>1</td>
-            </c:if>
-        </tr>
+            </tr>
+        </c:forEach>
     </tbody>
 </table>
 <hr>
@@ -49,8 +49,8 @@
                 Total:
             </td>
             <td>
-                <c:if test="${not empty sessionItem}">
-                    ${sessionItem.price}
+                <c:if test="${not empty sessionItems}">
+                    ${totalCartPrice}
                 </c:if>
             </td>
         </tr>
@@ -60,23 +60,29 @@
 <table>
     <tr>
         <td>
-            <form:form action="/shoppingCart/checkout" method="post" modelAttribute="item">
-                <c:if test="${not empty item}">
-                    <form:hidden path="itemId" value="${sessionItem.itemId}"/>
-                </c:if>
-                <button class="checkout-button" type="submit" name="checkout" id="checkout" value="Checkout" ${empty sessionItem ? 'disabled' : ''}>
+            <form:form action="/shoppingCart/checkout" method="post" modelAttribute="items">
+                <button class="checkout-button" type="submit" name="checkout" id="checkout" value="Checkout" ${empty sessionItems ? 'disabled' : ''}>
                     Checkout
                 </button>
             </form:form>
         </td>
         <td></td>
         <td>
-            <form:form action="/shoppingCart/clear" method="post" modelAttribute="item">
-                <button class="clear-button" type="submit" name="clear" id="clear" value="clear">
+            <form:form action="/shoppingCart/clear" method="post" modelAttribute="items">
+                <button class="clear-button" type="submit" name="clear" id="clear" value="clear" ${empty sessionItems ? 'disabled' : ''}>
                     Clear Shopping Cart
                 </button>
             </form:form>
         </td>
+        <td></td>
+        <td>
+            <form:form action="/" method="get" >
+                <button class="continue-button" type="submit" name="continue" id="continueShopping" value="t">
+                    Continue Shopping
+                </button>
+            </form:form>
+        </td>
+
     </tr>
 </table>
 

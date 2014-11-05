@@ -8,17 +8,26 @@ import java.util.List;
 public interface ReserveOrderMapper {
 
     @Insert(
-        "INSERT INTO reserve_order (account_id, item_id, status, note, reservation_timestamp) " +
-        "VALUES (#{account_id}, #{item_id}, #{status}, #{note}, #{reservation_timestamp})"
+        "INSERT INTO reserve_order (account_id, status, note, reservation_timestamp) " +
+        "VALUES (#{account_id}, #{status}, #{note}, #{reservation_timestamp})"
     )
     @Options(keyProperty = "order_id", useGeneratedKeys = true)
     Integer insert(ReserveOrder order);
 
     @Select(
-        "SELECT order_id, account_id, item_id, status, note, reservation_timestamp " +
+        "SELECT order_id, account_id, status, note, reservation_timestamp " +
         "FROM reserve_order " +
         "WHERE order_id = #{order_id}"
     )
+    @Results(value = {
+            @Result(property="order_id",column = "order_id"),
+            @Result(property="account_id"),
+            @Result(property="orderItems", column="order_id", javaType=List.class,
+                    one = @One(select = "com.trailblazers.freewheelers.mappers.OrderItemsMapper.getItemsByOrderId")),
+            @Result(property="status"),
+            @Result(property="note"),
+            @Result(property="reservation_timestamp")
+    })
     ReserveOrder get(Long order_id);
 
     @Delete(
@@ -28,35 +37,37 @@ public interface ReserveOrderMapper {
 
     @Update(
         "UPDATE reserve_order " +
-        "SET account_id=#{account_id}, item_id=#{item_id}, status=#{status}, note=#{note}, reservation_timestamp=#{reservation_timestamp} " +
+        "SET account_id=#{account_id}, status=#{status}, note=#{note}, reservation_timestamp=#{reservation_timestamp} " +
         "WHERE order_id=#{order_id}"
     )
     void save(ReserveOrder reserveOrder);
 
     @Select(
-        "SELECT order_id, account_id, item_id, status, note, reservation_timestamp " +
+        "SELECT order_id, account_id, status, note, reservation_timestamp " +
         "FROM reserve_order " +
         "ORDER BY account_id"
     )
     @Results(value = {
-        @Result(property="order_id"),
-        @Result(property="account_id"),
-        @Result(property="item_id"),
-        @Result(property="status"),
-        @Result(property="note"),
-        @Result(property="reservation_timestamp")
+            @Result(property="order_id",column = "order_id"),
+            @Result(property="account_id"),
+            @Result(property="orderItems", column="order_id", javaType=List.class,
+                    one = @One(select = "com.trailblazers.freewheelers.mappers.OrderItemsMapper.getItemsByOrderId")),
+            @Result(property="status"),
+            @Result(property="note"),
+            @Result(property="reservation_timestamp")
     })
     List<ReserveOrder> findAll();
 
     @Select(
-            "SELECT order_id, account_id, item_id, status, note, reservation_timestamp " +
+            "SELECT order_id, account_id, status, note, reservation_timestamp " +
             "FROM reserve_order " +
             "WHERE account_id=#{account_id}"
     )
     @Results(value = {
-            @Result(property="order_id"),
+            @Result(property="order_id", column = "order_id"),
             @Result(property="account_id"),
-            @Result(property="item_id"),
+            @Result(property="orderItems", column="order_id", javaType=List.class,
+                    one = @One(select = "com.trailblazers.freewheelers.mappers.OrderItemsMapper.getItemsByOrderId")),
             @Result(property="status"),
             @Result(property="note"),
             @Result(property="reservation_timestamp")

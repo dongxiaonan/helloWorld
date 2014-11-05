@@ -1,30 +1,52 @@
 package com.trailblazers.freewheelers.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ReserveOrder {
 
     private Long order_id;
     private Long account_id;
-    private Long item_id;
+    private List<OrderItem> orderItems;
     private Date reservation_timestamp;
     private OrderStatus status = OrderStatus.NEW;
     private String note = "";
 
-    public ReserveOrder(){}
+    public ReserveOrder(){
+        this.orderItems = new ArrayList<OrderItem>();
+    }
 
-    public ReserveOrder(Long account_id, Long item_id, Date rightNow) {
+    public ReserveOrder(Long account_id, List<OrderItem> orderItems, Date rightNow) {
         this.account_id = account_id;
-        this.item_id = item_id;
+        this.orderItems = orderItems;
         this.reservation_timestamp = rightNow;
     }
 
-    public Long getItem_id() {
-        return item_id;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public ReserveOrder setItem_id(Long item_id) {
-        this.item_id = item_id;
+    public ReserveOrder setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+        return this;
+    }
+
+    public ReserveOrder addItemToOrder(Long itemId,Long quantity) {
+        OrderItem existingOrderItem = null;
+        for(OrderItem orderItem : this.orderItems){
+            if(orderItem.getItemId().equals(itemId)){
+                existingOrderItem = orderItem;
+                break;
+            }
+        }
+        if(existingOrderItem == null){
+            orderItems.add(new OrderItem(itemId,quantity));
+        } else {
+            Long currentQuantity = existingOrderItem.getQuantity();
+            orderItems.remove(existingOrderItem);
+            orderItems.add(new OrderItem(itemId,currentQuantity + quantity));
+        }
         return this;
     }
 
@@ -41,8 +63,9 @@ public class ReserveOrder {
         return order_id;
     }
 
-    public void setOrder_id(Long order_id) {
+    public ReserveOrder setOrder_id(Long order_id) {
         this.order_id = order_id;
+        return this;
     }
 
     public Long getAccount_id() {
@@ -79,7 +102,7 @@ public class ReserveOrder {
         ReserveOrder that = (ReserveOrder) o;
 
         if (account_id != null ? !account_id.equals(that.account_id) : that.account_id != null) return false;
-        if (item_id != null ? !item_id.equals(that.item_id) : that.item_id != null) return false;
+        if (orderItems != null ? !orderItems.equals(that.orderItems) : that.orderItems != null) return false;
 
         return true;
     }
@@ -87,7 +110,7 @@ public class ReserveOrder {
     @Override
     public int hashCode() {
         int result = account_id != null ? account_id.hashCode() : 0;
-        result = 31 * result + (item_id != null ? item_id.hashCode() : 0);
+        result = 31 * result + (orderItems != null ? orderItems.hashCode() : 0);
         return result;
     }
 }

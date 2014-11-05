@@ -20,7 +20,16 @@
                         <c:out value="${order.account.account_name}"/>
                     </a>
                 </td>
-                <td><c:out value="${order.item.name}"/></td>
+                <td><c:out value="${order.orderId}"/></td>
+                <td>
+                        <table>
+                            <c:forEach var="item" items="${order.items}" varStatus="row" >
+                                <tr>
+                                        <td><c:out value="${item.name}"/></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                </td>
                 <td><c:out value="${order.reserve_time}"/></td>
                 <td>
                     <select name="state">
@@ -41,7 +50,8 @@
     <thead>
     <tr>
         <th>User</th>
-        <th>Order</th>
+        <th>Order ID</th>
+        <th>Items</th>
         <th>Order Time</th>
         <th>Status</th>
         <th>Note</th>

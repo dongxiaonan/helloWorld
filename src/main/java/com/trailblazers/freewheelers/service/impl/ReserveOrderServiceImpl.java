@@ -32,16 +32,17 @@ public class ReserveOrderServiceImpl implements ReserveOrderService {
     }
 
     public void save(ReserveOrder reserveOrder) {
-        if(reserveOrder.getOrder_id() == null) {
+        if (reserveOrder.getOrder_id() == null) {
             orderMapper.insert(reserveOrder);
-            for(OrderItem orderItem:reserveOrder.getOrderItems()) {
-                orderItemsMapper.saveOrderItems(reserveOrder.getOrder_id(),orderItem);
-            }
         } else {
             orderMapper.save(reserveOrder);
-            for(OrderItem orderItem:reserveOrder.getOrderItems()) {
-                orderItemsMapper.updateQuantity(reserveOrder.getOrder_id(),orderItem);
-            }
+        }
+        saveOrders(reserveOrder);
+    }
+
+    private void saveOrders(ReserveOrder reserveOrder) {
+        for (OrderItem orderItem : reserveOrder.getOrderItems()) {
+            orderItemsMapper.saveOrderItems(reserveOrder.getOrder_id(), orderItem);
         }
         sqlSession.commit();
     }

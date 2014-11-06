@@ -99,6 +99,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean checkItemsQuantityIsMoreThanZero(long itemId) {
+        sqlSession.clearCache();
         return itemMapper.getById(itemId).getQuantity()>0;
     }
 

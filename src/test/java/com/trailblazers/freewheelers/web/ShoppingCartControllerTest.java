@@ -165,8 +165,7 @@ public class ShoppingCartControllerTest {
         HttpSession mockHttpSession = mock(HttpSession.class);
         when(request.getSession()).thenReturn(mockHttpSession);
         when(accountService.getAccountByName(anyString())).thenReturn(new Account());
-        when(itemService.getById(2l)).thenReturn(new Item());
-        when(itemService.checkItemsQuantityIsMoreThanZero(2l)).thenReturn(false);
+        when(itemService.checkItemsQuantityIsMoreThanZero(anyLong())).thenReturn(false);
         when(mockHttpSession.getAttribute("totalCartPrice")).thenReturn((Object) BigDecimal.ONE);
 
         shoppingCartController.checkoutItem(expectedModelMap, mock(Principal.class), itemList, request);

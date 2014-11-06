@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -53,7 +52,7 @@ public class ShoppingCartController {
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
     public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request){
        Item itemToCheckout =  itemService.getById(item.getItemId());
-       ArrayList<Item> cartItems = (ArrayList<Item>) request.getSession().getAttribute(sessionItems);
+       ArrayList<Item> cartItems = getSessionItems(request);
        if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
            BigDecimal totalCartPrice = (BigDecimal) request.getSession().getAttribute(this.totalCartPrice);
 
@@ -73,12 +72,15 @@ public class ShoppingCartController {
        else if(itemToCheckout!=null) {
            cartItems = new ArrayList<Item>();
            cartItems.add(itemToCheckout);
-           request.getSession().setAttribute(sessionItems,cartItems);
-           request.getSession().setAttribute(this.totalCartPrice,itemToCheckout.getPrice());
+           setSessionAttributes(cartItems, request, itemToCheckout.getPrice());
            model.addAttribute("items",cartItems);
        }
 
         return "redirect:/?q=t";
+    }
+
+    private ArrayList<Item> getSessionItems(HttpServletRequest request) {
+        return (ArrayList<Item>) request.getSession().getAttribute(sessionItems);
     }
 
     @RequestMapping(value = {"/confirmation/{orderId:.*}"}, method = RequestMethod.GET)
@@ -100,7 +102,7 @@ public class ShoppingCartController {
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
     public String checkoutItem(Model model, Principal principal, @ModelAttribute("items") ArrayList<Item> items, HttpServletRequest request) {
         if(items.size()==0 ) {
-            items = (ArrayList<Item>) request.getSession().getAttribute(sessionItems);
+            items = getSessionItems(request);
         }
         String userName = principal.getName();
         Date rightNow = new Date();
@@ -113,32 +115,39 @@ public class ShoppingCartController {
             Item itemToReserve = itemService.getById(item.getItemId());
 
             if (itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())) {
-                reserveOrder.addItemToOrder(item.getItemId(),1L);
+                reserveOrder.addItemToOrder(itemToReserve.getItemId(),1L);
                 itemService.decreaseQuantityByOne(itemToReserve);
             } else {
                 allItemsAreAvailable = false;
                 model.addAttribute("quantityErrorMessage", "Sorry, some items are no longer available and have been removed from your cart.");
                 itemsNotAvailable.add(item);
                 BigDecimal totalCartPrice = ((BigDecimal) request.getSession().getAttribute(this.totalCartPrice)).subtract(item.getPrice());
-                request.getSession().setAttribute(sessionItems, items);
-                request.getSession().setAttribute(this.totalCartPrice,totalCartPrice);
+                setSessionAttributes(items, request, totalCartPrice);
             }
         }
         items.removeAll(itemsNotAvailable);
         model.addAttribute("items", items);
         if(allItemsAreAvailable) {
             reserveOrderService.save(reserveOrder);
-            request.getSession().setAttribute(sessionItems, null);
-            request.getSession().setAttribute(this.totalCartPrice,null);
+            clearSessionAttributes(request);
             return "redirect:/shoppingCart/confirmation/"+reserveOrder.getOrder_id();
         }
         return "/shoppingCart/myShoppingCart";
     }
 
+    private void clearSessionAttributes(HttpServletRequest request) {
+        request.getSession().setAttribute(sessionItems, null);
+        request.getSession().setAttribute(this.totalCartPrice, null);
+    }
+
+    private void setSessionAttributes(ArrayList<Item> items, HttpServletRequest request, BigDecimal totalCartPrice) {
+        request.getSession().setAttribute(sessionItems, items);
+        request.getSession().setAttribute(this.totalCartPrice,totalCartPrice);
+    }
+
     @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)
     public String clearShoppingCart(HttpServletRequest request) {
-        request.getSession().setAttribute(sessionItems, null);
-        request.getSession().setAttribute(this.totalCartPrice,null);
+        clearSessionAttributes(request);
         return "redirect:/";
     }
 }

@@ -89,17 +89,6 @@ public class AccountValidationTest {
         }
     }
 
-    @Test
-    public void shouldComplainAboutAnEmptyPassword() throws Exception {
-        String emptyPassword = "";
-
-        account.setPassword(emptyPassword);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
-
 
     @Test
     public void shouldComplainAboutAnEmptyName() throws Exception {
@@ -113,64 +102,35 @@ public class AccountValidationTest {
     }
 
     @Test
-    public void shouldComplainAboutAnEmptyPhoneNumber() throws Exception {
-        String emptyPhoneNumber = "";
+    public void shouldComplainAboutAnInvalidPhoneNumber() throws Exception {
+        List<String> invalidPhoneNumbers = new ArrayList<String>();
+        invalidPhoneNumbers.add("");
+        invalidPhoneNumbers.add("a");
+        invalidPhoneNumbers.add("?0086222222");
 
-        account.setPhoneNumber(emptyPhoneNumber);
+        for(String invalidPhoneNumber : invalidPhoneNumbers) {
+            account.setPhoneNumber(invalidPhoneNumber);
 
-        Map<String, String>  errors = verifyInputs(account);
+            Map<String, String> errors = verifyInputs(account);
 
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis).", errors);
+            assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis).", errors);
+        }
     }
 
     @Test
-    public void shouldComplainWhenPhoneNumberContainsCharacter() throws Exception {
-        String invalidPhoneNumber = "a";
-        account.setPhoneNumber(invalidPhoneNumber);
+    public void shouldNotComplainAboutAValidPhoneNumber() throws Exception {
+        List<String> validPhoneNumbers = new ArrayList<String>();
+        validPhoneNumbers.add("222-222");
+        validPhoneNumbers.add("+0086222222");
+        validPhoneNumbers.add("(008)6222222");
 
-        Map<String, String>  errors = verifyInputs(account);
+        for(String validPhoneNumber : validPhoneNumbers) {
+            account.setPhoneNumber(validPhoneNumber);
 
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis).", errors);
-    }
+            Map<String, String> errors = verifyInputs(account);
 
-    @Test
-    public void shouldNotComplainWhenPhoneNumberContainsDash() throws Exception {
-        String validPhoneNumberWithDash = "222-222";
-        account.setPhoneNumber(validPhoneNumberWithDash);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThat(errors.size(), is(0));
-    }
-
-    @Test
-    public void shouldNotComplainWhenPhoneNumberContainsPlus() throws Exception {
-        String validPhoneNumberWithPlus = "+0086222222";
-        account.setPhoneNumber(validPhoneNumberWithPlus);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThat(errors.size(), is(0));
-    }
-
-    @Test
-    public void shouldNotComplainWhenPhoneNumberContainsParenthesis() throws Exception {
-        String validPhoneNumberWithParenthesis = "(008)6222222";
-        account.setPhoneNumber(validPhoneNumberWithParenthesis);
-
-        Map<String, String> errors = verifyInputs(account);
-
-        assertThat(errors.size(), is(0));
-    }
-
-    @Test
-    public void shouldComplainWhenPhoneNumberContainsSpecialCharacters() throws Exception {
-        String invalidPhoneNumberWithQuestionMark = "?0086222222";
-        account.setPhoneNumber(invalidPhoneNumberWithQuestionMark);
-
-        Map<String, String> errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis).", errors);
+            assertThat(errors.size(), is(0));
+        }
     }
 
     @Test
@@ -184,63 +144,24 @@ public class AccountValidationTest {
 
     @Test
     public void shouldComplainWhenPasswordNotContainsNumber() throws Exception {
-        String password = "!invalidPassword";
-        account.setPassword(password);
+        List<String> invalidPasswords = new ArrayList<String>();
+        invalidPasswords.add("");
+        invalidPasswords.add("!invalidPassword");
+        invalidPasswords.add("1invalidPassword");
+        invalidPasswords.add("!invalidpassword1");
+        invalidPasswords.add("!1CONFIRMEDPASSWORD");
+        invalidPasswords.add("a!2Pass");
+        invalidPasswords.add("!invalidPassword123qq");
 
-        Map<String, String>  errors = verifyInputs(account);
+        for (String invalidPassword : invalidPasswords) {
+            account.setPassword(invalidPassword);
 
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
+            Map<String, String>  errors = verifyInputs(account);
+
+            assertThereIsOneErrorFor("password", "meet password requirement", errors);
+        }
     }
 
-    @Test
-    public void shouldComplainWhenPasswordNotContainsSpecialCapital() throws Exception {
-        String password = "1invalidPassword";
-        account.setPassword(password);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPasswordNotContainsUpperCase() throws Exception {
-        String password = "!invalidpassword1";
-        account.setPassword(password);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPasswordNotContainsLowerCase() throws Exception {
-        String password = "!1CONFIRMEDPASSWORD";
-        account.setPassword(password);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPasswordLessThan8() throws Exception {
-        String password = "a!2Pass";
-        account.setPassword(password);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
-
-    @Test
-    public void shouldComplainWhenPasswordNotContainsMoreThan20() throws Exception {
-        String password = "!invalidPassword123qq";
-        account.setPassword(password);
-
-        Map<String, String>  errors = verifyInputs(account);
-
-        assertThereIsOneErrorFor("password", "meet password requirement", errors);
-    }
     private void assertThereIsOneErrorFor(String field, String expected, Map<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));

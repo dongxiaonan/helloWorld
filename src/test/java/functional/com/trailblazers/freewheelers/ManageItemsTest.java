@@ -1,10 +1,6 @@
 package functional.com.trailblazers.freewheelers;
 
 import org.junit.Test;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-
-import java.io.File;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 
@@ -41,17 +37,6 @@ public class ManageItemsTest extends UserJourneyBase {
         screen
                 .shows_error("Please enter Item Quantity");
 
-        user
-                .creates_an_item(Simplon_Frame, "FRAME", "0", REALLY_EXPENSIVE, SOME_DESCRIPTION);
-
-        screen
-                .shows_error("Please enter positive quantity");
-
-        user
-                .creates_an_item(Simplon_Frame, "FRAME", "a", REALLY_EXPENSIVE, SOME_DESCRIPTION);
-
-        screen
-                .shows_error("Please enter positive quantity");
 
         user
                 .creates_an_item(Simplon_Frame, "FRAME", "-2", REALLY_EXPENSIVE, SOME_DESCRIPTION);

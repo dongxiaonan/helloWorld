@@ -30,7 +30,7 @@ public class NetPromoterScoreTest extends UserJourneyBase {
         user
                 .logs_in_with(username, password)
                 .visits_home_page()
-                .add_to_cart(frame)
+                .add_item_to_shopping_cart(frame)
                 .visits_shopping_cart()
                 .check_out_item()
                 .waits_for_survey_popup();

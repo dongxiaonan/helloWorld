@@ -142,12 +142,12 @@ public class ScreenApi {
     }
 
     public ScreenApi should_list_item_in_shopping_cart(String item) {
-        assertNumberOfRows(1, ShoppingCartTable.nameFieldFor(item));
+        assertNumberOfRows(1, ItemsTable.nameFieldFor(item));
         return this;
     }
 
     public ScreenApi should_not_list_item_in_shopping_cart(String item) {
-        assertNumberOfRows(0, ShoppingCartTable.nameFieldFor(item));
+        assertNumberOfRows(0, ItemsTable.nameFieldFor(item));
         return this;
     }
 
@@ -189,12 +189,16 @@ public class ScreenApi {
     }
 
     public ScreenApi should_list_items_with_order(String[] names) {
-        assertNumberOfRows(2, ShoppingCartTable.items());
+        assertNumberOfRows(2, ItemsTable.items());
         for (String name : names){
-            assertNumberOfRows(1, ShoppingCartTable.nameFieldFor(name));
+            assertNumberOfRows(1, ItemsTable.nameFieldFor(name));
         }
-        assertOrderOfRows(names, ShoppingCartTable.items(), ShoppingCartTable.firstColumnOfRow());
+        assertOrderOfRows(names, ItemsTable.items(), ItemsTable.firstColumnOfRow());
         return this;
     }
 
+    public ScreenApi shouldListItemInUserOrders(String itemName) {
+        assertNumberOfRows(1,ItemsTable.nameFieldFor(itemName));
+        return this;
+    }
 }

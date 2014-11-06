@@ -26,13 +26,17 @@ public class OrderTest extends UserJourneyBase {
                 .should_list_item(Simplon_Frame);
 
         user
-                .add_to_cart(Simplon_Frame)
+                .add_item_to_shopping_cart(Simplon_Frame)
                 .visits_shopping_cart()
                 .check_out_item()
                 .visits_home_page();
 
         screen
                 .should_not_list_item(Simplon_Frame);
+        user
+                .visits_his_profile();
+        screen
+                .shouldListItemInUserOrders(Simplon_Frame);
 
         user
                 .logs_in_with(Arno, SOME_PASSWORD)

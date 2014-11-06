@@ -136,11 +136,6 @@ public class UserApi {
         return this;
     }
 
-    public UserApi add_to_cart(String name) {
-        driver.findElement(HomeTable.addToCartButtonFor(name)).click();
-        return this;
-    }
-
     public UserApi changes_order_status(String item, String toState) {
         select(toState, driver.findElement(OrderTable.selectFor(item)));
         driver.findElement(OrderTable.saveButtonFor(item)).click();
@@ -210,11 +205,6 @@ public class UserApi {
         driver.get(URLs.userProfile() + "/" + username);
         return this;
 
-    }
-
-    public UserApi click_add_to_shopping_cart() {
-        driver.findElement(By.id("addToCart")).click();
-        return this;
     }
 
     public UserApi visits_shopping_cart() {

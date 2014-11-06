@@ -48,8 +48,24 @@
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
 
     <target name="cobertura-instrument">
+        <delete file="cobertura.ser"/>
         <cobertura-instrument todir="${cobertura.instrument.dir}">
             <fileset dir="${bin.dir}/main">
+                <exclude name="**/AccountRole.class" />
+                <exclude name="**/FreeWheelersServer.class" />
+                <exclude name="**/Account.class" />
+                <exclude name="**/ReserveOrder.class" />
+                <exclude name="**/ShoppingCartController.class" />
+                <exclude name="**/ItemServiceImpl.class" />
+                <exclude name="**/Country.class" />
+                <exclude name="**/OrderItem.class" />
+                <exclude name="**/VerificationController.class" />
+                <exclude name="**/ReservedOrderDetail.class" />
+                <exclude name="**/SurveyEntryForm.class" />
+                <exclude name="**/NpsReport.class" />
+                <exclude name="**/ReserveOrderServiceImpl.class" />
+                <exclude name="**/CountryServiceImpl.class" />
+                <exclude name="**/MyBatisUtil.class" />
                 <include name="**/*.class"/>
             </fileset>
         </cobertura-instrument>
@@ -230,7 +246,7 @@
     <target name="compile" depends="compile-main, compile-test" description="compile all sources" />
 
     <target name="coverage" description="generates html coverage reports">
-        <cobertura-report srcdir="${src.dir}" destdir="${bin.dir}/coverage/" format="html"/>
+        <cobertura-report srcdir="${src.dir}/main/java" destdir="${bin.dir}/coverage/" format="html"/>
         <echo message="Coverage report generated in: ${absolute.path.base.dir}/bin/coverage/index.html"/>
     </target>
 

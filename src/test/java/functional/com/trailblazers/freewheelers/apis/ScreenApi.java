@@ -125,8 +125,9 @@ public class ScreenApi {
         return this;
     }
 
-    public ScreenApi should_show_country() {
-        assertThat(driver.findElement(By.className("country")).getText(),not("Country :"));
+    public ScreenApi shouldShowNPSReportPage() {
+        assertThat(driver.getCurrentUrl(),is(URLs.surveyReport()));
+        assertThat(driver.findElement(By.className("net-promoter-score")).getText(),containsString("Net Promoter Score is"));
         return this;
     }
 

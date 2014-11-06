@@ -13,14 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/emailverification")
-public class VerificationController {
+public class EmailVerificationController {
 
 
     private AccountService accountService;
 
     private EncryptionService encryptionService;
 
-    public VerificationController()
+    public EmailVerificationController()
     {
         accountService = new AccountServiceImpl();
         encryptionService = new EncryptionService();

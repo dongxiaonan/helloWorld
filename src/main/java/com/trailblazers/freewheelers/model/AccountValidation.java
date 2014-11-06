@@ -11,10 +11,11 @@ public class AccountValidation {
     private static final String CITY_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,100}$";
     private static final String STATE_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,100}$";
     private static final String PHONE_NUMBER_FORMAT = "[\\+(0-9)\\-]*";
-    private HashMap<String, String> errors = new HashMap<String, String>();
+    private HashMap<String, String> errors;
     private Account account;
 
     public Map<String, String> verifyInputs(Account account) {
+        this.errors = new HashMap<String, String>();
         this.account = account;
         validateEmail();
         validateName();

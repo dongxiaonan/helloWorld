@@ -5,7 +5,6 @@ import com.trailblazers.freewheelers.mappers.AccountRoleMapper;
 import com.trailblazers.freewheelers.mappers.MyBatisUtil;
 import com.trailblazers.freewheelers.model.Account;
 import com.trailblazers.freewheelers.model.AccountRole;
-import com.trailblazers.freewheelers.model.AccountValidation;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -13,8 +12,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -64,17 +63,17 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ServiceResult<Account> createAccount(Account account){
-        Map<String, String> errors = new AccountValidation().verifyInputs(account);
+//        Map<String, String> errors = new AccountValidation().verifyInputs(account);
 
-        if(errors.isEmpty()) {
-            try {
-                create(account, USER);
-            }catch (PersistenceException e){
-                sqlSession.rollback();
-               if( e.getMessage().contains("email")){
-                   errors.put("email", "Email address is already being used.");
-               }
-            }
+//        if(errors.isEmpty()) {
+        HashMap<String, String> errors = new HashMap<String, String>();
+        try {
+            create(account, USER);
+        }catch (PersistenceException e){
+            sqlSession.rollback();
+           if( e.getMessage().contains("email")){
+               errors.put("email", "Email address is already being used.");
+           }
         }
 
         return new ServiceResult(errors, account);

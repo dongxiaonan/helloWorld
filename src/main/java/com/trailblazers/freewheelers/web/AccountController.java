@@ -30,6 +30,8 @@ public class AccountController {
     private AccountService accountService;
     @Autowired
     private CountryService countryService;
+
+    private AccountValidation accountValidation = new AccountValidation();
     @Autowired
     private EmailSender emailSender;
 
@@ -51,19 +53,15 @@ public class AccountController {
         Account account = createAccount(request);
 
         try {
-
-            if (!isPasswordMatch(account.getPassword(), request.getParameter("confirmedPassword"))) {
-                Map errors = new HashMap();
+            Map<String, String> errors = accountValidation.verifyInputs(account);
+            if(!isPasswordMatch(account.getPassword(), request.getParameter("confirmedPassword"))){
                 errors.put("confirmedPassword", "Must have matching password!");
-                errors.putAll(new AccountValidation().verifyInputs(account));
+            }
+            if (errors.size() != 0) {
                 return showErrors(errors);
             }
 
             ServiceResult<Account> result = accountService.createAccount(account);
-
-            if (result.hasErrors()) {
-                return showErrors(result.getErrors());
-            }
 
             emailSender.sendVerificationEmail(serverURL, account);
             return showSuccess(result.getModel());

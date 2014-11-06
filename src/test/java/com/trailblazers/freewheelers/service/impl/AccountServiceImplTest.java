@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -38,32 +37,6 @@ public class AccountServiceImplTest {
         when(sqlSession.getMapper(AccountRoleMapper.class)).thenReturn(accountRoleMapper);
 
         accountService = new AccountServiceImpl(sqlSession);
-    }
-
-    @Test
-    public void shouldNotCreateAccountWhenThereAreValidationErrors(){
-        Account account = getAccountWithErrors();
-
-        ServiceResult<Account> serviceResult = accountService.createAccount(account);
-
-        verify(accountMapper, never()).insert(account);
-        verify(accountRoleMapper, never()).insert(any(AccountRole.class));
-        verify(sqlSession, never()).commit();
-        assertTrue(serviceResult.hasErrors());
-    }
-
-    private Account getAccountWithErrors() {
-        return new Account()
-                .setAccount_name("")
-                .setEmail_address("")
-                .setPassword("")
-                .setCountry(null)
-                .setStreet1("")
-                .setStreet2("")
-                .setCity("")
-                .setState_Province("")
-                .setPostcode("")
-                .setPhoneNumber("");
     }
 
     @Test

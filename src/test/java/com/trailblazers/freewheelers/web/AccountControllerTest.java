@@ -1,6 +1,7 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.model.Account;
+import com.trailblazers.freewheelers.model.AccountValidation;
 import com.trailblazers.freewheelers.model.Country;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.CountryService;
@@ -32,6 +33,9 @@ public class AccountControllerTest {
 
     @Mock
     private CountryService countryService;
+
+    @Mock
+    private AccountValidation accountValidation;
 
     @Mock
     private EmailSender emailSender;
@@ -177,9 +181,9 @@ public class AccountControllerTest {
         ServiceResult<Account> failure = new ServiceResult<Account>(errors, new Account());
         when(accountService.createAccount(any(Account.class))).thenReturn(failure);
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+        when(accountValidation.verifyInputs(any(Account.class))).thenReturn(errors);
         when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
-
         ModelAndView createView = accountController.processCreate(mockRequest);
 
         ModelMap model = new ModelMap();
@@ -199,6 +203,7 @@ public class AccountControllerTest {
         HttpServletRequest mockRequest = mock(HttpServletRequest.class);
         when(mockRequest.getParameter("confirmedPassword")).thenReturn("V3rySecure!");
         when(mockRequest.getParameter("password")).thenReturn("V3rySecure!");
+        when(accountValidation.verifyInputs(any(Account.class))).thenReturn(new HashMap<String, String>());
 
         ModelAndView createView = accountController.processCreate(mockRequest);
 

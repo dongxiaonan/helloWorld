@@ -191,7 +191,7 @@ public class ShoppingCartControllerTest {
         assertTrue(expectedModelMap.containsValue(expectedItemList));
         assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object)expectedItemList));
         assertThat(httpServletRequest.getSession().getAttribute("totalCartPrice"),is((Object)BigDecimal.valueOf(5.22)));
-        assertThat(result,is("redirect:/?q=t"));
+        assertThat(result,is("redirect:/"));
 
     }
 

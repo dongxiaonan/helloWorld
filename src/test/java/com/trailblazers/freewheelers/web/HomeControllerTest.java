@@ -26,31 +26,6 @@ public class HomeControllerTest {
     private HomeController homeController= new HomeController();
 
     @Test
-    public void shouldSetTheSuccessMessageWhenItemIsSuccessfullyAddedToCart() {
-        ExtendedModelMap model =new ExtendedModelMap();
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getParameter("q")).thenReturn("t");
-
-        String result = homeController.get(model,new Item(),request);
-
-        assertThat(result,is("home"));
-        assertTrue(model.containsKey("successMessage"));
-        assertThat(model.get("successMessage"), is((Object)"Item has been added to your shopping cart.") );
-    }
-
-    @Test
-    public void shouldNotSetTheSuccessMessageWhenItemIsNotSuccessfullyAddedToCart() {
-        ExtendedModelMap model =new ExtendedModelMap();
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getParameter("q")).thenReturn("f");
-
-        String result = homeController.get(model,new Item(),request);
-
-        assertThat(result, is("home"));
-        assertFalse(model.containsKey("successMessage"));
-    }
-
-    @Test
     public void shouldShowTheHomePage() {
         ExtendedModelMap model =new ExtendedModelMap();
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -58,6 +33,5 @@ public class HomeControllerTest {
         String result = homeController.get(model,new Item(),request);
 
         assertThat(result, is("home"));
-        assertFalse(model.containsKey("successMessage"));
     }
 }

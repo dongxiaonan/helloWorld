@@ -174,8 +174,8 @@ public class ScreenApi {
     }
 
     public ScreenApi shouldShowSuccessAtHomePageForAddingItemToCart() {
-        assertThat(driver.getCurrentUrl(), is(URLs.home() + "?q=t"));
-        assertThat(driver.findElement(By.id("resultMessage")).getText(), is("Item has been added to your shopping cart."));
+        assertThat(driver.getCurrentUrl(), is(URLs.home()));
+        assertThat(driver.findElement(By.id("resultMessage")).getText(), containsString(" has been added to your shopping cart."));
         return this;
     }
 

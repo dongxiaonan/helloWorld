@@ -8,7 +8,6 @@
     })
 </script>
 
-<div class="page-action">My Shopping Cart</div>
 <div class="page-action">Order has been placed successfully</div>
 
 <table class="table">

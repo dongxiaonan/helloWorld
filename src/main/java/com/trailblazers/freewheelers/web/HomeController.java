@@ -24,9 +24,6 @@ public class HomeController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String get(Model model, @ModelAttribute("item") Item item, HttpServletRequest request) {
         model.addAttribute("items", itemService.getItemsWithNonZeroQuantity());
-        if(request.getParameter("q") != null && request.getParameter("q").equals("t")) {
-            model.addAttribute("successMessage", "Item has been added to your shopping cart.");
-        }
         return "home";
 	}
 

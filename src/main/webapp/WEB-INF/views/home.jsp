@@ -2,8 +2,9 @@
 <c:set var="pageTitle" scope="request" value="Home"/>
 <%@ include file="header.jsp" %>
 
-<c:if test="${not empty successMessage}">
-    <div id="resultMessage" class="page-action success"> ${successMessage} </div>
+<c:if test="${ lastItem != null }">
+    <div id="resultMessage" class="page-action success"> ${lastItem.name} has been added to your shopping cart.</div>
+    <% session.setAttribute("lastItem",null); %>
 </c:if>
 <table>
     <thead>

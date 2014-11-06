@@ -71,7 +71,8 @@ public class ShoppingCartController {
            model.addAttribute("items",cartItems);
        }
 
-        return "redirect:/?q=t";
+        request.getSession().setAttribute("lastItem",itemToCheckout);
+        return "redirect:/";
     }
 
     private ArrayList<Item> getSessionItems(HttpServletRequest request) {

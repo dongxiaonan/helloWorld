@@ -111,4 +111,15 @@ public class AccountServiceImpl implements AccountService {
                 .setAccountName(account.getAccount_name())
                 .setRole(role);
     }
+
+    @Override
+    public boolean enabledAccountByEmail(String emailAddress) {
+            Account account = getAccountIdByEmail(emailAddress);
+            if (account != null) {
+                account.setEnabled(true);
+                updateAccount(account);
+                return true;
+            }
+        return false;
+    }
 }

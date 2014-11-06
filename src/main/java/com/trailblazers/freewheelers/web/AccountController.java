@@ -55,7 +55,7 @@ public class AccountController {
             if (!isPasswordMatch(account.getPassword(), request.getParameter("confirmedPassword"))) {
                 Map errors = new HashMap();
                 errors.put("confirmedPassword", "Must have matching password!");
-                errors.putAll(AccountValidation.verifyInputs(account));
+                errors.putAll(new AccountValidation().verifyInputs(account));
                 return showErrors(errors);
             }
 

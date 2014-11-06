@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.trailblazers.freewheelers.model.AccountValidation.verifyInputs;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -23,9 +22,11 @@ public class AccountValidationTest {
     public static final String SOME_CITY = "London";
     public static final String SOME_POSTCODE = "12453";
     private Account account;
+    private AccountValidation accountValidation;
 
     @Before
     public void setup() {
+        accountValidation = new AccountValidation();
         account = new Account()
                 .setEmail_address(SOME_EMAIL)
                 .setPassword(SOME_PASSWORD)
@@ -42,7 +43,7 @@ public class AccountValidationTest {
     }
     @Test
     public void shouldHaveNoErrorsForValidInput() throws Exception {
-        Map<String, String>  errors = verifyInputs(account);
+        Map<String, String>  errors = accountValidation.verifyInputs(account);
 
         assertThat(errors.size(), is(0));
     }
@@ -64,7 +65,7 @@ public class AccountValidationTest {
 
         for(String invalidEmail :invalidEmails) {
             account.setEmail_address(invalidEmail);
-            Map<String, String>  errors = verifyInputs(account);
+            Map<String, String>  errors = accountValidation.verifyInputs(account);
 
             assertThereIsOneErrorFor("email", "enter a valid email", errors);
         }
@@ -83,12 +84,11 @@ public class AccountValidationTest {
 
         for(String validEmail:validEmails) {
             account.setEmail_address(validEmail);
-            Map<String, String>  errors = verifyInputs(account);
+            Map<String, String>  errors = accountValidation.verifyInputs(account);
 
             assertThat(errors.size(),is(0));
         }
     }
-
 
     @Test
     public void shouldComplainAboutAnEmptyName() throws Exception {
@@ -96,7 +96,7 @@ public class AccountValidationTest {
 
         account.setAccount_name(emptyName);
 
-        Map<String, String>  errors = verifyInputs(account);
+        Map<String, String>  errors = accountValidation.verifyInputs(account);
 
         assertThereIsOneErrorFor("name", "enter a name", errors);
     }
@@ -110,9 +110,7 @@ public class AccountValidationTest {
 
         for(String invalidPhoneNumber : invalidPhoneNumbers) {
             account.setPhoneNumber(invalidPhoneNumber);
-
-            Map<String, String> errors = verifyInputs(account);
-
+            Map<String, String> errors = accountValidation.verifyInputs(account);
             assertThereIsOneErrorFor("phoneNumber", "Must enter valid phone number (Not empty, and can only contain: numbers, plus, dash and parenthesis).", errors);
         }
     }
@@ -123,12 +121,9 @@ public class AccountValidationTest {
         validPhoneNumbers.add("222-222");
         validPhoneNumbers.add("+0086222222");
         validPhoneNumbers.add("(008)6222222");
-
         for(String validPhoneNumber : validPhoneNumbers) {
             account.setPhoneNumber(validPhoneNumber);
-
-            Map<String, String> errors = verifyInputs(account);
-
+            Map<String, String> errors = accountValidation.verifyInputs(account);
             assertThat(errors.size(), is(0));
         }
     }
@@ -137,7 +132,7 @@ public class AccountValidationTest {
     public void shouldComplainAboutAnEmptyCountry() throws Exception {
         account.setCountry(null);
 
-        Map<String, String>  errors = verifyInputs(account);
+        Map<String, String>  errors = accountValidation.verifyInputs(account);
 
         assertThereIsOneErrorFor("country","select a country",errors);
     }
@@ -156,7 +151,7 @@ public class AccountValidationTest {
         for (String invalidPassword : invalidPasswords) {
             account.setPassword(invalidPassword);
 
-            Map<String, String>  errors = verifyInputs(account);
+            Map<String, String>  errors = accountValidation.verifyInputs(account);
 
             assertThereIsOneErrorFor("password", "meet password requirement", errors);
         }

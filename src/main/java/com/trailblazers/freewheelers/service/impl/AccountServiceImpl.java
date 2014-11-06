@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ServiceResult<Account> createAccount(Account account){
-        Map<String, String> errors = AccountValidation.verifyInputs(account);
+        Map<String, String> errors = new AccountValidation().verifyInputs(account);
 
         if(errors.isEmpty()) {
             try {

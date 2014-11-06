@@ -103,15 +103,19 @@ public class AccountControllerTest {
         when(request.getParameter("postcode")).thenReturn("12453");
         when(request.getParameter("phoneNumber")).thenReturn("123456789");
         when(countryService.getCountryByName("United Kingdom")).thenReturn(new Country(1, "United Kingdom"));
+        when(accountService.createAccount(expectedAccount)).thenReturn(new ServiceResult<Account>(new HashMap<String, String>(),expectedAccount));
 
-        accountController.processCreate(request);
+        ModelAndView resultModelAndView = accountController.processCreate(request);
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
         verify(accountService).createAccount(captor.capture());
         Account account= captor.getValue();
-
+        ModelMap expectedModelMap = new ModelMap();
+        expectedModelMap.put("name",expectedAccount.getAccount_name());
+        ModelAndView expectedModelAndView  = new ModelAndView("account/createSuccess", "postedValues", expectedModelMap);
 
         assertThat(account,is(expectedAccount));
+        assertThat(resultModelAndView.getModel(), is((Object)expectedModelAndView.getModel()));
     }
 
     private Account getSomeAccount() {

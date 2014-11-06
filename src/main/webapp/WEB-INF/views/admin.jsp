@@ -30,7 +30,7 @@
                             </c:forEach>
                         </table>
                 </td>
-                <td><c:out value="${order.reserve_time}"/></td>
+                <td><c:out value="${order.reserveTime}"/></td>
                 <td>
                     <select name="state">
                         <c:forEach var="statusoption" items="${order.statusOptions}" varStatus="row">

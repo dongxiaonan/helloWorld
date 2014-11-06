@@ -7,16 +7,16 @@ public class ReservedOrderDetail  {
 
     private List<Item> items;
     private Account account;
-    private Date reserve_time;
+    private Date reserveTime;
     private OrderStatus status;
     private String note;
     private Long orderId;
 
-    public ReservedOrderDetail(Long orderId, Account account, List<Item> items, Date reserve_time, OrderStatus status, String note){
+    public ReservedOrderDetail(Long orderId, Account account, List<Item> items, Date reserveTime, OrderStatus status, String note){
         this.orderId = orderId;
         this.items = items;
         this.account = account;
-        this.reserve_time = reserve_time;
+        this.reserveTime = reserveTime;
         this.status = status;
         this.note = note;
     }
@@ -32,10 +32,6 @@ public class ReservedOrderDetail  {
         this.items = item;
     }
 
-    public void addItem(Item item) {
-        this.items.add(item);
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -44,12 +40,8 @@ public class ReservedOrderDetail  {
         this.account = account;
     }
 
-    public Date getReserve_time() {
-        return reserve_time;
-    }
-
-    public void setReserve_time(Date reserve_time) {
-        this.reserve_time = reserve_time;
+    public Date getReserveTime() {
+        return reserveTime;
     }
 
     public OrderStatus getStatus() {
@@ -62,10 +54,6 @@ public class ReservedOrderDetail  {
 
     public Long getOrderId() {
         return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
     }
 
     public String getNote() {

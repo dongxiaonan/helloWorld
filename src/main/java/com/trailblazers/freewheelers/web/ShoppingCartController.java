@@ -38,12 +38,11 @@ public class ShoppingCartController {
     private ReserveOrderService reserveOrderService;
 
     final String sessionItems = "sessionItems";
-    private final String totalCartPrice = "totalCartPrice";
 
     @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.GET)
     public void showShoppingCart(Model model,@ModelAttribute Item item, HttpServletRequest request) {
         if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
-            List<Item> cartItems = (List<Item>) request.getSession().getAttribute(sessionItems);
+            List<Item> cartItems = getSessionItems(request);
 
             model.addAttribute("items", cartItems);
         }
@@ -54,25 +53,21 @@ public class ShoppingCartController {
        Item itemToCheckout =  itemService.getById(item.getItemId());
        ArrayList<Item> cartItems = getSessionItems(request);
        if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
-           BigDecimal totalCartPrice = (BigDecimal) request.getSession().getAttribute(this.totalCartPrice);
 
            if (cartItems == null) {
                cartItems = new ArrayList<Item>();
-               totalCartPrice = BigDecimal.valueOf(0.0d);
            }
 
            if (itemToCheckout != null) {
                cartItems.add(itemToCheckout);
-               totalCartPrice = totalCartPrice.add(itemToCheckout.getPrice());
-               request.getSession().setAttribute(this.totalCartPrice, totalCartPrice);
-               request.getSession().setAttribute(sessionItems, cartItems);
+               setSessionAttributes(request, cartItems);
            }
            model.addAttribute("items", cartItems);
        }
        else if(itemToCheckout!=null) {
            cartItems = new ArrayList<Item>();
            cartItems.add(itemToCheckout);
-           setSessionAttributes(cartItems, request, itemToCheckout.getPrice());
+           setSessionAttributes(request, cartItems);
            model.addAttribute("items",cartItems);
        }
 
@@ -121,8 +116,6 @@ public class ShoppingCartController {
                 allItemsAreAvailable = false;
                 model.addAttribute("quantityErrorMessage", "Sorry, some items are no longer available and have been removed from your cart.");
                 itemsNotAvailable.add(item);
-                BigDecimal totalCartPrice = ((BigDecimal) request.getSession().getAttribute(this.totalCartPrice)).subtract(item.getPrice());
-                setSessionAttributes(items, request, totalCartPrice);
             }
         }
         items.removeAll(itemsNotAvailable);
@@ -130,19 +123,26 @@ public class ShoppingCartController {
         if(allItemsAreAvailable) {
             reserveOrderService.save(reserveOrder);
             clearSessionAttributes(request);
-            return "redirect:/shoppingCart/confirmation/"+reserveOrder.getOrder_id();
+            return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
         }
+        setSessionAttributes(request, items);
         return "/shoppingCart/myShoppingCart";
     }
 
     private void clearSessionAttributes(HttpServletRequest request) {
-        request.getSession().setAttribute(sessionItems, null);
-        request.getSession().setAttribute(this.totalCartPrice, null);
+        setSessionAttributes(request, null);
     }
 
-    private void setSessionAttributes(ArrayList<Item> items, HttpServletRequest request, BigDecimal totalCartPrice) {
+    private void setSessionAttributes(HttpServletRequest request, ArrayList<Item> items) {
+        BigDecimal cartPrice = BigDecimal.ZERO;
+        if(items != null){
+            for(Item item : items) {
+                cartPrice = cartPrice.add(item.getPrice());
+            }
+        }
         request.getSession().setAttribute(sessionItems, items);
-        request.getSession().setAttribute(this.totalCartPrice,totalCartPrice);
+        String totalCartPrice = "totalCartPrice";
+        request.getSession().setAttribute(totalCartPrice, cartPrice);
     }
 
     @RequestMapping(value = {"/clear"}, method = RequestMethod.POST)

@@ -12,12 +12,18 @@ import java.io.IOException;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    private HttpSessionRequestCache httpSessionRequestCache;
+
+    public AuthenticationSuccessHandler(){
+        this.httpSessionRequestCache = new HttpSessionRequestCache();
+    }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response, Authentication authentication)
             throws ServletException, IOException {
-        SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request,response);
-        if(savedRequest.getRedirectUrl().contains("/shoppingCart/addToCart")) {
+        SavedRequest savedRequest = httpSessionRequestCache.getRequest(request, response);
+        if(savedRequest!=null && savedRequest.getRedirectUrl().contains("/shoppingCart/addToCart")) {
             this.setUseReferer(true);
             response.sendRedirect("/shoppingCart/addToCart");
         } else {

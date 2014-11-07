@@ -48,7 +48,7 @@ public class ShoppingCartController {
         }
     }
 
-    @RequestMapping(value = {"/myShoppingCart"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/addToCart"}, method = RequestMethod.POST)
     public String addToShoppingCart(Model model, @ModelAttribute Item item, HttpServletRequest request){
        Item itemToCheckout =  itemService.getById(item.getItemId());
        ArrayList<Item> cartItems = getSessionItems(request);

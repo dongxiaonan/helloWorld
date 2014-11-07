@@ -8,6 +8,8 @@
 
     <beans:import resource='persistence-config.xml'/>
 
+    <beans:bean id="mySuccessHandler" class="com.trailblazers.freewheelers.web.AuthenticationSuccessHandler"/>
+
     <http auto-config="true">
         <intercept-url pattern="/admin" access="ROLE_ADMIN"/>
         <intercept-url pattern="/item" access="ROLE_ADMIN"/>
@@ -16,8 +18,10 @@
         <intercept-url pattern="/survey/report" access="ROLE_ADMIN"/>
         <intercept-url pattern="/userProfile/**" access="ROLE_ADMIN, ROLE_USER"/>
         <intercept-url pattern="/shoppingCart/**" access="ROLE_ADMIN, ROLE_USER"/>
-        <form-login login-page="/login" default-target-url="/" always-use-default-target="true"
+        <form-login login-page="/login"
+                    authentication-success-handler-ref="mySuccessHandler"
                     authentication-failure-url="/loginfailed" />
+                    <!--default-target-url="/" always-use-default-target="true"-->
         <logout logout-success-url="/" />
         <access-denied-handler error-page="/403" />
     </http>

@@ -17,7 +17,7 @@ public class FreeWheelersServer {
     public FreeWheelersServer() {
         server = new Server(8080);
         server.setHandler(handlers());
-        enabledFeatures.add("multipleItemsPerCart");
+//        enabledFeatures.add("multipleItemsPerCart");
     }
 
     private void start() throws Exception {

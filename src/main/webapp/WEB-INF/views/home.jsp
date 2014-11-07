@@ -26,7 +26,7 @@
             <td><c:out value="${item.type}"/></td>
             <td><c:out value="${item.quantity}"/></td>
             <td>
-                <form:form action="/shoppingCart/myShoppingCart" method="post" modelAttribute="item">
+                <form:form action="/shoppingCart/addToCart" method="post" modelAttribute="item">
                     <form:hidden path="itemId" value="${item.itemId}"/>
                     <button class="addToCart-button" type="submit" name="addToCart" id="addToCart" value="Add To Cart" ${enableMultipleItemsPerCart == false ? 'disabled' : '' }>
                         Add To Cart

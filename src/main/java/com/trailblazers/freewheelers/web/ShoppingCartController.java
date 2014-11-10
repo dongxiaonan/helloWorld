@@ -61,11 +61,19 @@ public class ShoppingCartController {
 
            if (itemToCheckout != null) {
                if(!cartItems.contains(itemToCheckout)) {
-                   itemToCheckout.setQuantity(1l);
-                   cartItems.add(itemToCheckout);
+                   if(itemToCheckout.getQuantity() > 0) {
+                       itemToCheckout.setQuantity(1l);
+                       cartItems.add(itemToCheckout);
+                   } else {
+                       request.getSession().setAttribute("error",true);
+                   }
                } else {
                    Item itemToBeModified = cartItems.get(cartItems.indexOf(itemToCheckout));
-                   itemToBeModified.setQuantity(itemToBeModified.getQuantity()+1);
+                   if(itemToCheckout.getQuantity() > itemToBeModified.getQuantity()) {
+                       itemToBeModified.setQuantity(itemToBeModified.getQuantity() + 1);
+                   } else {
+                       request.getSession().setAttribute("error",true);
+                   }
                }
                setSessionAttributes(request, cartItems);
            }
@@ -108,12 +116,12 @@ public class ShoppingCartController {
         if(items.size()==0 ) {
             items = getSessionItems(request);
         }
-        String userName = principal.getName();
-        Date rightNow = new Date();
-        Account account = accountService.getAccountByName(userName);
 
         List<Item> unavailableItems = getUnavailableItems(items);
         if(unavailableItems.size()==0) {
+            String userName = principal.getName();
+            Account account = accountService.getAccountByName(userName);
+            Date rightNow = new Date();
             ReserveOrder reserveOrder = getOrderFor(account.getAccount_id(),items,rightNow);
             reserveOrderService.save(reserveOrder);
             updateItemsQuantity(items);

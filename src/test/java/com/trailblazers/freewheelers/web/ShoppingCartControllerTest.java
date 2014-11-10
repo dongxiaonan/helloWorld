@@ -67,22 +67,22 @@ public class ShoppingCartControllerTest {
     public void shouldSaveMultipleItemsIntoSessionWhenAddToCartIsCalled (){
         if(FreeWheelersServer.enabledFeatures.contains("multipleItemsPerCart")) {
             List<Item> expectedItemsInCart = new ArrayList<Item>();
-            Item item = new Item();
-            item.setItemId(739L).setPrice(BigDecimal.valueOf(5.78));
-            expectedItemsInCart.add(item);
+            Item item1 = getSomeItem().setPrice(BigDecimal.valueOf(5.78));
+            expectedItemsInCart.add(item1);
             HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
             MockHttpSession httpSession = new MockHttpSession();
             ExtendedModelMap expectedModelMap = new ExtendedModelMap();
             BigDecimal expectedTotalPrice = BigDecimal.valueOf(10.0).setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            when(itemService.getById(anyLong())).thenReturn(item);
+            when(itemService.getById(item1.getItemId())).thenReturn(item1);
             when(httpServletRequest.getSession()).thenReturn(httpSession);
 
-            shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
-            item.setItemId(750L).setPrice(BigDecimal.valueOf(4.22));
-            expectedItemsInCart.add(item);
+            shoppingCartController.addToShoppingCart(expectedModelMap, item1, httpServletRequest);
+            Item item2 = getSomeItem().setItemId(item1.getItemId() + 1).setPrice(BigDecimal.valueOf(4.22));
+            when(itemService.getById(item2.getItemId())).thenReturn(item2);
+            expectedItemsInCart.add(item2);
 
-            shoppingCartController.addToShoppingCart(expectedModelMap, item, httpServletRequest);
+            shoppingCartController.addToShoppingCart(expectedModelMap, item2, httpServletRequest);
 
             assertTrue(expectedModelMap.containsValue(expectedItemsInCart));
             assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object) expectedItemsInCart));
@@ -174,6 +174,25 @@ public class ShoppingCartControllerTest {
         assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object)expectedItemList));
         assertThat(httpServletRequest.getSession().getAttribute("totalCartPrice"),is((Object)BigDecimal.valueOf(5.22)));
         assertThat(result,is("redirect:/"));
+    }
+
+    @Test
+    public void userCannotAddAnItemToCartIfItIsNotAvailableWhileAddingMultipleItems() throws Exception {
+        FreeWheelersServer.enabledFeatures.add("multipleItemsPerCart");
+        Item cartItem = getSomeItem();
+        Item itemInDB =getSomeItem().setQuantity(0l);
+        when(itemService.getById(itemInDB.getItemId())).thenReturn(itemInDB);
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        MockHttpSession httpSession = new MockHttpSession();
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+        when(accountService.getAccountByName(anyString())).thenReturn(new Account());
+
+        String result = shoppingCartController.addToShoppingCart(expectedModelMap,cartItem,httpServletRequest);
+
+        assertThat(result,is("redirect:/"));
+        assertEquals(true, httpServletRequest.getSession().getAttribute("error"));
+        assertEquals(cartItem, httpServletRequest.getSession().getAttribute("lastItem"));
     }
 
     @Test

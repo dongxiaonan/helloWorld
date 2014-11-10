@@ -17,7 +17,7 @@ public class NetPromoterScoreTest extends UserJourneyBase {
     private final long someAccountId = 12L;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         long quantity = 10;
         admin
                 .there_is_an_admin(adminUser, password)

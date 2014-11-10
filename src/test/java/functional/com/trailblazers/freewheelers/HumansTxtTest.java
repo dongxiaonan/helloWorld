@@ -23,7 +23,7 @@ public class HumansTxtTest {
 
     @AfterClass
     public static void after() {
-        if(driver != null) {
+        if (driver != null) {
             driver.close();
             driver.quit();
         }
@@ -34,22 +34,22 @@ public class HumansTxtTest {
         driver.get("http://localhost:8080/humans.txt");
         WebElement element = driver.findElement(By.tagName("pre"));
         String[] expectedTeamMembers = {"Nishitha Ningegowda",
-                                        "Peter Gibbons",
-                                        "Samir Nagheenanajar",
-                                        "Michael Bolton",
-                                        "Juliana Paukowski",
-                                        "Xiaonan Dong",
-                                        "Michael Bolton",
-                                        "Taylar Wade",
-                                        "Daisy Shih",
-                                        "Siba Fadda",
-                                        "Abhishek Puri",
-                                        "Flavia Fale",
-                                        "Gustavo Goulart",
-                                        "Mohammed Binsabbar",
-                                        "Florian Schlosser",
-                                        "Boxing Peng",
-                                        "Aleksandar Serafimoski"};
+                "Peter Gibbons",
+                "Samir Nagheenanajar",
+                "Michael Bolton",
+                "Juliana Paukowski",
+                "Xiaonan Dong",
+                "Michael Bolton",
+                "Taylar Wade",
+                "Daisy Shih",
+                "Siba Fadda",
+                "Abhishek Puri",
+                "Flavia Fale",
+                "Gustavo Goulart",
+                "Mohammed Binsabbar",
+                "Florian Schlosser",
+                "Boxing Peng",
+                "Aleksandar Serafimoski"};
         assertThat(element.getText().split("\n"), is(expectedTeamMembers));
     }
 

@@ -49,8 +49,6 @@ public class ItemValidationTest {
         assertFieldError(someItem().setPrice(valueOf(-1.0)),"price","Please enter a price greater than zero.");
     }
 
-
-
     @Test
     public void shouldErrorWhenThereIsNoQuantity() {
         assertFieldError(someItem().setQuantity(null), "quantity", "Please enter Item Quantity");

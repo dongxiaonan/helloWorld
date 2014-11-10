@@ -1,8 +1,9 @@
 package functional.com.trailblazers.freewheelers.apis;
 
 import functional.com.trailblazers.freewheelers.helpers.*;
-import org.junit.Assert;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.Arrays;
@@ -10,7 +11,6 @@ import java.util.List;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,7 +27,6 @@ public class ScreenApi {
     }
 
 
-
     public ScreenApi shows_error(String expectedMessage) {
         expectMessageWithClass(expectedMessage, "text-error");
         return this;
@@ -40,7 +39,6 @@ public class ScreenApi {
     public void shows_in_navbar(String expectedMessage) {
         expectMessageWithClass(expectedMessage, "navbar-text");
     }
-
 
 
     public ScreenApi shows_profile_for(String name) {
@@ -98,17 +96,17 @@ public class ScreenApi {
         Arrays.sort(itemNames);
         List<WebElement> elements = driver.findElements(itemListSelector);
         int i = 1;
-        for (WebElement itemRow : elements){
+        for (WebElement itemRow : elements) {
             String actualName = itemRow.findElement(firstColumnOfRow).getText();
             assertEquals(itemNames[i], actualName);
             i++;
         }
-}
+    }
 
     private ScreenApi expectMessageWithClass(String expectedMessage, String messageClass) {
         List<WebElement> elements = driver.findElements(By.className(messageClass));
         boolean foundElement = false;
-        for (WebElement element : elements){
+        for (WebElement element : elements) {
             if (element.getText().contains(expectedMessage)) foundElement = true;
 
         }
@@ -117,7 +115,7 @@ public class ScreenApi {
     }
 
     public ScreenApi should_show_access_denied() {
-        assertThat(driver.getPageSource(),containsString("403 Your access is denied"));
+        assertThat(driver.getPageSource(), containsString("403 Your access is denied"));
         return this;
     }
 
@@ -127,8 +125,8 @@ public class ScreenApi {
     }
 
     public ScreenApi shouldShowNPSReportPage() {
-        assertThat(driver.getCurrentUrl(),is(URLs.surveyReport()));
-        assertThat(driver.findElement(By.className("net-promoter-score")).getText(),containsString("Net Promoter Score is"));
+        assertThat(driver.getCurrentUrl(), is(URLs.surveyReport()));
+        assertThat(driver.findElement(By.className("net-promoter-score")).getText(), containsString("Net Promoter Score is"));
         return this;
     }
 
@@ -162,7 +160,7 @@ public class ScreenApi {
         return this;
     }
 
-    public ScreenApi shouldShowAddressTitleInUserProfile(){
+    public ScreenApi shouldShowAddressTitleInUserProfile() {
         assertThat(driver.findElement(By.className("user-address-title")).getText(), is("Address:"));
         return this;
     }
@@ -191,7 +189,7 @@ public class ScreenApi {
 
     public ScreenApi should_list_items_with_order(String[] names) {
         assertNumberOfRows(2, ItemsTable.items());
-        for (String name : names){
+        for (String name : names) {
             assertNumberOfRows(1, ItemsTable.nameFieldFor(name));
         }
         assertOrderOfRows(names, ItemsTable.items(), ItemsTable.firstColumnOfRow());
@@ -199,9 +197,10 @@ public class ScreenApi {
     }
 
     public ScreenApi shouldListItemInUserOrders(String itemName) {
-        assertNumberOfRows(1,ItemsTable.nameFieldFor(itemName));
+        assertNumberOfRows(1, ItemsTable.nameFieldFor(itemName));
         return this;
     }
+
     public ScreenApi shouldShowListOfOrderedItems(String... names) {
         assertThat(containsItem(names[0]), is(true));
         assertThat(containsItem(names[1]), is(true));
@@ -209,7 +208,7 @@ public class ScreenApi {
     }
 
     private boolean containsItem(String name) {
-        if (driver.findElement(By.id("order-table")).getText().contains(name)){
+        if (driver.findElement(By.id("order-table")).getText().contains(name)) {
             return true;
         }
 

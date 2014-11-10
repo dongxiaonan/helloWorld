@@ -6,6 +6,7 @@ public class ItemsTable {
     public static By nameFieldFor(String item) {
         return By.xpath("//tbody/tr/td[1][text() = '" + item + "']");
     }
+
     public static By items() {
         return By.tagName("tr");
     }

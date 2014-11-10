@@ -1,7 +1,9 @@
 package functional.com.trailblazers.freewheelers.apis;
 
 import com.google.common.base.Function;
-import functional.com.trailblazers.freewheelers.helpers.*;
+import functional.com.trailblazers.freewheelers.helpers.HomeTable;
+import functional.com.trailblazers.freewheelers.helpers.ManageItemTable;
+import functional.com.trailblazers.freewheelers.helpers.URLs;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

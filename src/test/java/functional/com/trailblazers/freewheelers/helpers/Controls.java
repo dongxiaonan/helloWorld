@@ -12,7 +12,7 @@ public class Controls {
 
 
     public static void check(WebElement checkBox) {
-        if(!checkBox.isSelected()) {
+        if (!checkBox.isSelected()) {
             checkBox.click();
         }
     }

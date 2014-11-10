@@ -75,11 +75,11 @@ public class AdminApi {
 
     private Item itemFor(String itemName, Long quantity) {
         return new Item()
-                    .setName(itemName)
-                    .setQuantity(quantity)
-                    .setDescription("A very nice item.")
-                    .setPrice(SOME_PRICE)
-                    .setType(ItemType.FRAME);
+                .setName(itemName)
+                .setQuantity(quantity)
+                .setDescription("A very nice item.")
+                .setPrice(SOME_PRICE)
+                .setType(ItemType.FRAME);
     }
 
     private Account account_for(String userName, String password) {
@@ -97,7 +97,7 @@ public class AdminApi {
                 .setEnabled(true);
     }
 
-    public AdminApi there_is_a_survey_entry_for(long accountId,int feedbackType, String comment) {
+    public AdminApi there_is_a_survey_entry_for(long accountId, int feedbackType, String comment) {
         surveyService.submitSurvey(accountId, new SurveyEntry(feedbackType, comment));
         return this;
     }

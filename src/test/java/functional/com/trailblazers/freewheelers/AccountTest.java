@@ -15,8 +15,8 @@ public class AccountTest extends UserJourneyBase {
 
         admin
                 .there_is_no_account_for(jan)
-                .there_is_a_user(userAccount,SOME_PASSWORD)
-                .there_is_an_admin(Arno,SOME_PASSWORD);
+                .there_is_a_user(userAccount, SOME_PASSWORD)
+                .there_is_an_admin(Arno, SOME_PASSWORD);
 
         user
                 .is_logged_out()
@@ -95,7 +95,7 @@ public class AccountTest extends UserJourneyBase {
         admin
                 .there_is_a_user(Hugo, SOME_PASSWORD)
                 .there_is_an_admin(Arno, SOME_PASSWORD)
-                .there_is_a_frame(item,10l);
+                .there_is_a_frame(item, 10l);
 
         user
                 .is_logged_out()

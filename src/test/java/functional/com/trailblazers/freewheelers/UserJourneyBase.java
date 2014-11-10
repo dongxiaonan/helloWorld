@@ -8,7 +8,6 @@ import functional.com.trailblazers.freewheelers.pages.NetPromoterScoreSurveyForm
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -42,7 +41,7 @@ public class UserJourneyBase {
 
     @AfterClass
     public static void after() {
-        if(driver != null) {
+        if (driver != null) {
             driver.close();
             driver.quit();
         }

@@ -12,12 +12,16 @@ public class FreeWheelersServer {
 
     public static ArrayList<String> enabledFeatures = new ArrayList<String>();
 
+    static {
+        enabledFeatures.add("multipleItemsPerCart");
+        enabledFeatures.add("cardPayment");
+    }
+
     private final Server server;
 
     public FreeWheelersServer() {
         server = new Server(8080);
         server.setHandler(handlers());
-        enabledFeatures.add("multipleItemsPerCart");
     }
 
     private void start() throws Exception {

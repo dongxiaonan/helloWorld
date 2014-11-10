@@ -54,6 +54,7 @@
                 <exclude name="**/AccountRole.class" />
                 <exclude name="**/FreeWheelersServer.class" />
                 <exclude name="**/Account.class" />
+                <exclude name="**/Item.class" />
                 <exclude name="**/ReserveOrder.class" />
                 <exclude name="**/ShoppingCartController.class" />
                 <exclude name="**/ItemServiceImpl.class" />

@@ -22,7 +22,7 @@ public interface ItemService {
 
     void deleteItems(List<Item> items);
 
-    void decreaseQuantityByOne(Item item);
+    void decreaseQuantity(Item item, Long quantity);
 
     ServiceResult<Item> saveItem(Item item);
 

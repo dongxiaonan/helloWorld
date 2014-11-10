@@ -28,7 +28,7 @@
                 <td>${item.name}</td>
                 <td>${item.description}</td>
                 <td>${item.price}</td>
-                <td>1</td>
+                <td>${item.quantity}</td>
             </tr>
         </c:forEach>
     </tbody>

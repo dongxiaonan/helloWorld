@@ -1,10 +1,7 @@
 package com.trailblazers.freewheelers.web;
 
 import com.trailblazers.freewheelers.FreeWheelersServer;
-import com.trailblazers.freewheelers.model.Account;
-import com.trailblazers.freewheelers.model.Item;
-import com.trailblazers.freewheelers.model.OrderItem;
-import com.trailblazers.freewheelers.model.ReserveOrder;
+import com.trailblazers.freewheelers.model.*;
 import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ReserveOrderService;
@@ -12,7 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -46,7 +45,7 @@ public class ShoppingCartControllerTest {
     @Test
     public void shouldSaveItemIntoSessionWhenReserveItemIsCalled (){
         Item item = new Item();
-        item.setItemId(739L).setPrice(BigDecimal.valueOf(5.22));
+        item.setItemId(739L).setPrice(BigDecimal.valueOf(5.22)).setQuantity(1l);
         List<Item> expectedItemList = new ArrayList<Item>();
         expectedItemList.add(item);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
@@ -101,7 +100,7 @@ public class ShoppingCartControllerTest {
         ArrayList<Item> itemList = new ArrayList<Item>();
         itemList.add(item);
         List<OrderItem> items = new ArrayList<OrderItem>();
-        items.add(new OrderItem(item.getItemId(), 1L));
+        items.add(new OrderItem(item.getItemId(), 2L));
         Account account = new Account();
         account.setAccount_id(2l);
         ReserveOrder reserveOrder = new ReserveOrder(2l, items, new Date());
@@ -117,7 +116,7 @@ public class ShoppingCartControllerTest {
         shoppingCartController.checkoutItem(model, principle, itemList, httpServletRequest);
 
         verify(reserveOrderService, times(1)).save(reserveOrder);
-        verify(itemService, times(1)).decreaseQuantityByOne(item);
+        verify(itemService, times(1)).decreaseQuantity(item, 2l);
         assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is(nullValue()));
     }
 
@@ -139,33 +138,16 @@ public class ShoppingCartControllerTest {
     }
 
     @Test
-    public void shouldCheckIfItemIsAvailableBeforeSavingOrder() {
-        Item item = new Item().setItemId(2l).setPrice(BigDecimal.ZERO);
-        ArrayList<Item> itemList = new ArrayList<Item>();
-        itemList.add(item);
-        when(accountService.getAccountByName(anyString())).thenReturn(new Account());
-        when(itemService.getById(2l)).thenReturn(new Item());
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpSession mockHttpSession = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(mockHttpSession);
-        when(mockHttpSession.getAttribute("totalCartPrice")).thenReturn((Object) BigDecimal.ONE);
-
-        shoppingCartController.checkoutItem(mock(Model.class), mock(Principal.class), itemList, request);
-
-        verify(itemService).checkItemsQuantityIsMoreThanZero(2l);
-    }
-
-    @Test
     public void shouldReturnAErrorMessageWhenTheItemHaveLessThenZeroQuantity() {
-        Item item = new Item().setItemId(2l).setPrice(BigDecimal.ZERO);
+        Item item = getSomeItem().setQuantity(0l);
         ArrayList<Item> itemList = new ArrayList<Item>();
-        itemList.add(item);
+        itemList.add(getSomeItem());
         ExtendedModelMap expectedModelMap = new ExtendedModelMap();
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession mockHttpSession = mock(HttpSession.class);
         when(request.getSession()).thenReturn(mockHttpSession);
         when(accountService.getAccountByName(anyString())).thenReturn(new Account());
-        when(itemService.checkItemsQuantityIsMoreThanZero(anyLong())).thenReturn(false);
+        when(itemService.getById(item.getItemId())).thenReturn(item);
         when(mockHttpSession.getAttribute("totalCartPrice")).thenReturn((Object) BigDecimal.ONE);
 
         shoppingCartController.checkoutItem(expectedModelMap, mock(Principal.class), itemList, request);
@@ -176,7 +158,7 @@ public class ShoppingCartControllerTest {
     @Test
     public void shouldReturnToHomePageWhenAnItemIsAddedToShoppingCart() throws Exception {
         Item item = new Item();
-        item.setItemId(739L).setPrice(BigDecimal.valueOf(5.22));
+        item.setItemId(739L).setPrice(BigDecimal.valueOf(5.22)).setQuantity(1l);
         List<Item> expectedItemList = new ArrayList<Item>();
         expectedItemList.add(item);
         HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
@@ -192,7 +174,35 @@ public class ShoppingCartControllerTest {
         assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is((Object)expectedItemList));
         assertThat(httpServletRequest.getSession().getAttribute("totalCartPrice"),is((Object)BigDecimal.valueOf(5.22)));
         assertThat(result,is("redirect:/"));
-
     }
 
+    @Test
+    public void shouldNotUpdateDatabaseInCaseOfOneOrMoreItemsNotAvailable() throws Exception {
+        Item testItem = getSomeItem();
+        Item cartItem = getSomeItem().setQuantity(2l);
+        when(itemService.getById(7595l)).thenReturn(testItem);
+        List<Item> items =new ArrayList<Item>(Arrays.asList(cartItem));
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        HttpSession httpSession = mock(HttpSession.class);
+        Principal principal = mock(Principal.class);
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+        when(httpSession.getAttribute("sessionItems")).thenReturn(items);
+        ExtendedModelMap expectedModelMap = new ExtendedModelMap();
+        when(accountService.getAccountByName(anyString())).thenReturn(new Account());
+
+        String result = shoppingCartController.checkoutItem(expectedModelMap,principal,new ArrayList<Item>(),httpServletRequest);
+
+        verify(itemService,times(0)).decreaseQuantity(any(Item.class),anyLong());
+        verify(httpSession).setAttribute("sessionItems", new ArrayList<Item>(Arrays.asList(testItem)));
+        assertThat(result, is("/shoppingCart/myShoppingCart"));
+    }
+
+    private Item getSomeItem() {
+        return new Item().setQuantity(1L)
+                .setItemId(7595l)
+                .setType(ItemType.ACCESSORIES)
+                .setPrice(BigDecimal.TEN)
+                .setName("Test Item")
+                .setDescription(" ");
+    }
 }

@@ -55,6 +55,32 @@ public class Item implements Comparable<Item> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (description != null ? !description.equals(item.description) : item.description != null) return false;
+        if (itemId != null ? !itemId.equals(item.itemId) : item.itemId != null) return false;
+        if (name != null ? !name.equals(item.name) : item.name != null) return false;
+        if (price != null ? !price.equals(item.price) : item.price != null) return false;
+        if (type != item.type) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = itemId != null ? itemId.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public int compareTo(Item item) {
         return this.getName().compareToIgnoreCase(item.getName()) ;
     }

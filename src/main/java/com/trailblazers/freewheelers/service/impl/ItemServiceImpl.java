@@ -5,14 +5,11 @@ import com.trailblazers.freewheelers.mappers.MyBatisUtil;
 import com.trailblazers.freewheelers.mappers.OrderItemsMapper;
 import com.trailblazers.freewheelers.model.Item;
 import com.trailblazers.freewheelers.model.ItemValidation;
-import com.trailblazers.freewheelers.model.OrderItem;
 import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
-import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +31,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item getById(Long item_id) {
+        sqlSession.clearCache();
         return itemMapper.getById(item_id);
     }
 
@@ -80,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void decreaseQuantityByOne(Item item) {
-        item.setQuantity(item.getQuantity() - 1);
+    public void decreaseQuantity(Item item, Long quantity) {
+        item.setQuantity(item.getQuantity() - quantity);
         itemMapper.update(item);
         sqlSession.commit();
     }

@@ -10,6 +10,7 @@ import com.trailblazers.freewheelers.service.ReserveOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +60,13 @@ public class ShoppingCartController {
            }
 
            if (itemToCheckout != null) {
-               cartItems.add(itemToCheckout);
+               if(!cartItems.contains(itemToCheckout)) {
+                   itemToCheckout.setQuantity(1l);
+                   cartItems.add(itemToCheckout);
+               } else {
+                   Item itemToBeModified = cartItems.get(cartItems.indexOf(itemToCheckout));
+                   itemToBeModified.setQuantity(itemToBeModified.getQuantity()+1);
+               }
                setSessionAttributes(request, cartItems);
            }
            model.addAttribute("items", cartItems);
@@ -95,6 +102,7 @@ public class ShoppingCartController {
         return "/shoppingCart/confirmation";
     }
 
+    @Transactional
     @RequestMapping(value = {"/checkout"}, method = RequestMethod.POST)
     public String checkoutItem(Model model, Principal principal, @ModelAttribute("items") ArrayList<Item> items, HttpServletRequest request) {
         if(items.size()==0 ) {
@@ -103,31 +111,59 @@ public class ShoppingCartController {
         String userName = principal.getName();
         Date rightNow = new Date();
         Account account = accountService.getAccountByName(userName);
-        ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), new ArrayList<OrderItem>(), rightNow);
-        List<Item> itemsNotAvailable = new ArrayList<Item>();
 
-        boolean allItemsAreAvailable = true;
-        for(Item item:items) {
-            Item itemToReserve = itemService.getById(item.getItemId());
-
-            if (itemService.checkItemsQuantityIsMoreThanZero(item.getItemId())) {
-                reserveOrder.addItemToOrder(itemToReserve.getItemId(),1L);
-                itemService.decreaseQuantityByOne(itemToReserve);
-            } else {
-                allItemsAreAvailable = false;
-                model.addAttribute("quantityErrorMessage", "Sorry, some items are no longer available and have been removed from your cart.");
-                itemsNotAvailable.add(item);
-            }
-        }
-        items.removeAll(itemsNotAvailable);
-        model.addAttribute("items", items);
-        if(allItemsAreAvailable) {
+        List<Item> unavailableItems = getUnavailableItems(items);
+        if(unavailableItems.size()==0) {
+            ReserveOrder reserveOrder = getOrderFor(account.getAccount_id(),items,rightNow);
             reserveOrderService.save(reserveOrder);
+            updateItemsQuantity(items);
             clearSessionAttributes(request);
+            model.addAttribute("items", items);
             return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
+        }
+        else {
+            removeUnavailableItems(items, unavailableItems);
+            model.addAttribute("items", items);
+            model.addAttribute("quantityErrorMessage", "Sorry, some items are no longer available and have been removed from your cart.");
         }
         setSessionAttributes(request, items);
         return "/shoppingCart/myShoppingCart";
+    }
+
+    private ReserveOrder getOrderFor(Long account_id, ArrayList<Item> items, Date rightNow) {
+        ReserveOrder reserveOrder = new ReserveOrder(account_id, new ArrayList<OrderItem>(), rightNow);
+        for(Item item:items) {
+            reserveOrder.addItemToOrder(item.getItemId(),item.getQuantity());
+        }
+        return reserveOrder;
+    }
+
+    private void updateItemsQuantity(ArrayList<Item> items) {
+        for(Item item:items) {
+            Item itemInDB = itemService.getById(item.getItemId());
+            itemService.decreaseQuantity(itemInDB, item.getQuantity());
+        }
+    }
+
+    private List<Item> getUnavailableItems(ArrayList<Item> items) {
+        List<Item> itemsNotAvailable = new ArrayList<Item>();
+        for(Item item:items) {
+            Item itemFromDB  =itemService.getById(item.getItemId());
+            if(itemFromDB.getQuantity()<item.getQuantity()) {
+                itemsNotAvailable.add(item.setQuantity(itemFromDB.getQuantity()));
+            }
+        }
+
+        return itemsNotAvailable;
+    }
+
+    private List<Item> removeUnavailableItems(ArrayList<Item> items, List<Item> itemsNotAvailable) {
+        for(Item unavailableItem : itemsNotAvailable) {
+            if(unavailableItem.getQuantity()==0) {
+                items.remove(unavailableItem);
+            }
+        }
+        return items;
     }
 
     private void clearSessionAttributes(HttpServletRequest request) {
@@ -138,7 +174,7 @@ public class ShoppingCartController {
         BigDecimal cartPrice = BigDecimal.ZERO;
         if(items != null){
             for(Item item : items) {
-                cartPrice = cartPrice.add(item.getPrice());
+                cartPrice = cartPrice.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
             }
         }
         request.getSession().setAttribute(sessionItems, items);
@@ -151,4 +187,6 @@ public class ShoppingCartController {
         clearSessionAttributes(request);
         return "redirect:/";
     }
+
+
 }

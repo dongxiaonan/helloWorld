@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.PAYMENT_THANKYOU;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -213,6 +214,20 @@ public class ScreenApi {
         }
 
         return false;
+    }
+
+    public ScreenApi should_confirm_payment() {
+        assertThat(driver.findElement(By.id("confirmationMessage")).getText(), containsString(PAYMENT_THANKYOU));
+        return this;
+    }
+
+    public ScreenApi should_show_card_fields(String cardNumber, String expiryMonth, String expiryYear, String CCV) {
+        assertThat(driver.findElement(By.id("fld_cardNumber")).getAttribute("value"), is(cardNumber));
+        assertThat(driver.findElement(By.id("sel_expiration_date_month")).getAttribute("value"), is(expiryMonth));
+        assertThat(driver.findElement(By.id("sel_expiration_date_year")).getAttribute("value"), is(expiryYear));
+        assertThat(driver.findElement(By.id("fld_csc")).getAttribute("value"), is(CCV));
+        assertThat(driver.findElement(By.id("label_amount")).getText(), is("Amount:"));
+        return this;
     }
 
 }

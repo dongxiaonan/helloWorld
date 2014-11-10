@@ -242,4 +242,18 @@ public class UserApi {
         driver.findElement(By.name("update")).click();
         return this;
     }
+
+    public UserApi fill_in_card_details(String cardHolderName, String cardNumber, String month, String year, String CCV){
+        fillField(driver.findElement(By.id("fld_cardHolderName")), cardHolderName);
+        fillField(driver.findElement(By.id("fld_cardNumber")), cardNumber);
+        fillField(driver.findElement(By.id("fld_csc")), CCV);
+        select(month, driver.findElement(By.id("sel_expiration_date_month")));
+        select(year, driver.findElement(By.id("sel_expiration_date_year")));
+        return this;
+    }
+
+    public UserApi click_submit_button_for_card_payment(){
+        driver.findElement(By.id("submitPayment")).click();
+        return this;
+    }
 }

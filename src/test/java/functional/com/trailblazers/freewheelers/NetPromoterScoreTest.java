@@ -1,11 +1,13 @@
 package functional.com.trailblazers.freewheelers;
 
+import com.trailblazers.freewheelers.FreeWheelersServer;
 import functional.com.trailblazers.freewheelers.helpers.FeedbackType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 import static org.junit.Assert.assertTrue;
 
 public class NetPromoterScoreTest extends UserJourneyBase {
@@ -32,8 +34,15 @@ public class NetPromoterScoreTest extends UserJourneyBase {
                 .visits_home_page()
                 .add_item_to_shopping_cart(frame)
                 .visits_shopping_cart()
-                .check_out_item()
-                .waits_for_survey_popup();
+                .check_out_item();
+        if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
+            user
+                    .fill_in_card_details("Bob", VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
+                    .click_submit_button_for_card_payment();
+            screen
+                    .should_confirm_payment();
+        }
+        user.waits_for_survey_popup();
 
         npsSurveyForm.submitFeedback(FeedbackType.Positive, "Some Feedback");
         Assert.assertTrue(npsSurveyForm.thankYouMessageExists());

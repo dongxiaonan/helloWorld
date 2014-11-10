@@ -9,9 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -21,13 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ShoppingCartControllerTest {
@@ -97,6 +97,7 @@ public class ShoppingCartControllerTest {
         Item item = new Item();
         item.setItemId(739l);
         item.setQuantity(2l);
+        item.setPrice(BigDecimal.TEN);
         ArrayList<Item> itemList = new ArrayList<Item>();
         itemList.add(item);
         List<OrderItem> items = new ArrayList<OrderItem>();
@@ -113,11 +114,43 @@ public class ShoppingCartControllerTest {
         when(accountService.getAccountByName("UserCat")).thenReturn(account);
         when(itemService.checkItemsQuantityIsMoreThanZero(739l)).thenReturn(true);
 
-        shoppingCartController.checkoutItem(model, principle, itemList, httpServletRequest);
+        String result = shoppingCartController.checkoutItem(model, principle, itemList, httpServletRequest);
 
-        verify(reserveOrderService, times(1)).save(reserveOrder);
+        if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
+            assertThat(result, is("redirect:/cardPayment/payment"));
+        } else {
+            assertThat(result, containsString("redirect:/shoppingCart/confirmation"));
+        }
+    }
+
+    @Test
+    public void shouldCallReserveOrderServiceWhenConfirmCheckoutIsCalled() throws Exception{
+        Item item = new Item();
+        item.setItemId(739l);
+        item.setQuantity(2l);
+        item.setPrice(BigDecimal.TEN);
+        ArrayList<Item> itemList = new ArrayList<Item>();
+        itemList.add(item);
+        List<OrderItem> items = new ArrayList<OrderItem>();
+        items.add(new OrderItem(item.getItemId(), 1L));
+        Account account = new Account();
+        account.setAccount_id(2l).setAccount_name("UserCat");
+        ReserveOrder reserveOrder = new ReserveOrder(account.getAccount_id(), items, new Date());
+        HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
+        HttpSession httpSession = new MockHttpSession();
+        HttpSession spy = spy(httpSession);
+        spy.setAttribute("sessionItems", itemList);
+
+        when(httpServletRequest.getSession()).thenReturn(spy);
+        when(itemService.getById(739l)).thenReturn(item);
+        when(accountService.getAccountByName(anyString())).thenReturn(account);
+        when(itemService.checkItemsQuantityIsMoreThanZero(739l)).thenReturn(true);
+
+        shoppingCartController.confirmCheckout(mock(Model.class), httpServletRequest, mock(Principal.class));
+
+        verify(reserveOrderService, times(1)).save(any(ReserveOrder.class));
+
         verify(itemService, times(1)).decreaseQuantity(item, 2l);
-        assertThat(httpServletRequest.getSession().getAttribute("sessionItems"), is(nullValue()));
     }
 
     @Test

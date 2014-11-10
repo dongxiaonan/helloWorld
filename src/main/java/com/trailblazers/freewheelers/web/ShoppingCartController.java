@@ -119,15 +119,13 @@ public class ShoppingCartController {
 
         List<Item> unavailableItems = getUnavailableItems(items);
         if(unavailableItems.size()==0) {
-            String userName = principal.getName();
-            Account account = accountService.getAccountByName(userName);
-            Date rightNow = new Date();
-            ReserveOrder reserveOrder = getOrderFor(account.getAccount_id(),items,rightNow);
-            reserveOrderService.save(reserveOrder);
-            updateItemsQuantity(items);
-            clearSessionAttributes(request);
             model.addAttribute("items", items);
-            return "redirect:/shoppingCart/confirmation/" + reserveOrder.getOrder_id();
+            setSessionAttributes(request,items);
+            if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
+                return "redirect:/cardPayment/payment";
+            } else {
+                return confirmCheckout(model, request,principal);
+            }
         }
         else {
             removeUnavailableItems(items, unavailableItems);
@@ -136,6 +134,22 @@ public class ShoppingCartController {
         }
         setSessionAttributes(request, items);
         return "/shoppingCart/myShoppingCart";
+    }
+
+    @RequestMapping(value = "/confirmCheckout", method = RequestMethod.GET)
+    String confirmCheckout(Model model, HttpServletRequest request, Principal principal) {
+        String userName = principal.getName();
+        Account account = accountService.getAccountByName(userName);
+        Date rightNow = new Date();
+        ArrayList<Item> items = getSessionItems(request);
+        ReserveOrder reserveOrder = getOrderFor(account.getAccount_id(),items,rightNow);
+        reserveOrderService.save(reserveOrder);
+        updateItemsQuantity(items);
+        clearSessionAttributes(request);
+        model.addAttribute("items", items);
+        request.getSession().setAttribute(sessionItems, null);
+        request.getSession().setAttribute("reserveOrder", null);
+        return "redirect:/shoppingCart/confirmation/"+reserveOrder.getOrder_id();
     }
 
     private ReserveOrder getOrderFor(Long account_id, ArrayList<Item> items, Date rightNow) {

@@ -22,6 +22,14 @@ public class SyntaxSugar {
     public static final String SOME_POSTCODE = "12453";
     public static final String SOME_STATE = "Somewhere";
 
+    public static final String SOME_CARD_NUMBER = "100100100100";
+    public static final String SOME_MONTH= "12";
+
+    public static final String VALID_CARD_NUMBER = "4111111111111111";
+    public static final String VALID_EXPIRAY_MONTH = "11";
+    public static final String VALID_EXPIRAY_YEAR  = "2020";
+    public static final String VALID_CCV  = "534";
+
     public static final String EMPTY_PASSWORD = "";
     public static final String NO_QUANTITY = "";
     public static final String ZERO_VALUE = "0";
@@ -35,6 +43,7 @@ public class SyntaxSugar {
             "screw fastening 4 x red, curved Arrow shape, screw fastening";
     public static final String A_LOT = "1000";
     public static final String PHONE_NUMBER_WITH_CHARACTERS = "a";
+    public static final String PAYMENT_THANKYOU = "Thank you for your purchase!";
 
 
     public static String emailFor(String userName) {

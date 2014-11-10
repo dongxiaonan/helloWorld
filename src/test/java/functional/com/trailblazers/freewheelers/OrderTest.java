@@ -1,9 +1,11 @@
 package functional.com.trailblazers.freewheelers;
 
+import com.trailblazers.freewheelers.FreeWheelersServer;
 import org.junit.Test;
 
-import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.ONLY_ONE_LEFT;
-import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.SOME_PASSWORD;
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.VALID_CCV;
+import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.VALID_EXPIRAY_YEAR;
 
 public class OrderTest extends UserJourneyBase {
 
@@ -28,8 +30,16 @@ public class OrderTest extends UserJourneyBase {
         user
                 .add_item_to_shopping_cart(Simplon_Frame)
                 .visits_shopping_cart()
-                .check_out_item()
-                .visits_home_page();
+                .check_out_item();
+        if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
+            user
+                    .fill_in_card_details("Bob", VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
+                    .click_submit_button_for_card_payment();
+            screen
+                    .should_confirm_payment();
+        }
+         user
+                 .visits_home_page();
 
         screen
                 .should_not_list_item(Simplon_Frame);

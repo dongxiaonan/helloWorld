@@ -8,7 +8,7 @@
     })
 </script>
 
-<div class="page-action">Order has been placed successfully</div>
+<div class="page-action" id="confirmationMessage">Order has been placed successfully. Thank you for your purchase!</div>
 
 <table class="table">
     <thead>

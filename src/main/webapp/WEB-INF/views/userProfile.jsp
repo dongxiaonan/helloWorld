@@ -11,7 +11,7 @@
         </div>
 
 		<div class="page-action">Your Orders</div>
-		<table class="table">
+		<table id= "order-table" class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -21,12 +21,14 @@
                 </tr>
             </thead>
             <tbody>
+            <c:set var="index" scope="session" value="${0}"/>
             <c:forEach var="item" items="${items}" varStatus="row">
-                <tr>
+                <tr id=row<c:out value="${index}"/>>
                     <td><c:out value="${item.name}"/></td>
                     <td><c:out value="${item.price}"/></td>
                     <td><c:out value="${item.description}"/></td>
                     <td><c:out value="${item.type}"/></td>
+                    <c:set var="index" scope="session" value="${index+1}"/>
                 </tr>
              </c:forEach>
             </tbody>

@@ -1,6 +1,7 @@
 package functional.com.trailblazers.freewheelers.apis;
 
 import functional.com.trailblazers.freewheelers.helpers.*;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 
@@ -201,4 +202,18 @@ public class ScreenApi {
         assertNumberOfRows(1,ItemsTable.nameFieldFor(itemName));
         return this;
     }
+    public ScreenApi shouldShowListOfOrderedItems(String... names) {
+        assertThat(containsItem(names[0]), is(true));
+        assertThat(containsItem(names[1]), is(true));
+        return this;
+    }
+
+    private boolean containsItem(String name) {
+        if (driver.findElement(By.id("order-table")).getText().contains(name)){
+            return true;
+        }
+
+        return false;
+    }
+
 }

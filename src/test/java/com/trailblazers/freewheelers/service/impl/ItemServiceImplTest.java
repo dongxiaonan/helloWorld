@@ -86,7 +86,7 @@ public class ItemServiceImplTest {
 
     @Test
     public void shouldReturnTheItemQuantity() {
-        Long itemId = 1L;
+        Long itemId = 1l;
         long expectedQuantity = 2;
         when(itemMapper.getById(itemId)).thenReturn(new Item().setQuantity(expectedQuantity));
 

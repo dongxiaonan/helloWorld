@@ -20,13 +20,26 @@ public class ShoppingCartTest extends UserJourneyBase{
                 .there_is_a_frame(Simplon_Frame, ONLY_ONE_LEFT);
 
         user
-                .logs_in_with(Bob, SOME_PASSWORD)
                 .visits_home_page();
 
         screen
                 .should_list_item(Simplon_Frame);
 
         user
+                .add_item_to_shopping_cart(Simplon_Frame);
+        screen
+                .shows_login();
+        user
+                .logs_in_with(Bob, SOME_PASSWORD);
+
+        screen
+                .shouldShowSuccessAtHomePageForAddingItemToCart();
+        user
+                .visits_shopping_cart();
+        screen
+                .should_list_item_in_shopping_cart(Simplon_Frame);
+        user
+                .clickClearItemsInShoppingCart()
                 .add_item_to_shopping_cart(Simplon_Frame);
         screen
                 .shouldShowSuccessAtHomePageForAddingItemToCart();
@@ -55,40 +68,6 @@ public class ShoppingCartTest extends UserJourneyBase{
 
         screen
                 .there_should_be_an_order(Simplon_Frame, "IN_PROGRESS");
-    }
-
-    @Test
-    public void addToCartThenClearTest() throws Exception{
-        String Bob = "Bob Buyer";
-        String Simplon_Frame = "Simplon Pavo 3 Ultra " + System.currentTimeMillis();
-
-        admin
-                .there_is_a_user(Bob, SOME_PASSWORD)
-                .there_is_a_frame(Simplon_Frame, ONLY_ONE_LEFT);
-
-        user
-                .logs_in_with(Bob, SOME_PASSWORD)
-                .visits_home_page();
-
-        screen
-                .shouldGoToHomePage();
-        user
-                .visits_shopping_cart();
-        screen
-                .should_not_list_item_in_shopping_cart(Simplon_Frame);
-        user
-                .visits_home_page()
-                .add_item_to_shopping_cart(Simplon_Frame);
-        screen
-                .shouldShowSuccessAtHomePageForAddingItemToCart();
-        user
-                .visits_shopping_cart();
-        screen
-                .should_list_item_in_shopping_cart(Simplon_Frame);
-        user
-                .check_out_item();
-        screen
-                .should_visit_confirmation_page();
     }
 
     @Test

@@ -95,7 +95,6 @@ public class AccountTest extends UserJourneyBase {
         admin
                 .there_is_a_user(Hugo, SOME_PASSWORD)
                 .there_is_an_admin(Arno, SOME_PASSWORD)
-                .there_is_no_item(item)
                 .there_is_a_frame(item,10l);
 
         user

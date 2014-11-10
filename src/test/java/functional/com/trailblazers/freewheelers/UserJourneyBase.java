@@ -31,7 +31,7 @@ public class UserJourneyBase {
         desiredCapabilities.setCapability("takesScreenshot", true);
         driver = new PhantomJSDriver(desiredCapabilities);
 
-        admin = new AdminApi();
+        admin = new AdminApi(driver);
         user = new UserApi(driver);
         screen = new ScreenApi(driver);
 

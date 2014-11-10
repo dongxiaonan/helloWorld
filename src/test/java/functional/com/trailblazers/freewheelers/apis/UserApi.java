@@ -136,13 +136,6 @@ public class UserApi {
         return this;
     }
 
-    public UserApi changes_order_status(String item, String toState) {
-        select(toState, driver.findElement(OrderTable.selectFor(item)));
-        driver.findElement(OrderTable.saveButtonFor(item)).click();
-
-        return this;
-    }
-
     private String encoded(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");

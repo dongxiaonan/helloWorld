@@ -6,17 +6,22 @@ import com.trailblazers.freewheelers.service.ItemService;
 import com.trailblazers.freewheelers.service.SurveyService;
 import com.trailblazers.freewheelers.service.impl.AccountServiceImpl;
 import com.trailblazers.freewheelers.service.impl.ItemServiceImpl;
+import functional.com.trailblazers.freewheelers.helpers.OrderTable;
+import org.openqa.selenium.WebDriver;
 
+import static functional.com.trailblazers.freewheelers.helpers.Controls.select;
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 
 
 public class AdminApi {
 
+    private WebDriver driver;
     private AccountService accountService;
     private ItemService itemService;
     private SurveyService surveyService;
 
-    public AdminApi() {
+    public AdminApi(WebDriver driver) {
+        this.driver = driver;
         this.accountService = new AccountServiceImpl();
         this.itemService = new ItemServiceImpl();
         this.surveyService = new SurveyService();
@@ -94,6 +99,13 @@ public class AdminApi {
 
     public AdminApi there_is_a_survey_entry_for(long accountId,int feedbackType, String comment) {
         surveyService.submitSurvey(accountId, new SurveyEntry(feedbackType, comment));
+        return this;
+    }
+
+    public AdminApi changes_order_status(String item, String toState) {
+        select(toState, driver.findElement(OrderTable.selectFor(item)));
+        driver.findElement(OrderTable.saveButtonFor(item)).click();
+
         return this;
     }
 }

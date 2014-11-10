@@ -50,7 +50,7 @@ public class ShoppingCartTest extends UserJourneyBase{
         screen
                 .there_should_be_an_order(Simplon_Frame, "NEW");
 
-        user
+        admin
                 .changes_order_status(Simplon_Frame, "IN_PROGRESS");
 
         screen

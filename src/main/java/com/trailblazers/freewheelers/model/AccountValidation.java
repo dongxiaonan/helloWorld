@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountValidation {
-    private static final String PASSWORD_FORMAT = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`]).{8,20}$";
+    private static final String PASSWORD_FORMAT = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-/_<.>|='~`()\"]).{8,20}$";
     private static final String EMAIL_FORMAT = "^[a-zA-Z0-9](([\\.\\_\\-\\+]){0,1}[a-zA-Z\\d])*\\@[a-zA-Z\\d]([\\-]{0,1}[a-zA-Z\\d]|[a-zA-Z\\d]){0,254}(\\.[a-zA-Z]{2,3}){1,2}$";
     private static final String STREET1_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{1,255}$";
     private static final String STREET2_FORMAT = "^[0-9a-zA-Z\\-\\'\\ \\.\\,]{0,255}$";

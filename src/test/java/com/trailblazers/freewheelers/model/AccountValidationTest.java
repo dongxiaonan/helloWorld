@@ -157,6 +157,22 @@ public class AccountValidationTest {
         }
     }
 
+    @Test
+    public void shouldNotComplainWhenPasswordIsValid() throws Exception {
+        List<String> validPasswords = new ArrayList<String>();
+        validPasswords.add("V3ry Secure!");
+        validPasswords.add("V3ry(Secure)");
+        validPasswords.add("V3ry \"Secure\"");
+
+        for (String invalidPassword : validPasswords) {
+            account.setPassword(invalidPassword);
+
+            Map<String, String>  errors = accountValidation.verifyInputs(account);
+
+            assertThat(errors.size(),is(0));
+        }
+    }
+
     private void assertThereIsOneErrorFor(String field, String expected, Map<String, String> errors) {
         assertThat(errors.size(), is(1));
         assertThat(errors.get(field), containsString(expected));

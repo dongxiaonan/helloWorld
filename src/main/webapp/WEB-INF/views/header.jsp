@@ -24,18 +24,27 @@
     </a>
     <ul class="nav">
         <li><a href="<c:url value='/' />" class="header-link">Home</a></li>
-        <security:authorize ifAnyGranted="ROLE_ADMIN">
-            <li><a href="<c:url value="/survey/report" />" class="header-link">NPS Report</a></li>
+
+        <security:authorize ifNotGranted="ROLE_ADMIN,ROLE_USER">
+            <li><a href="<c:url value='/login' />" class="header-link">Login</a></li>
         </security:authorize>
+
         <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
             <li><a href="<c:url value="/shoppingCart/myShoppingCart" />" class="header-link ${enableMultipleItemsPerCart == false ? 'disableClick' : ''}">My Shopping Cart</a></li>
         </security:authorize>
-        <li><a href="<c:url value='/admin' />" class="header-link">Admin Profile</a></li>
-        <li><a href="<c:url value='/userProfile' />" class="header-link">User Profile</a></li>
-        <li><a href="<c:url value='/account/create' />" class="header-link">Create Account</a></li>
+
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+            <li><a href="<c:url value="/survey/report" />" class="header-link">NPS Report</a></li>
+            <li><a href="<c:url value='/admin' />" class="header-link">Admin Profile</a></li>
+        </security:authorize>
+
         <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
+            <li><a href="<c:url value='/userProfile' />" class="header-link">User Profile</a></li>
             <li><a href="<c:url value="j_spring_security_logout" />" class="header-link">Logout</a></li>
         </security:authorize>
+
+        <li><a href="<c:url value='/account/create' />" class="header-link">Create Account</a></li>
+
         <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
             <li id="welcome" class="navbar-text">Welcome <security:authentication property="principal.username"/>!</li>
         </security:authorize>

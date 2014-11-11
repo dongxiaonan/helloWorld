@@ -25,7 +25,7 @@
             <c:forEach var="item" items="${items}" varStatus="row">
                 <tr id=row<c:out value="${index}"/>>
                     <td><c:out value="${item.name}"/></td>
-                    <td><c:out value="${item.price}"/></td>
+                    <td>&#163;&nbsp;<c:out value="${item.price}"/></td>
                     <td><c:out value="${item.description}"/></td>
                     <td><c:out value="${item.type}"/></td>
                     <c:set var="index" scope="session" value="${index+1}"/>

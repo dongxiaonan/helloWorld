@@ -1,8 +1,6 @@
 package functional.com.trailblazers.freewheelers;
 
 import com.trailblazers.freewheelers.FreeWheelersServer;
-import functional.com.trailblazers.freewheelers.apis.ScreenApi;
-import functional.com.trailblazers.freewheelers.apis.UserApi;
 import org.junit.Test;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
@@ -42,7 +40,11 @@ public class ShoppingCartTest extends UserJourneyBase {
         user
                 .check_out_item();
         if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
-            cardPaymentTest(Bob, user, screen);
+            user
+                    .fill_in_card_details("Bob", VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
+                    .click_submit_button_for_card_payment();
+            screen
+                    .should_confirm_payment();
         }
         screen
                 .should_visit_confirmation_page();
@@ -106,53 +108,4 @@ public class ShoppingCartTest extends UserJourneyBase {
         }
     }
 
-    private void cardPaymentTest(String Bob, UserApi user, ScreenApi screen) {
-        user
-                .fill_in_card_details(Bob, SOME_CARD_NUMBER+"a", SOME_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields("", SOME_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
-                .shows_error("Only numbers are allowed");
-
-        user
-                .fill_in_card_details(Bob, SOME_CARD_NUMBER, SOME_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields("", SOME_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
-                .shows_error("The length of card number must be 16");
-
-        user
-                .fill_in_card_details(Bob, VALID_CARD_NUMBER, "Month", VALID_EXPIRAY_YEAR, VALID_CCV)
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields(VALID_CARD_NUMBER, "", VALID_EXPIRAY_YEAR, VALID_CCV)
-                .shows_error("You need to select month and year again");
-
-        user
-                .fill_in_card_details(Bob, VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, "Year", VALID_CCV)
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields(VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, "", VALID_CCV)
-                .shows_error("You need to select month and year again");
-
-        user
-                .fill_in_card_details(Bob, VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV+"a")
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields(VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, "")
-                .shows_error("Only numbers are allowed");
-
-        user
-                .fill_in_card_details(Bob, VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV+"12")
-                .click_submit_button_for_card_payment();
-        screen
-                .should_show_card_fields(VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, "")
-                .shows_error("The length of CCV must be 3 or 4");
-
-        user
-                .fill_in_card_details(Bob, VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
-                .click_submit_button_for_card_payment();
-        screen
-                .should_confirm_payment();
-    }
 }

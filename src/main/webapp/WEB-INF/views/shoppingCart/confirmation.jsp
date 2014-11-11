@@ -10,6 +10,13 @@
 
 <div class="page-action" id="confirmationMessage">Order has been placed successfully. Thank you for your purchase!</div>
 
+<div class="page-action" id="shippingAddress">
+    Shipping Address
+</div>
+
+<br/> ${address}
+
+<div class="page-action" id="orderSummary">Order Summary</div>
 <table class="table">
     <thead>
     <tr>

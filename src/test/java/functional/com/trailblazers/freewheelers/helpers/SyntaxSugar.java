@@ -26,6 +26,8 @@ public class SyntaxSugar {
     public static final String SOME_MONTH= "12";
 
     public static final String VALID_CARD_NUMBER = "4111111111111111";
+    public static final String REVOKED_CARD_NUMBER = "4111111111111116";
+    public static final String INVALID_CARD_NUMBER = "4111111111111222";
     public static final String VALID_EXPIRAY_MONTH = "11";
     public static final String VALID_EXPIRAY_YEAR  = "2020";
     public static final String VALID_CCV  = "534";

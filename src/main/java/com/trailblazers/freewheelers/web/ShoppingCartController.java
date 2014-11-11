@@ -107,6 +107,7 @@ public class ShoppingCartController {
         }
         model.addAttribute("items", orderItems);
         model.addAttribute("totalPrice",totalPrice);
+        model.addAttribute("address", accountService.get(reserveOrder.getAccount_id()).getAddress());
         return "/shoppingCart/confirmation";
     }
 

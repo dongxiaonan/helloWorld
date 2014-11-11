@@ -12,6 +12,7 @@ import java.util.List;
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.PAYMENT_THANKYOU;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +31,12 @@ public class ScreenApi {
 
     public ScreenApi shows_error(String expectedMessage) {
         expectMessageWithClass(expectedMessage, "text-error");
+        return this;
+    }
+
+    public ScreenApi shows_error_in_red(String expectedMessage){
+        String message = driver.findElement(By.id("paymentErrorMessage")).getText();
+        assertThat(expectedMessage, is(message));
         return this;
     }
 
@@ -230,4 +237,8 @@ public class ScreenApi {
         return this;
     }
 
+    public ScreenApi should_show_address_in_confirmation_page() {
+        assertThat(driver.findElement(By.id("shippingAddress")).getText(), containsString("Shipping Address"));
+        return this;
+    }
 }

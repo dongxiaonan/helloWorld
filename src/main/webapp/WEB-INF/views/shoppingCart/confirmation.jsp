@@ -24,7 +24,7 @@
             <tr>
                 <td>${item.name}</td>
                 <td>${item.description}</td>
-                <td>&#163;&nbsp;${item.price}</td>
+                <td>&pound; ${item.price}</td>
                 <td>${item.quantity}</td>
             </tr>
         </c:forEach>
@@ -46,7 +46,7 @@
             Total:
         </td>
         <td>
-            ${totalPrice}
+           &pound; ${totalPrice}
         </td>
     </tr>
     </tbody>

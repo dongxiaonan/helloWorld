@@ -27,7 +27,7 @@
             <tr>
                 <td>${item.name}</td>
                 <td>${item.description}</td>
-                <td>&#163;&nbsp;${item.price}</td>
+                <td>&pound; ${item.price}</td>
                 <td>${item.quantity}</td>
             </tr>
         </c:forEach>
@@ -50,7 +50,7 @@
             </td>
             <td>
                 <c:if test="${not empty sessionItems}">
-                    &#163;&nbsp;${totalCartPrice}
+                    &pound; ${totalCartPrice}
                 </c:if>
             </td>
         </tr>

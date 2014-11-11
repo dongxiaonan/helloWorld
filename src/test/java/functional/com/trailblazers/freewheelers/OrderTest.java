@@ -60,6 +60,8 @@ public class OrderTest extends UserJourneyBase {
     }
 
     private void cardPaymentTest(String Bob, UserApi user, ScreenApi screen) throws Exception{
+        screen
+                .should_show_address_in_confirmation_page();
         user
                 .fill_in_card_details(Bob, SOME_CARD_NUMBER+"a", SOME_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
                 .click_submit_button_for_card_payment();
@@ -122,7 +124,6 @@ public class OrderTest extends UserJourneyBase {
                 .fill_in_card_details(Bob, VALID_CARD_NUMBER, VALID_EXPIRAY_MONTH, VALID_EXPIRAY_YEAR, VALID_CCV)
                 .click_submit_button_for_card_payment();
         screen
-                .should_confirm_payment()
-                .should_show_address_in_confirmation_page();
+                .should_confirm_payment();
     }
 }

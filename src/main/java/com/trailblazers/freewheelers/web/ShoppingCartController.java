@@ -107,7 +107,6 @@ public class ShoppingCartController {
         }
         model.addAttribute("items", orderItems);
         model.addAttribute("totalPrice",totalPrice);
-        model.addAttribute("address", accountService.get(reserveOrder.getAccount_id()).getAddress());
         return "/shoppingCart/confirmation";
     }
 
@@ -123,6 +122,8 @@ public class ShoppingCartController {
             model.addAttribute("items", items);
             setSessionAttributes(request,items);
             if (FreeWheelersServer.enabledFeatures.contains("cardPayment")){
+                Account account = accountService.getAccountByName(principal.getName());
+                request.getSession().setAttribute("account_address", account.getAddress());
                 return "redirect:/cardPayment/payment";
             } else {
                 return confirmCheckout(model, request,principal);

@@ -2,11 +2,19 @@
 <c:set var="pageTitle" scope="request" value="Payment"/>
 <%@ include file="header.jsp" %>
 
-<div class="page-action">My Shopping Cart</div>
 
-<c:if test="${not empty quantityErrorMessage}">
-    <div id="resultMessage" class="page-action error"> ${quantityErrorMessage} </div>
+<div class="page-action" id="shippingAddress">
+    Shipping Address
+</div>
+
+<c:if test="${not empty address}">
+    ${address}
+    <br/>
+    <br/>
+    <span>*Note: Shipping and billing addresses are the same</span>
 </c:if>
+
+<div class="page-action">Payment Details</div>
 
 <c:if test="${not empty paymentErrorMessage}">
     <div id="paymentErrorMessage" class="page-action error"> ${paymentErrorMessage} </div>
@@ -67,7 +75,7 @@
         <label id="label_amount">Amount: </label>
         <div class="controls">
             <label type="text" id="fld_amount" name="amount">
-                <c:if test="${not empty sessionItems}">${totalCartPrice}</c:if>
+                <c:if test="${not empty sessionItems}">&pound; ${totalCartPrice}</c:if>
             </label>
             <input type="hidden" name="price" value="${totalCartPrice}">
         </div>

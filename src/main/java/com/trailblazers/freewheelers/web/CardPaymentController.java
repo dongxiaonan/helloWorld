@@ -31,6 +31,10 @@ public class CardPaymentController {
         model.addAttribute("months", MONTHS);
         model.addAttribute("years", getYears());
         model.addAttribute("totalPrice", request.getParameter("price"));
+        String address = (String)request.getSession().getAttribute("account_address");
+        if (address != null){
+            model.addAttribute("address", address.replaceAll("\\n", "<br/>"));
+        }
         return "payment";
     }
 

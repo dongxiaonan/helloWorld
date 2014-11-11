@@ -2,7 +2,15 @@
 <c:set var="pageTitle" scope="request" value="User Profile"/>
 <%@ include file="header.jsp" %>
 
-<div class="page-action">Your details</div>
+<security:authorize ifAnyGranted="ROLE_ADMIN">
+    <c:set var="titlePrefix" value="${userDetail.account_name}'s"/>
+</security:authorize>
+
+<security:authorize ifAnyGranted="ROLE_USER">
+    <c:set var="titlePrefix" value="Your"/>
+</security:authorize>
+
+<div class="page-action">${titlePrefix} details</div>
         <div id="user-details" >
             <span class="user-name">${userDetail.account_name}</span> - <span class="email-address">${userDetail.email_address}</span><br />
             <span class="user-address-title">Address:</span><br/>
@@ -10,7 +18,7 @@
             <span class="phone-number">Phone Number : ${userDetail.phoneNumber}</span>
         </div>
 
-		<div class="page-action">Your Orders</div>
+		<div class="page-action">${titlePrefix} Orders</div>
 		<table id= "order-table" class="table">
             <thead>
                 <tr>

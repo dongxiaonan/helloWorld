@@ -63,6 +63,10 @@ public class AccountController {
 
             ServiceResult<Account> result = accountService.createAccount(account);
 
+            if (result.getErrors().size() != 0) {
+                return showErrors(result.getErrors());
+            }
+
             emailSender.sendVerificationEmail(serverURL, account);
             return showSuccess(result.getModel());
         } catch (Exception e) {

@@ -108,6 +108,7 @@
                     <td>
                         <form:errors path="itemMap[${itemEntry.key}].price" class="text-error" />
                         <form:input disabled="true" path="itemMap[${itemEntry.key}].price" />
+                        <span class="text-error">${itemGridErrors[itemEntry.key]["price"]}</span>
                     </td>
                     <td>
                         <form:errors path="itemMap[${itemEntry.key}].description" class="text-error" />

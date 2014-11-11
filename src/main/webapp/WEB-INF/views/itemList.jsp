@@ -25,7 +25,8 @@
         </div>
 
         <div>
-            <form:label for="price" path="price">Price (&pound;)</form:label>
+            <form:label for="price" path="price">Price</form:label>
+            <form:label path="price" class="pound">&pound; </form:label>
             <div class="controls">
                 <form:input pattern="\d+|\d+.\d+" path="price"
                             title="Price should be a positive decimal number only"

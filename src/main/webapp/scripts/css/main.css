@@ -133,3 +133,8 @@ a.disableClick {
     pointer-events: none;
     display: none;
 }
+
+.pound {
+    width:auto;
+    margin-left: -13px;
+}

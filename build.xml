@@ -58,6 +58,7 @@
                 <exclude name="**/ReserveOrder.class" />
                 <exclude name="**/ShoppingCartController.class" />
                 <exclude name="**/ItemServiceImpl.class" />
+                <exclude name="**/AccountServiceImpl.class" />
                 <exclude name="**/Country.class" />
                 <exclude name="**/OrderItem.class" />
                 <exclude name="**/VerificationController.class" />

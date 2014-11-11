@@ -196,7 +196,7 @@ public class UserApi {
 
     public String verify_password_field_is_masked_in_login() {
         driver.get(URLs.home());
-        driver.findElement(By.linkText("User Profile")).click();
+        driver.findElement(By.linkText("Login")).click();
 
         return driver.findElement(By.id("j_password")).getAttribute("type");
     }

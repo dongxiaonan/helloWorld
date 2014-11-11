@@ -45,7 +45,7 @@ public interface ReserveOrderMapper {
     @Select(
         "SELECT order_id, account_id, status, note, reservation_timestamp " +
         "FROM reserve_order " +
-        "ORDER BY account_id"
+        "ORDER BY reservation_timestamp DESC"
     )
     @Results(value = {
             @Result(property="order_id",column = "order_id"),

@@ -84,6 +84,12 @@ public class UserApi {
         return this;
     }
 
+    public UserApi visit_login() {
+        driver.findElement(By.linkText("Login")).click();
+        return this;
+    }
+
+
     public UserApi visits_his_profile() {
         driver.findElement(By.linkText("User Profile")).click();
         return this;

@@ -99,7 +99,7 @@ public class AccountTest extends UserJourneyBase {
 
         user
                 .is_logged_out()
-                .visits_his_profile();
+                .visit_login();
 
         screen
                 .shows_login();

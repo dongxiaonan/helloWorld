@@ -28,6 +28,7 @@
 
     <authentication-manager>
         <authentication-provider>
+            <password-encoder hash="md5" />
             <jdbc-user-service data-source-ref="myDataSource"
                                users-by-username-query="select account_name, password, enabled from account where account_name=? and enabled=TRUE"
                                authorities-by-username-query="select a.account_name, ar.role from account a,

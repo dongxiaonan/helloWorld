@@ -10,6 +10,7 @@ import com.trailblazers.freewheelers.service.AccountService;
 import com.trailblazers.freewheelers.service.ServiceResult;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -97,6 +98,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void create(Account account, String role) {
+
+        Md5PasswordEncoder md5PasswordEncoder = new Md5PasswordEncoder();
+        account.setPassword(md5PasswordEncoder.encodePassword(account.getPassword(), null));
         accountMapper.insert(account);
         accountRoleMapper.insert(roleFor(account, role));
         sqlSession.commit();

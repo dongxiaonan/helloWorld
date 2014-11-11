@@ -29,7 +29,6 @@ public class UserJourneyBase {
         desiredCapabilities.setJavascriptEnabled(true);
         desiredCapabilities.setCapability("takesScreenshot", true);
         driver = new PhantomJSDriver(desiredCapabilities);
-        //driver = new FirefoxDriver();
 
         admin = new AdminApi(driver);
         user = new UserApi(driver);

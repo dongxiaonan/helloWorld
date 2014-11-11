@@ -6,7 +6,6 @@ import functional.com.trailblazers.freewheelers.apis.UserApi;
 import org.junit.Test;
 
 import static functional.com.trailblazers.freewheelers.helpers.SyntaxSugar.*;
-import static java.lang.Thread.sleep;
 
 public class ShoppingCartTest extends UserJourneyBase {
 
@@ -15,8 +14,6 @@ public class ShoppingCartTest extends UserJourneyBase {
         String Arno = "Arno Admin";
         String Bob = "Bob Buyer";
         String Simplon_Frame = "Simplon Pavo 3 Ultra " + System.currentTimeMillis();
-
-        sleep(1000);
         admin
                 .there_is_an_admin(Arno, SOME_PASSWORD)
                 .there_is_a_user(Bob, SOME_PASSWORD)
@@ -26,8 +23,8 @@ public class ShoppingCartTest extends UserJourneyBase {
                 .visits_home_page()
                 .add_item_to_shopping_cart(Simplon_Frame)
                 .logs_in_with(Bob, SOME_PASSWORD);
-//        screen
-//                .shouldShowSuccessAtHomePageForAddingItemToCart();
+        screen
+                .shouldShowSuccessAtHomePageForAddingItemToCart();
 
         user
                 .visits_shopping_cart();

@@ -29,7 +29,7 @@
             <li><a href="<c:url value='/login' />" class="header-link">Login</a></li>
         </security:authorize>
 
-        <security:authorize ifAnyGranted="ROLE_USER,ROLE_ADMIN">
+        <security:authorize ifAnyGranted="ROLE_USER">
             <li><a href="<c:url value="/shoppingCart/myShoppingCart" />" class="header-link ${enableMultipleItemsPerCart == false ? 'disableClick' : ''}">My Shopping Cart</a></li>
         </security:authorize>
 

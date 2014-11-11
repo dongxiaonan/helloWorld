@@ -19,6 +19,7 @@ public class ShoppingCartTest extends UserJourneyBase {
                 .there_is_a_user(Bob, SOME_PASSWORD)
                 .there_is_a_frame(Simplon_Frame, ONLY_ONE_LEFT);
         user
+                .is_logged_out()
                 .visits_home_page()
                 .add_item_to_shopping_cart(Simplon_Frame)
                 .logs_in_with(Bob, SOME_PASSWORD);

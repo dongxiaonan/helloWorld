@@ -19,7 +19,7 @@
     </environments>
 
     <mappers>
-        <package name="com.trailblazers.freewheelers.mappers"/>
+        <package name="com.trailblazers.spring.mappers"/>
     </mappers>
 
 </configuration>

@@ -14,7 +14,6 @@
 	<mvc:resources mapping="/scripts/**" location="/scripts/" />
 	<mvc:resources mapping="/styles/**" location="/styles/" />
 	<mvc:resources mapping="/images/**" location="/images/" />
-    <mvc:resources mapping="/humans.txt" location="/humans.txt" />
     <mvc:resources mapping="/favicon.ico" location="/images/favicon.ico" />
 	
 	<!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
